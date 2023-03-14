@@ -483,6 +483,9 @@ function validation() {
     $(steps[x])
       .find(':input[type="file"][required]')
       .each(function (i) {
+
+        let empReqFile = []
+
         if ($(this).val() !== "") {
           empReqFile = empReqFile.filter((y) => y.input !== i);
         } else {
