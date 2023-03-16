@@ -46,6 +46,7 @@ let searchQ = [];
 let domainAllowed = true;
 let dom = [];
 let image_changed = false
+let is_boy = true;
 
 $(progressbarClone).removeClass("current");
 $('[data-form="progress"]').children().remove();
@@ -61,13 +62,32 @@ $('[data-form="next-btn"][type="submit"]').each(function () {
 
 function changeImage() {
   if (image_changed == false) {
-    console.log('Updating 2. step picture')
+    console.log('Updating 2. step picture, uploading guide')
     // Get the img element by it's class nem
     // const imageElement = document.getElementsByTagName("image-5");
     const imageElement = document.getElementsByClassName("image-5")[0];
     // Set the src attribute to the new image's path
-    imageElement.src = "test.webp";
-    imageElement.srcset = "test.webp 500w, test.webp 800w, test.webp 1080w, test.webp 1600w, test.webp 2000w, test.webp 2000w";
+
+    if (is_boy) {
+      url = "https://stastiem-public-assets.s3.eu-west-1.amazonaws.com/website/boy.webp";
+      imageElement.src = url;
+      imageElement.srcset = url + " 500w, "
+                            url + " 800w, "
+                            url + " 1080w, "
+                            url + " 1600w, "
+                            url + " 2000w, "
+                            url + " 2000w";
+    } else {
+      url = "https://stastiem-public-assets.s3.eu-west-1.amazonaws.com/website/girl.png";
+      imageElement.src = "girl.webp";
+      imageElement.srcset = url + " 500w, "
+                            url + " 800w, "
+                            url + " 1080w, "
+                            url + " 1600w, "
+                            url + " 2000w, "
+                            url + " 2000w";
+    }
+
     image_changed = true
   }
 }
@@ -463,6 +483,7 @@ function validation() {
     $(steps[x])
       .find(':input[type="text"][required]')
       .each(function (i) {
+        console.log("Text input step val: " + $(this).val());
         if ($(this).val() !== "") {
           empReqInput = empReqInput.filter((y) => y.input !== i);
         } else {
@@ -481,6 +502,8 @@ function validation() {
     $(steps[x])
       .find(':input[type="tel"][required]')
       .each(function (i) {
+        console.log("Tel input step val: " + $(this).val());
+
         if ($(this).val() !== "") {
           empReqTel = empReqTel.filter((y) => y.input !== i);
         } else {
@@ -499,6 +522,7 @@ function validation() {
     $(steps[x])
       .find(':input[type="date"][required]')
       .each(function (i) {
+        console.log("Date input step val: " + $(this).val());
         if ($(this).val() !== "") {
           empReqDate = empReqDate.filter((y) => y.input !== i);
         } else {
@@ -557,6 +581,8 @@ function validation() {
     $(steps[x])
       .find("select[required]")
       .each(function (i) {
+        console.log("Select input step val: " + $(this).val());
+
         if ($(this).val() !== "") {
           empReqSelect = empReqSelect.filter((y) => y.input !== i);
         } else {
