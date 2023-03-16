@@ -69,7 +69,7 @@ function changeImage() {
     // Set the src attribute to the new image's path
 
     if (is_boy) {
-      url = "https://stastiem-public-assets.s3.eu-west-1.amazonaws.com/website/boy.webp";
+      url = "https://stastiem-public-assets.s3-accelerate.amazonaws.com/website/boy.webp";
       imageElement.src = url;
       imageElement.srcset = url + " 500w, "
                             url + " 800w, "
@@ -78,7 +78,7 @@ function changeImage() {
                             url + " 2000w, "
                             url + " 2000w";
     } else {
-      url = "https://stastiem-public-assets.s3.eu-west-1.amazonaws.com/website/girl.png";
+      url = "https://stastiem-public-assets.s3-accelerate.amazonaws.com/website/girl.png";
       imageElement.src = "girl.webp";
       imageElement.srcset = url + " 500w, "
                             url + " 800w, "
@@ -351,12 +351,15 @@ function updateStep() {
   }
 
   if (x === 0 && !$(steps[x]).data("card")) {
+    console.log("first step");
     $(steps[x]).find(`[data-answer]`).show();
   }
 
   if (selection.length > 0) {
+    console.log("selection 1")
     $(steps[x]).find(`[data-answer="${selection[0].selected}"]`).show();
   } else {
+    console.log("selection 2")
     $(steps[x]).find(`[data-answer="${answer}"]`).show();
   }
 
@@ -445,6 +448,7 @@ function validation() {
 
   if (!$("[data-logic-extra]").data("logic-extra")) {
     if ($(steps[x]).find(":input").is('[type="checkbox"]')) {
+      console.log("checkbox step val: " + checkCount)
       if (
         checkCount === "*" ||
         checkCount > $(steps[x]).find(':input[type="checkbox"]').length
@@ -523,6 +527,7 @@ function validation() {
       .find(':input[type="date"][required]')
       .each(function (i) {
         console.log("Date input step val: " + $(this).val());
+
         if ($(this).val() !== "") {
           empReqDate = empReqDate.filter((y) => y.input !== i);
         } else {
@@ -601,6 +606,7 @@ function validation() {
     $(steps[x])
       .find("textarea[required]")
       .each(function (i) {
+        console.log("Textarea input step val: " + $(this).val());
         if ($(this).val() !== "") {
           empReqTextarea = empReqTextarea.filter((y) => y.input !== i);
         } else {
@@ -619,6 +625,7 @@ function validation() {
     $(steps[x])
       .find(':input[type="email"][required]')
       .each(function () {
+        console.log("Email input step val: " + $(this).val());
         if ($(this).val() !== "") {
           validateEmail($(this).val(), $(this).data("block-domain"));
         } else {
@@ -647,6 +654,7 @@ function validation() {
         $(steps[x])
           .find(':input[type="checkbox"]')
           .each(function () {
+            console.log("Checkbox input step val: " + $(this).val());
             if ($(this).is(":checked")) {
               if ($(steps[x]).find(":input[required]").length < 1) {
                 if ($(this).parents("[data-go-to]").attr("data-go-to")) {
@@ -666,6 +674,7 @@ function validation() {
             .find("[data-answer]:visible")
             .find(':input[type="checkbox"]:checked').length >= checkCount
         ) {
+          console.log("Checkbox input step val: " + $(this).val());
 
           if (
             $(steps[x])
@@ -705,6 +714,7 @@ function validation() {
           .find(':input[type="radio"][required]')
           .is(":checked")
       ) {
+        console.log("Radio input step val: " + $(this).val());
         radioFilled = true;
       } else {
         radioFilled = false;
@@ -718,6 +728,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="text"][required]')
       .each(function (i) {
+        console.log("Text input step val: " + $(this).val());
         if ($(this).val() !== "") {
           empReqInput = empReqInput.filter((y) => y.input !== i);
         } else {
@@ -737,6 +748,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="text"]')
       .each(function (i) {
+        console.log("Text input step val: " + $(this).val());
         skipTo = undefined;
         if ($(this).parents("[data-skip-to]").data("skip-to") !== "") {
           skipTo = $(this).parents("[data-skip-to]").data("skip-to");
@@ -759,6 +771,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="tel"][required]')
       .each(function (i) {
+        console.log("Phone input step val: " + $(this).val());
         if ($(this).val() !== "") {
           empReqTel = empReqTel.filter((y) => y.input !== i);
         } else {
@@ -778,6 +791,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="tel"]')
       .each(function (i) {
+        console.log("Phone input step val: " + $(this).val());
         skipTo = undefined;
         if ($(this).parents("[data-skip-to]").data("skip-to") !== "") {
           skipTo = $(this).parents("[data-skip-to]").data("skip-to");
@@ -845,6 +859,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="number"][required]')
       .each(function (i) {
+        console.log("Number input step val: " + $(this).val());
         if ($(this).val() !== "") {
           empReqInput = empReqInput.filter((y) => y.input !== i);
         } else {
@@ -864,6 +879,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="number"]')
       .each(function (i) {
+        console.log("Number input step val: " + $(this).val());
         skipTo = undefined;
         if ($(this).parents("[data-skip-to]").data("skip-to") !== "") {
           skipTo = $(this).parents("[data-skip-to]").data("skip-to");
@@ -886,6 +902,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find("select[required]")
       .each(function (i) {
+        console.log("Select input step val: " + $(this).val());
         if ($(this).val() !== "") {
           empReqSelect = empReqSelect.filter((y) => y.input !== i);
         } else {
@@ -905,6 +922,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find("select")
       .each(function (i) {
+        console.log("Select input step val: " + $(this).val());
         skipTo = undefined;
         if ($(this).parents("[data-skip-to]").data("skip-to") !== "") {
           skipTo = $(this).parents("[data-skip-to]").data("skip-to");
@@ -927,6 +945,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find("textarea[required]")
       .each(function (i) {
+        console.log("Textarea input step val: " + $(this).val());
         if ($(this).val() !== "") {
           empReqTextarea = empReqTextarea.filter((y) => y.input !== i);
         } else {
@@ -946,6 +965,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find("textarea")
       .each(function (i) {
+        console.log("Textarea input step val: " + $(this).val());
         skipTo = undefined;
         if ($(this).parents("[data-skip-to]").data("skip-to") !== "") {
           skipTo = $(this).parents("[data-skip-to]").data("skip-to");
@@ -968,6 +988,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="email"][required]')
       .each(function (m) {
+        console.log("Email input step val: " + $(this).val());
         if ($(this).val() !== "") {
           validateEmail($(this).val(), $(this).data("block-domain"));
         } else {
@@ -979,6 +1000,7 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="email"]')
       .each(function (m) {
+        console.log("Email input step val: " + $(this).val());
         skipTo = undefined;
         if ($(this).parents("[data-skip-to]").data("skip-to") !== "") {
           skipTo = $(this).parents("[data-skip-to]").data("skip-to");
@@ -1167,6 +1189,13 @@ $(steps)
 
       selString = [];
       selArr.forEach((sel) => selString.push(sel.selected));
+
+      console.log("Radio botton selected", $(this).val());
+      if ($(this).val() === "Girl") {
+        is_boy = false;
+      } else {
+        is_boy = true;
+      }
 
       $(steps[x])
         .find("[data-answer]:visible")
