@@ -483,6 +483,7 @@ function validation() {
     $(steps[x])
       .find(':input[type="file"][required]')
       .each(function (i) {
+        console.log("File input step val: " + $(this).val());
 
         let empReqFile = []
 
@@ -500,6 +501,18 @@ function validation() {
           fileFilled = false;
         }
       });
+
+    // Happens when clicking the "remove" button on the file upload
+    $(steps[x]).find('.w-icon-file-upload-remove').on("click", function() {
+      console.log("1. User removed a file " + $(this).val());
+      disableBtn()
+    });
+
+    // Happens when clicking the "remove" button on the file upload
+    $(steps[x]).find('.link-5.w-file-remove-link').on("click", function() {
+      console.log("2. User removed a file " + $(this).val());
+      disableBtn()
+    });
 
     $(steps[x])
       .find("select[required]")
@@ -723,6 +736,8 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="file"][required]')
       .each(function (i) {
+        console.log("File input validation val: " + $(this).val());
+
         if ($(this).val() !== "") {
           empReqfile = empReqfile.filter((y) => y.input !== i);
         } else {
@@ -742,6 +757,8 @@ function validation() {
       .find("[data-answer]:visible")
       .find(':input[type="file"]')
       .each(function (i) {
+        console.log("File input validation val: " + $(this).val());
+
         skipTo = undefined;
         if ($(this).parents("[data-skip-to]").data("skip-to") !== "") {
           skipTo = $(this).parents("[data-skip-to]").data("skip-to");
