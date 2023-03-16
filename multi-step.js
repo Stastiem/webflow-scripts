@@ -13,6 +13,7 @@ let checkboxFilled = true;
 let emailFilled = true;
 let textareaFilled = true;
 let telFilled = true;
+let dateFilled = true;
 let fileFilled = true;
 let answer = "";
 let selections = [];
@@ -22,6 +23,7 @@ let empReqSelect = [];
 let empReqTextarea = [];
 let empReqfile = [];
 let empReqTel = [];
+let empReqDate = [];
 let reinitIX = $("[data-reinit]").data("reinit");
 let textareaLength = 0;
 let textInputLength = 0;
@@ -43,6 +45,7 @@ let emptyInput = 0;
 let searchQ = [];
 let domainAllowed = true;
 let dom = [];
+let image_changed = false
 
 $(progressbarClone).removeClass("current");
 $('[data-form="progress"]').children().remove();
@@ -55,6 +58,19 @@ steps.hide();
 $('[data-form="next-btn"][type="submit"]').each(function () {
   $(this).attr("type", "button");
 });
+
+function changeImage() {
+  if (image_changed == false) {
+    console.log('Updating 2. step picture')
+    // Get the img element by it's class nem
+    // const imageElement = document.getElementsByTagName("image-5");
+    const imageElement = document.getElementsByClassName("image-5")[0];
+    // Set the src attribute to the new image's path
+    imageElement.src = "test.webp";
+    imageElement.srcset = "test.webp 500w, test.webp 800w, test.webp 1080w, test.webp 1600w, test.webp 2000w, test.webp 2000w";
+    image_changed = true
+  }
+}
 
 function getParams() {
   urlFormly.searchParams.forEach(function (val, key) {
@@ -481,9 +497,28 @@ function validation() {
       });
 
     $(steps[x])
+      .find(':input[type="date"][required]')
+      .each(function (i) {
+        if ($(this).val() !== "") {
+          empReqDate = empReqDate.filter((y) => y.input !== i);
+        } else {
+          if (!empReqDate.find((y) => y.input === i)) {
+            empReqDate.push({ input: i });
+          }
+        }
+
+        if (empReqDate.length === 0) {
+          dateFilled = true;
+        } else {
+          dateFilled = false;
+        }
+      });
+
+    $(steps[x])
       .find(':input[type="file"][required]')
       .each(function (i) {
         console.log("File input step val: " + $(this).val());
+        changeImage();
 
         let empReqFile = []
 
@@ -512,6 +547,11 @@ function validation() {
     $(steps[x]).find('.link-5.w-file-remove-link').on("click", function() {
       console.log("2. User removed a file " + $(this).val());
       disableBtn()
+    });
+
+    $(steps[x]).find('.link-back.w-inline-block').on("click", function() {
+      console.log("User clicked back" + $(this).val());
+      enableBtn()
     });
 
     $(steps[x])
@@ -600,8 +640,6 @@ function validation() {
             .find("[data-answer]:visible")
             .find(':input[type="checkbox"]:checked').length >= checkCount
         ) {
-          //console.log($(steps[x]).find(':input[required').length);
-          //if ($(steps[x]).find(':input[required]').length < 1) {
 
           if (
             $(steps[x])
@@ -931,10 +969,55 @@ function validation() {
           }
         }
       });
+
+    ///////////////////////////date validation//////////////////////////////////////
+    $(steps[x])
+      .find("[data-answer]:visible")
+      .find(':input[type="date"][required]')
+      .each(function (m) {
+        console.log("date", $(this).val());
+
+        if ($(this).val() !== "") {
+          empReqDate = empReqDate.filter((y) => y.input !== m);
+        } else {
+          if (!empReqDate.find((y) => y.input === m)) {
+            empReqDate.push({ input: m });
+          }
+        }
+
+        if (empReqDate.length === 0) {
+          dateFilled = true;
+        } else {
+          dateFilled = false;
+        }
+      });
+
+    $(steps[x])
+      .find("[data-answer]:visible")
+      .find(':input[type="date"]')
+      .each(function (m) {
+        console.log("date2", $(this).val());
+        skipTo = undefined;
+        if ($(this).parents("[data-skip-to]").data("skip-to") !== "") {
+          skipTo = $(this).parents("[data-skip-to]").data("skip-to");
+        }
+        if ($(this).parents("[data-go-to]").attr("data-go-to")) {
+          answer = $(this).parents("[data-go-to]").attr("data-go-to");
+          selections = selections.filter((y) => y.step !== x);
+          selections.push({ step: x, selected: answer });
+          if (skipTo) {
+            selections.push({ step: skipTo - 2, selected: answer });
+            objIndex = selections.findIndex((obj) => obj.step === x);
+            selections[objIndex].skipTo = parseInt(skipTo) - 1;
+            selections[objIndex].backTo = x;
+          }
+        }
+      });
   }
 
   if (
     inputFilled &&
+    dateFilled &&
     checkboxFilled &&
     telFilled &&
     radioFilled &&
@@ -1041,6 +1124,7 @@ $(steps)
   .find(":radio")
   .on("click", function () {
     if ($(steps[x]).find(":input").is(":checked")) {
+
       skipTo = undefined;
       if ($(this).parents("[data-skip-to]").data("skip-to")) {
         skipTo = $(this).parents("[data-skip-to]").data("skip-to");
@@ -1102,7 +1186,6 @@ $(steps)
           }, $(steps[x]).find("[data-radio-delay]").data("radio-delay"));
         }
       }
-      console.log(selections);
     }
   });
 
