@@ -45,7 +45,7 @@ let emptyInput = 0;
 let searchQ = [];
 let domainAllowed = true;
 let dom = [];
-let image_changed = false
+let image_changed = false;
 let is_boy = true;
 
 $(progressbarClone).removeClass("current");
@@ -108,6 +108,8 @@ function getSafe(fn, defaultVal) {
 
 if (savedFilledInput && memory) {
   savedFilledInput.forEach((x) => {
+    console.log("Pre-fill: ", x.inputName, x.value, x.type, x.inputType);
+
     if (
       $(`input[name="${x.inputName}"][value="${x.value}"]`).attr("type") ===
       "radio"
@@ -134,6 +136,7 @@ if (savedFilledInput && memory) {
 if (params) {
   getParams();
   searchQ.forEach((y) => {
+    console.info("Query param: ", y.key, y.val)
     console.log(y, $(`input[value="${y.val}"]`).attr("type"));
     if (
       $(`input[name="${y.key}"][value="${y.val}"]`).attr("type") === "radio"
@@ -351,15 +354,15 @@ function updateStep() {
   }
 
   if (x === 0 && !$(steps[x]).data("card")) {
-    console.log("first step");
+    console.log("First step");
     $(steps[x]).find(`[data-answer]`).show();
   }
 
   if (selection.length > 0) {
-    console.log("selection 1")
+    console.log("Selection 1", selection[0].selected)
     $(steps[x]).find(`[data-answer="${selection[0].selected}"]`).show();
   } else {
-    console.log("selection 2")
+    console.log("Selection 2", answer)
     $(steps[x]).find(`[data-answer="${answer}"]`).show();
   }
 
@@ -1097,6 +1100,7 @@ function nextStep() {
       $(steps[x]).data("card") ? (curStep = x + 0) : (curStep = x + 1)
     );
   }
+  return x;
 }
 
 function backStep() {
@@ -1115,7 +1119,6 @@ function backStep() {
 
 $("body").on("keypress", function (e) {
   if (e.keyCode === 13 && fill) {
-    //console.log('enter');
     if ($("[data-enter]").data("enter")) {
       $('[data-form="next-btn"]')[0].click();
       e.preventDefault();
@@ -1150,9 +1153,11 @@ function selectionQuiz() {
 }
 
 $('[data-form="next-btn"]').on("click", function () {
+  console.log('Clicked to continue');
   scrollTop();
   next = true;
-  nextStep();
+  let step_number = nextStep();
+  console.log('Step number: ', step_number);
   selectionQuiz();
 });
 
@@ -1190,7 +1195,7 @@ $(steps)
       selString = [];
       selArr.forEach((sel) => selString.push(sel.selected));
 
-      console.log("Radio botton selected", $(this).val());
+      console.log("Radio button selected", $(this).val());
       if ($(this).val() === "Girl") {
         is_boy = false;
       } else {
@@ -1286,7 +1291,7 @@ $('[data-form="submit-btn"]').on("click", function (e) {
 
   e.preventDefault();
   e.stopPropagation();
-  //console.log('form is being submitted')
+  console.log('form is being submitted')
 
   if ($('[data-form="multistep"]').data("logic-extra")) {
     //if(x === $('[data-form="step"]:not([data-card="true"])').length || $(steps[x]).find('[data-form="submit"]:visible').length > 0){
