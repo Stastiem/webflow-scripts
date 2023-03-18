@@ -593,6 +593,7 @@ function validation() {
     $(steps[x]).find('.link-back.w-inline-block').on("click", function() {
       console.log("User clicked back" + $(this).val());
       enableBtn()
+      setAllChecksToTrue()
     });
 
     $(steps[x])
@@ -1075,6 +1076,19 @@ function validation() {
       });
   }
 
+  function setAllChecksToTrue() {
+    inputFilled = true;
+    dateFilled = true;
+    checkboxFilled = true;
+    telFilled = true;
+    radioFilled = true;
+    emailFilled = true;
+    domainAllowed = true;
+    selectFilled = true;
+    fileFilled = true;
+    textareaFilled = true;
+  };
+
   if (
     inputFilled &&
     dateFilled &&
@@ -1087,8 +1101,18 @@ function validation() {
     fileFilled &&
     textareaFilled
   ) {
+    console.log("ENABLING BOTTON BECAUSE inputFilled: " + inputFilled + " dateFilled: " + dateFilled +
+                "checkboxFilled: " + checkboxFilled + " telFilled: " +telFilled +
+                " radioFilled: " + radioFilled + " emailFilled: " + emailFilled +
+                " domainAllowed: " + domainAllowed + " selectFilled: " + selectFilled +
+                " fileFilled: " + fileFilled + " textareaFilled: " + textareaFilled);
     enableBtn();
   } else {
+    console.log("DISABLING BOTTON BECAUSE inputFilled: " + inputFilled + " dateFilled: " + dateFilled +
+                "checkboxFilled: " + checkboxFilled + " telFilled: " +telFilled +
+                " radioFilled: " + radioFilled + " emailFilled: " + emailFilled +
+                " domainAllowed: " + domainAllowed + " selectFilled: " + selectFilled +
+                " fileFilled: " + fileFilled + " textareaFilled: " + textareaFilled);
     disableBtn();
   }
 }
