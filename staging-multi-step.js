@@ -1,4 +1,82 @@
 //22-2-23 Update Push
+
+let autocomplete;
+let countryInputField = document.querySelector("#Country");
+countryInputField.addEventListener("change", (e) => {
+  initAutocomplete(e.target.value);
+});
+function initAutocomplete(lang = "lv") {
+  autocomplete = new google.maps.places.Autocomplete(
+    document.getElementById("Address"),
+    {
+      types: ["address"],
+    }
+  );
+  autocomplete.setComponentRestrictions({ country: lang });
+  autocomplete.addListener("place_changed", fillInAddress);
+}
+function fillInAddress() {
+  const place = autocomplete.getPlace();
+
+  function findAddressData(data) {
+    const dataObject = place.address_components.find((el) =>
+      el.types.includes(data)
+    );
+    return dataObject ? dataObject.long_name : "";
+  }
+
+  if (!place.geometry) {
+    document.getElementById("Address").placeholder = "Enter a place";
+  } else {
+    switch (countryInputField.value) {
+      case "lv":
+        document.getElementById("Street").value = findAddressData(
+          "street_number"
+        )
+          ? findAddressData("street_number") + ", " + findAddressData("route")
+          : findAddressData("premise") || findAddressData("establishment");
+
+        document.getElementById("City").value =
+          findAddressData("locality") === findAddressData("premise")
+            ? findAddressData("administrative_area_level_2")
+            : findAddressData("locality");
+
+        document.getElementById("State").value =
+          findAddressData("administrative_area_level_1") ||
+          findAddressData("locality");
+        break;
+
+      case "gb":
+        document.getElementById("Street").value =
+          findAddressData("street_number") + ", " + findAddressData("route");
+
+        document.getElementById("City").value =
+          findAddressData("locality") || findAddressData("postal_town");
+
+        document.getElementById("State").value = findAddressData(
+          "administrative_area_level_2"
+        );
+        break;
+
+      case "de":
+        document.getElementById("Street").value =
+          findAddressData("street_number") + ", " + findAddressData("route");
+
+        document.getElementById("City").value = findAddressData("locality");
+
+        document.getElementById("State").value = findAddressData(
+          "administrative_area_level_1"
+        );
+        break;
+      default:
+        break;
+    }
+    document.getElementById("Address").value = place.formatted_address;
+    document.getElementById("ZipCode").value = findAddressData("postal_code");
+    validation();
+  }
+}
+
 const addressInputField = document.getElementById("Address");
 const street = document.getElementById("streetWrap");
 const apart = document.getElementById("apartWrap");

@@ -1668,9 +1668,7 @@
                             </select>
                           </div>
                           <div class="form-input-items">
-                            <label for="Address" class="label"
-                              >Location search*</label
-                            >
+                            <label for="Address" class="label">Address*</label>
                             <input
                               type="text"
                               class="field w-node-bea9dc66-583e-b05a-be0f-f1b5c87468c6-f2b54ff2 w-input"
@@ -1684,9 +1682,7 @@
                           </div>
                           <!-- <div class="div-block-2"> -->
                           <div class="form-input-items" id="streetWrap">
-                            <label for="Street" class="label"
-                              >Street name and number*</label
-                            >
+                            <label for="Street" class="label">Street*</label>
                             <input
                               type="text"
                               class="field w-input"
@@ -1711,14 +1707,11 @@
                               data-name="Apartment"
                               placeholder="Ex.: 48, Liela iela"
                               id="Apartment"
-                              required=""
                               autocomplete="on"
                             />
                           </div>
                           <div class="form-input-items" id="cityWrap">
-                            <label for="City" class="label"
-                              >City/Town/Village*</label
-                            >
+                            <label for="City" class="label">Settlement*</label>
                             <input
                               type="text"
                               class="field w-input"
@@ -1732,9 +1725,7 @@
                             />
                           </div>
                           <div class="form-input-items" id="stateWrap">
-                            <label for="State" class="label"
-                              >County/State/Region*</label
-                            >
+                            <label for="State" class="label">Region*</label>
                             <input
                               type="text"
                               class="field w-input"
@@ -2056,7 +2047,7 @@
         });
       });
     </script>
-    <script>
+    <!-- <script>
       let autocomplete;
       let countryInputField = document.querySelector("#Country");
       countryInputField.addEventListener("change", (e) => {
@@ -2142,7 +2133,7 @@
           validation();
         }
       }
-    </script>
+    </script> -->
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&callback=initAutocomplete&libraries=places"
       defer
