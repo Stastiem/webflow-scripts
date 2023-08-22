@@ -224,6 +224,20 @@
       src="https://platform-api.sharethis.com/js/sharethis.js#property=644690dd7ac381001a3044ab&product=inline-share-buttons&source=platform"
       async="async"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <style>
+      .pac-container:after {
+        /* Disclaimer: not needed to show 'powered by Google' if also a Google Map is shown */
+        background-image: none !important;
+        height: 0px;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
   </head>
   <body class="body">
     <div class="w-embed w-iframe">
@@ -1584,7 +1598,6 @@
                               maxlength="256"
                               name="Phone"
                               data-name="Phone"
-                              placeholder="Ex.: +37168812345"
                               data-tracker="ENTER_PHONE|ORDER"
                               id="Phone"
                               required=""
@@ -1640,8 +1653,23 @@
                         </div>
                         <div class="form-inputs-wrapper">
                           <div class="form-input-items">
+                            <label for="Country" class="label">Country*</label>
+                            <select
+                              id="Country"
+                              name="Country"
+                              data-name="Country"
+                              required=""
+                              class="field w-select"
+                            >
+                              <option value=""></option>
+                              <option value="lv">Latvia</option>
+                              <option value="de">Germany</option>
+                              <option value="gb">United Kingdom</option>
+                            </select>
+                          </div>
+                          <div class="form-input-items">
                             <label for="Address" class="label"
-                              >Delivery Address*</label
+                              >Location search*</label
                             >
                             <input
                               type="text"
@@ -1651,40 +1679,91 @@
                               data-name="Address"
                               placeholder="Ex.: 14c Latvia Street"
                               id="Address"
-                              required=""
+                              autocomplete="on"
                             />
                           </div>
-                          <div class="div-block-2">
-                            <div class="form-input-items">
-                              <label for="City" class="label">City*</label>
-                              <input
-                                type="text"
-                                class="field w-input"
-                                maxlength="256"
-                                name="City"
-                                data-name="City"
-                                placeholder="Ex.: Riga"
-                                id="City"
-                                required=""
-                              />
-                            </div>
-                            <div class="form-input-items">
-                              <label for="Country" class="label"
-                                >Country*</label
-                              >
-                              <select
-                                id="Country"
-                                name="Country"
-                                data-name="Country"
-                                required=""
-                                class="field w-select"
-                              >
-                                <option value="Latvia">Latvia</option>
-                                <option value="Lithuania">Lithuania</option>
-                                <option value="Estonia">Estonia</option>
-                              </select>
-                            </div>
+                          <!-- <div class="div-block-2"> -->
+                          <div class="form-input-items" id="streetWrap">
+                            <label for="Street" class="label"
+                              >Street name and number*</label
+                            >
+                            <input
+                              type="text"
+                              class="field w-input"
+                              maxlength="256"
+                              name="Street"
+                              data-name="Street"
+                              placeholder="Ex.: 48, Liela iela"
+                              id="Street"
+                              required=""
+                              autocomplete="on"
+                            />
                           </div>
+                          <div class="form-input-items" id="apartWrap">
+                            <label for="Apartment" class="label"
+                              >Apartment(optional)</label
+                            >
+                            <input
+                              type="text"
+                              class="field w-input"
+                              maxlength="256"
+                              name="Apartment"
+                              data-name="Apartment"
+                              placeholder="Ex.: 48, Liela iela"
+                              id="Apartment"
+                              required=""
+                              autocomplete="on"
+                            />
+                          </div>
+                          <div class="form-input-items" id="cityWrap">
+                            <label for="City" class="label"
+                              >City/Town/Village*</label
+                            >
+                            <input
+                              type="text"
+                              class="field w-input"
+                              maxlength="256"
+                              name="City"
+                              data-name="City"
+                              placeholder="Ex.: Riga"
+                              id="City"
+                              required=""
+                              autocomplete="on"
+                            />
+                          </div>
+                          <div class="form-input-items" id="stateWrap">
+                            <label for="State" class="label"
+                              >County/State/Region*</label
+                            >
+                            <input
+                              type="text"
+                              class="field w-input"
+                              maxlength="256"
+                              name="State"
+                              data-name="State"
+                              placeholder="Ex.: Riga"
+                              id="State"
+                              required=""
+                              autocomplete="on"
+                            />
+                          </div>
+                          <div class="form-input-items" id="zipWrap">
+                            <label for="ZipCode" class="label"
+                              >Postal code*</label
+                            >
+                            <input
+                              type="text"
+                              class="field w-input"
+                              maxlength="256"
+                              name="ZipCode"
+                              data-name="ZipCode"
+                              placeholder="Ex.: 1234"
+                              id="ZipCode"
+                              required=""
+                              autocomplete="on"
+                            />
+                          </div>
+                          <!-- </div> -->
                           <div class="note">
                             We will ship to the nearest parcel locker. Shipping
                             in Latvia is FREE!
@@ -1977,6 +2056,104 @@
         });
       });
     </script>
-    <script src="./multi-step.js"></script>
+    <script>
+      let autocomplete;
+      let countryInputField = document.querySelector("#Country");
+      countryInputField.addEventListener("change", (e) => {
+        initAutocomplete(e.target.value);
+      });
+      function initAutocomplete(lang = "lv") {
+        autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById("Address"),
+          {
+            types: ["address"],
+          }
+        );
+        autocomplete.setComponentRestrictions({ country: lang });
+        autocomplete.addListener("place_changed", fillInAddress);
+      }
+      function fillInAddress() {
+        const place = autocomplete.getPlace();
+
+        function findAddressData(data) {
+          const dataObject = place.address_components.find((el) =>
+            el.types.includes(data)
+          );
+          return dataObject ? dataObject.long_name : "";
+        }
+
+        if (!place.geometry) {
+          document.getElementById("Address").placeholder = "Enter a place";
+        } else {
+          switch (countryInputField.value) {
+            case "lv":
+              document.getElementById("Street").value = findAddressData(
+                "street_number"
+              )
+                ? findAddressData("street_number") +
+                  ", " +
+                  findAddressData("route")
+                : findAddressData("premise") ||
+                  findAddressData("establishment");
+
+              document.getElementById("City").value =
+                findAddressData("locality") === findAddressData("premise")
+                  ? findAddressData("administrative_area_level_2")
+                  : findAddressData("locality");
+
+              document.getElementById("State").value =
+                findAddressData("administrative_area_level_1") ||
+                findAddressData("locality");
+              break;
+
+            case "gb":
+              document.getElementById("Street").value =
+                findAddressData("street_number") +
+                ", " +
+                findAddressData("route");
+
+              document.getElementById("City").value =
+                findAddressData("locality") || findAddressData("postal_town");
+
+              document.getElementById("State").value = findAddressData(
+                "administrative_area_level_2"
+              );
+              break;
+
+            case "de":
+              document.getElementById("Street").value =
+                findAddressData("street_number") +
+                ", " +
+                findAddressData("route");
+
+              document.getElementById("City").value =
+                findAddressData("locality");
+
+              document.getElementById("State").value = findAddressData(
+                "administrative_area_level_1"
+              );
+              break;
+            default:
+              break;
+          }
+          document.getElementById("Address").value = place.formatted_address;
+          document.getElementById("ZipCode").value =
+            findAddressData("postal_code");
+          validation();
+        }
+      }
+    </script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&callback=initAutocomplete&libraries=places"
+      defer
+    ></script>
+    <script>
+      const phoneInputField = document.querySelector("#Phone");
+      const phoneInput = window.intlTelInput(phoneInputField, {
+        utilsScript:
+          "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+      });
+    </script>
+    <script src="./staging-multi-step.js"></script>
   </body>
 </html>
