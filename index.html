@@ -2042,10 +2042,22 @@
         });
       });
     </script>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&callback=initAutocomplete&libraries=places"
-      defer
-    ></script>
-    <script src="./staging-multi-step.js"></script>
+    <script>
+      var currentHost = window.location.hostname;
+      var script = document.createElement("script");
+      if (
+        currentHost.includes("stastiem.webflow.io") ||
+        currentHost.includes("127")
+      ) {
+        // script.src = "./staging-multi-step.js";
+        script.src =
+          "https://stastiem.github.io/webflow-scripts/staging-multi-step.js";
+      } else {
+        script.src = "https://stastiem.github.io/webflow-scripts/multi-step.js";
+      }
+      document.body.appendChild(script);
+    </script>
+    <script id="google-maps-api" defer></script>
+    <!-- <script src="https://stastiem.github.io/webflow-scripts/staging-multi-step.js"></script> -->
   </body>
 </html>
