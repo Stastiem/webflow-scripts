@@ -14,7 +14,7 @@ restrictAge();
 // find script tag with google maps api and set its src attribute
 const googleMapsScript = document.getElementById("google-maps-api");
 googleMapsScript.src =
-  "https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&callback=initAutocomplete&libraries=places";
+  "https://maps.googleapis.com/maps/api/js?key=AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU&callback=initAutocomplete&libraries=places";
 
 // google maps autocomplete for address
 let autocomplete;
