@@ -237,6 +237,10 @@
         padding: 0;
         margin: 0;
       }
+      .two-address-fields-wrapper {
+        display: flex;
+        gap: 20px;
+      }
     </style>
   </head>
   <body class="body">
@@ -687,6 +691,7 @@
                                     class="field w-input"
                                     type="date"
                                     maxlength="7"
+                                    id="HeroDOB"
                                     name="HeroDOB"
                                     data-name="HeroDOB"
                                     placeholder="YYYY-MM-DD"
@@ -1681,78 +1686,68 @@
                             />
                           </div>
                           <!-- <div class="div-block-2"> -->
-                          <div class="form-input-items" id="streetWrap">
-                            <label for="Street" class="label">Street*</label>
-                            <input
-                              type="text"
-                              class="field w-input"
-                              maxlength="256"
-                              name="Street"
-                              data-name="Street"
-                              placeholder="Ex.: 48, Liela iela"
-                              id="Street"
-                              required=""
-                              autocomplete="on"
-                            />
+                          <div class="two-address-fields-wrapper">
+                            <div class="form-input-items" id="stateWrap">
+                              <label for="State" class="label">Region*</label>
+                              <input
+                                type="text"
+                                class="field w-input"
+                                maxlength="256"
+                                name="State"
+                                data-name="State"
+                                placeholder="Ex.: Riga"
+                                id="State"
+                                required=""
+                                autocomplete="on"
+                              />
+                            </div>
+                            <div class="form-input-items" id="cityWrap">
+                              <label for="City" class="label">City*</label>
+                              <input
+                                type="text"
+                                class="field w-input"
+                                maxlength="256"
+                                name="City"
+                                data-name="City"
+                                placeholder="Ex.: Riga"
+                                id="City"
+                                required=""
+                                autocomplete="on"
+                              />
+                            </div>
                           </div>
-                          <div class="form-input-items" id="apartWrap">
-                            <label for="Apartment" class="label"
-                              >Apartment(optional)</label
-                            >
-                            <input
-                              type="text"
-                              class="field w-input"
-                              maxlength="256"
-                              name="Apartment"
-                              data-name="Apartment"
-                              placeholder="Ex.: 48, Liela iela"
-                              id="Apartment"
-                              autocomplete="on"
-                            />
-                          </div>
-                          <div class="form-input-items" id="cityWrap">
-                            <label for="City" class="label">Settlement*</label>
-                            <input
-                              type="text"
-                              class="field w-input"
-                              maxlength="256"
-                              name="City"
-                              data-name="City"
-                              placeholder="Ex.: Riga"
-                              id="City"
-                              required=""
-                              autocomplete="on"
-                            />
-                          </div>
-                          <div class="form-input-items" id="stateWrap">
-                            <label for="State" class="label">Region*</label>
-                            <input
-                              type="text"
-                              class="field w-input"
-                              maxlength="256"
-                              name="State"
-                              data-name="State"
-                              placeholder="Ex.: Riga"
-                              id="State"
-                              required=""
-                              autocomplete="on"
-                            />
-                          </div>
-                          <div class="form-input-items" id="zipWrap">
-                            <label for="ZipCode" class="label"
-                              >Postal code*</label
-                            >
-                            <input
-                              type="text"
-                              class="field w-input"
-                              maxlength="256"
-                              name="ZipCode"
-                              data-name="ZipCode"
-                              placeholder="Ex.: 1234"
-                              id="ZipCode"
-                              required=""
-                              autocomplete="on"
-                            />
+                          <div class="two-address-fields-wrapper">
+                            <div class="form-input-items" id="streetWrap">
+                              <label for="Street" class="label">Street*</label>
+                              <input
+                                type="text"
+                                class="field w-input"
+                                maxlength="256"
+                                name="Street"
+                                data-name="Street"
+                                placeholder="Ex.: 48, Liela iela"
+                                id="Street"
+                                required=""
+                                autocomplete="on"
+                              />
+                            </div>
+
+                            <div class="form-input-items" id="zipWrap">
+                              <label for="ZipCode" class="label"
+                                >Postal code*</label
+                              >
+                              <input
+                                type="text"
+                                class="field w-input"
+                                maxlength="256"
+                                name="ZipCode"
+                                data-name="ZipCode"
+                                placeholder="Ex.: 1234"
+                                id="ZipCode"
+                                required=""
+                                autocomplete="on"
+                              />
+                            </div>
                           </div>
                           <!-- </div> -->
                           <div class="note">
@@ -2047,104 +2042,10 @@
         });
       });
     </script>
-    <!-- <script>
-      let autocomplete;
-      let countryInputField = document.querySelector("#Country");
-      countryInputField.addEventListener("change", (e) => {
-        initAutocomplete(e.target.value);
-      });
-      function initAutocomplete(lang = "lv") {
-        autocomplete = new google.maps.places.Autocomplete(
-          document.getElementById("Address"),
-          {
-            types: ["address"],
-          }
-        );
-        autocomplete.setComponentRestrictions({ country: lang });
-        autocomplete.addListener("place_changed", fillInAddress);
-      }
-      function fillInAddress() {
-        const place = autocomplete.getPlace();
-
-        function findAddressData(data) {
-          const dataObject = place.address_components.find((el) =>
-            el.types.includes(data)
-          );
-          return dataObject ? dataObject.long_name : "";
-        }
-
-        if (!place.geometry) {
-          document.getElementById("Address").placeholder = "Enter a place";
-        } else {
-          switch (countryInputField.value) {
-            case "lv":
-              document.getElementById("Street").value = findAddressData(
-                "street_number"
-              )
-                ? findAddressData("street_number") +
-                  ", " +
-                  findAddressData("route")
-                : findAddressData("premise") ||
-                  findAddressData("establishment");
-
-              document.getElementById("City").value =
-                findAddressData("locality") === findAddressData("premise")
-                  ? findAddressData("administrative_area_level_2")
-                  : findAddressData("locality");
-
-              document.getElementById("State").value =
-                findAddressData("administrative_area_level_1") ||
-                findAddressData("locality");
-              break;
-
-            case "gb":
-              document.getElementById("Street").value =
-                findAddressData("street_number") +
-                ", " +
-                findAddressData("route");
-
-              document.getElementById("City").value =
-                findAddressData("locality") || findAddressData("postal_town");
-
-              document.getElementById("State").value = findAddressData(
-                "administrative_area_level_2"
-              );
-              break;
-
-            case "de":
-              document.getElementById("Street").value =
-                findAddressData("street_number") +
-                ", " +
-                findAddressData("route");
-
-              document.getElementById("City").value =
-                findAddressData("locality");
-
-              document.getElementById("State").value = findAddressData(
-                "administrative_area_level_1"
-              );
-              break;
-            default:
-              break;
-          }
-          document.getElementById("Address").value = place.formatted_address;
-          document.getElementById("ZipCode").value =
-            findAddressData("postal_code");
-          validation();
-        }
-      }
-    </script> -->
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&callback=initAutocomplete&libraries=places"
       defer
     ></script>
-    <script>
-      const phoneInputField = document.querySelector("#Phone");
-      const phoneInput = window.intlTelInput(phoneInputField, {
-        utilsScript:
-          "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-      });
-    </script>
     <script src="./staging-multi-step.js"></script>
   </body>
 </html>

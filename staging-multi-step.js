@@ -1,5 +1,17 @@
 //22-2-23 Update Push
 
+// restrict ability to order books for children under 1 year old
+function restrictAge() {
+  const today = new Date();
+  const pastYear = new Date(today);
+  pastYear.setFullYear(today.getFullYear() - 1);
+
+  const dateInput = document.getElementById("HeroDOB");
+  dateInput.setAttribute("max", pastYear.toISOString().split("T")[0]);
+}
+restrictAge();
+
+// google maps autocomplete for address
 let autocomplete;
 let countryInputField = document.querySelector("#Country");
 countryInputField.addEventListener("change", (e) => {
@@ -18,6 +30,7 @@ function initAutocomplete(lang = "lv") {
 function fillInAddress() {
   const place = autocomplete.getPlace();
 
+  // find address data by type
   function findAddressData(data) {
     const dataObject = place.address_components.find((el) =>
       el.types.includes(data)
@@ -28,6 +41,7 @@ function fillInAddress() {
   if (!place.geometry) {
     document.getElementById("Address").placeholder = "Enter a place";
   } else {
+    // different address fields for different countries
     switch (countryInputField.value) {
       case "lv":
         document.getElementById("Street").value = findAddressData(
@@ -35,12 +49,10 @@ function fillInAddress() {
         )
           ? findAddressData("street_number") + ", " + findAddressData("route")
           : findAddressData("premise") || findAddressData("establishment");
-
         document.getElementById("City").value =
           findAddressData("locality") === findAddressData("premise")
             ? findAddressData("administrative_area_level_2")
             : findAddressData("locality");
-
         document.getElementById("State").value =
           findAddressData("administrative_area_level_1") ||
           findAddressData("locality");
@@ -49,10 +61,8 @@ function fillInAddress() {
       case "gb":
         document.getElementById("Street").value =
           findAddressData("street_number") + ", " + findAddressData("route");
-
         document.getElementById("City").value =
           findAddressData("locality") || findAddressData("postal_town");
-
         document.getElementById("State").value = findAddressData(
           "administrative_area_level_2"
         );
@@ -61,9 +71,7 @@ function fillInAddress() {
       case "de":
         document.getElementById("Street").value =
           findAddressData("street_number") + ", " + findAddressData("route");
-
         document.getElementById("City").value = findAddressData("locality");
-
         document.getElementById("State").value = findAddressData(
           "administrative_area_level_1"
         );
@@ -78,24 +86,33 @@ function fillInAddress() {
 }
 
 const addressInputField = document.getElementById("Address");
-const street = document.getElementById("streetWrap");
-const apart = document.getElementById("apartWrap");
-const city = document.getElementById("cityWrap");
-const state = document.getElementById("stateWrap");
-const zipCode = document.getElementById("zipWrap");
+const addressFieldsWrap = document.querySelectorAll(
+  ".two-address-fields-wrapper"
+);
 
-street.style.display = "none";
-apart.style.display = "none";
-city.style.display = "none";
-state.style.display = "none";
-zipCode.style.display = "none";
+// hide address fields
+addressFieldsWrap.forEach((el) => (el.style.display = "none"));
 
+// unhide address fields when address input loses focus
 addressInputField.addEventListener("blur", (e) => {
-  street.style.display = "block";
-  apart.style.display = "block";
-  city.style.display = "block";
-  state.style.display = "block";
-  zipCode.style.display = "block";
+  addressFieldsWrap.forEach((el) => (el.style.display = "flex"));
+});
+
+// add dropdown list of countries to phone input
+const phoneInputField = document.querySelector("#Phone");
+const phoneInput = window.intlTelInput(phoneInputField, {
+  initialCountry: "auto",
+  geoIpLookup: (callback) => {
+    fetch("https://ipapi.co/json")
+      .then((res) => res.json())
+      .then((data) => callback(data.country_code))
+      .catch(() => callback("us"));
+  },
+  utilsScript:
+    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+});
+phoneInputField.addEventListener("change", (e) => {
+  e.target.value = phoneInput.getNumber();
 });
 
 let x = 0;
@@ -146,17 +163,16 @@ let dom = [];
 let image_changed = false;
 let is_boy = true;
 const environment = document.querySelector("#Environment");
-// const urlFormly = new URL(window.location.href);
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
 
 // const bookLang = document.getElementById("BookLanguage");
 // const detectBookLang = () => {
-//   const devidedHost = host.split(".");
-//   if (devidedHost[0] === "stastiem") {
+//   const splittedHost = host.split(".");
+//   if (splittedHost[0] === "stastiem") {
 //     bookLang.value = "en";
 //   } else {
-//     bookLang.value = devidedHost[0];
+//     bookLang.value = splittedHost[0];
 //   }
 // };
 
