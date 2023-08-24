@@ -1,125 +1,5 @@
 //22-2-23 Update Push
 
-// restrict ability to order books for children under 1 year old
-function restrictAge() {
-  const today = new Date();
-  const pastYear = new Date(today);
-  pastYear.setFullYear(today.getFullYear() - 1);
-
-  const dateInput = document.getElementById("HeroDOB");
-  dateInput.setAttribute("max", pastYear.toISOString().split("T")[0]);
-}
-restrictAge();
-
-// find script tag with google maps api and set its src attribute
-const googleMapsScript = document.getElementById("google-maps-api");
-googleMapsScript.src =
-  "https://maps.googleapis.com/maps/api/js?key=AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU&callback=initAutocomplete&libraries=places";
-
-// google maps autocomplete for address
-let autocomplete;
-let countryInputField = document.querySelector("#Country");
-countryInputField.addEventListener("change", (e) => {
-  initAutocomplete(e.target.value);
-});
-function initAutocomplete(lang = "lv") {
-  autocomplete = new google.maps.places.Autocomplete(
-    document.getElementById("Address"),
-    {
-      types: ["address"],
-    }
-  );
-  autocomplete.setComponentRestrictions({ country: lang });
-  autocomplete.addListener("place_changed", fillInAddress);
-}
-function fillInAddress() {
-  const place = autocomplete.getPlace();
-
-  // find address data by type
-  function findAddressData(data) {
-    const dataObject = place.address_components.find((el) =>
-      el.types.includes(data)
-    );
-    return dataObject ? dataObject.long_name : "";
-  }
-
-  if (!place.geometry) {
-    document.getElementById("Address").placeholder = "Enter a place";
-  } else {
-    // different address fields for different countries
-    switch (countryInputField.value) {
-      case "lv":
-        document.getElementById("Street").value = findAddressData(
-          "street_number"
-        )
-          ? findAddressData("street_number") + ", " + findAddressData("route")
-          : findAddressData("premise") || findAddressData("establishment");
-        document.getElementById("City").value =
-          findAddressData("locality") === findAddressData("premise")
-            ? findAddressData("administrative_area_level_2")
-            : findAddressData("locality");
-        document.getElementById("State").value =
-          findAddressData("administrative_area_level_1") ||
-          findAddressData("locality");
-        break;
-
-      case "gb":
-        document.getElementById("Street").value =
-          findAddressData("street_number") + ", " + findAddressData("route");
-        document.getElementById("City").value =
-          findAddressData("locality") || findAddressData("postal_town");
-        document.getElementById("State").value = findAddressData(
-          "administrative_area_level_2"
-        );
-        break;
-
-      case "de":
-        document.getElementById("Street").value =
-          findAddressData("street_number") + ", " + findAddressData("route");
-        document.getElementById("City").value = findAddressData("locality");
-        document.getElementById("State").value = findAddressData(
-          "administrative_area_level_1"
-        );
-        break;
-      default:
-        break;
-    }
-    document.getElementById("Address").value = place.formatted_address;
-    document.getElementById("ZipCode").value = findAddressData("postal_code");
-    validation();
-  }
-}
-
-const addressInputField = document.getElementById("Address");
-const addressFieldsWrap = document.querySelectorAll(
-  ".two-address-fields-wrapper"
-);
-
-// hide address fields
-addressFieldsWrap.forEach((el) => (el.style.display = "none"));
-
-// unhide address fields when address input loses focus
-addressInputField.addEventListener("blur", (e) => {
-  addressFieldsWrap.forEach((el) => (el.style.display = "flex"));
-});
-
-// add dropdown list of countries to phone input
-const phoneInputField = document.querySelector("#Phone");
-const phoneInput = window.intlTelInput(phoneInputField, {
-  initialCountry: "auto",
-  geoIpLookup: (callback) => {
-    fetch("https://ipapi.co/json")
-      .then((res) => res.json())
-      .then((data) => callback(data.country_code))
-      .catch(() => callback("us"));
-  },
-  utilsScript:
-    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-});
-phoneInputField.addEventListener("change", (e) => {
-  e.target.value = phoneInput.getNumber();
-});
-
 let x = 0;
 let curStep = 0;
 let steps = $('[data-form="step"]'); // node elements with data-form="step" attribute (divs)
@@ -167,20 +47,128 @@ let domainAllowed = true;
 let dom = [];
 let image_changed = false;
 let is_boy = true;
+
+// added new variables
+let autocomplete;
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
+const bookLang = document.getElementById("BookLanguage");
+const dateInput = document.getElementById("HeroDOB");
+const googleMapsScript = document.getElementById("google-maps-api");
+let countryInputField = document.querySelector("#Country");
+const city = document.getElementById("City");
+const street = document.getElementById("Street");
+const zipCode = document.getElementById("ZipCode");
+const phoneInputField = document.querySelector("#Phone");
 
-// const bookLang = document.getElementById("BookLanguage");
-// const detectBookLang = () => {
-//   const splittedHost = host.split(".");
-//   if (splittedHost[0] === "stastiem") {
-//     bookLang.value = "en";
-//   } else {
-//     bookLang.value = splittedHost[0];
-//   }
-// };
+const detectBookLang = () => {
+  const splittedHost = host.split(".");
+  if (splittedHost[0] === "stastiem") {
+    bookLang.value = "en";
+  } else {
+    bookLang.value = splittedHost[0];
+  }
+};
 
+// restrict ability to order books for children under 1 year old
+function restrictAge() {
+  const today = new Date();
+  const pastYear = new Date(today);
+  pastYear.setFullYear(today.getFullYear() - 1);
+  dateInput.setAttribute("max", pastYear.toISOString().split("T")[0]);
+}
+restrictAge();
+
+// set language for google maps autocomplete depending on the site language
+googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&callback=initAutocomplete&libraries=places`;
+
+// when country is changed, change country in autocomplete function
+countryInputField.addEventListener("change", (e) => {
+  googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&language=${e.target.value}&callback=initAutocomplete&libraries=places`;
+  initAutocomplete(e.target.value);
+});
+
+function initAutocomplete(selectedCountry = "lv") {
+  autocomplete = new google.maps.places.Autocomplete(
+    document.getElementById("City"),
+    {
+      types: ["(regions)"],
+    }
+  );
+  autocomplete.setComponentRestrictions({ country: selectedCountry });
+  autocomplete.addListener("place_changed", fillInAddress);
+}
+
+function fillInAddress() {
+  const place = autocomplete.getPlace();
+  // console.log(place);
+
+  // find address data by type of it
+  function findAddressData(data) {
+    const dataObject = place.address_components.find((el) =>
+      el.types.includes(data)
+    );
+    return dataObject ? dataObject.long_name : "";
+  }
+
+  if (!place.geometry) {
+    document.getElementById("City").placeholder = "Enter a place";
+  } else {
+    // added different address fields for different countries
+    switch (countryInputField.value) {
+      case "lv":
+        document.getElementById("City").value = findAddressData("locality")
+          ? findAddressData("administrative_area_level_1")
+            ? findAddressData("locality") +
+              ", " +
+              findAddressData("administrative_area_level_1")
+            : findAddressData("locality")
+          : findAddressData("administrative_area_level_2") +
+            ", " +
+            findAddressData("administrative_area_level_1");
+        break;
+
+      case "gb":
+        document.getElementById("City").value =
+          findAddressData("locality") +
+          ", " +
+          findAddressData("administrative_area_level_2");
+        break;
+
+      case "de":
+        document.getElementById("City").value =
+          findAddressData("locality") +
+          ", " +
+          findAddressData("administrative_area_level_1");
+        break;
+      default:
+        break;
+    }
+    zipCode.value = findAddressData("postal_code");
+    validation();
+  }
+}
+
+// added dropdown list of countries to phone input
+const phoneInput = window.intlTelInput(phoneInputField, {
+  initialCountry: "auto",
+  geoIpLookup: (callback) => {
+    fetch("https://ipapi.co/json")
+      .then((res) => res.json())
+      .then((data) => callback(data.country_code))
+      .catch(() => callback("us"));
+  },
+  utilsScript:
+    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+});
+
+// added country code to phone input when input is changed
+phoneInputField.addEventListener("change", (e) => {
+  e.target.value = phoneInput.getNumber();
+});
+
+// added new field to form data object which shows if order made during staging or production
 if (host.includes("stastiem.webflow.io") || port !== "") {
   console.log("staging");
   environment.value = "staging";

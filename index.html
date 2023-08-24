@@ -1672,84 +1672,51 @@
                               <option value="gb">United Kingdom</option>
                             </select>
                           </div>
-                          <div class="form-input-items">
-                            <label for="Address" class="label">Address*</label>
+                          <div class="form-input-items" id="cityWrap">
+                            <label for="City" class="label">City*</label>
                             <input
                               type="text"
-                              class="field w-node-bea9dc66-583e-b05a-be0f-f1b5c87468c6-f2b54ff2 w-input"
+                              class="field w-input"
                               maxlength="256"
-                              name="Address"
-                              data-name="Address"
-                              placeholder="Ex.: 14c Latvia Street"
-                              id="Address"
+                              name="City"
+                              data-name="City"
+                              placeholder="Ex.: Riga"
+                              id="City"
+                              required=""
                               autocomplete="on"
                             />
                           </div>
-                          <!-- <div class="div-block-2"> -->
-                          <div class="two-address-fields-wrapper">
-                            <div class="form-input-items" id="stateWrap">
-                              <label for="State" class="label">Region*</label>
-                              <input
-                                type="text"
-                                class="field w-input"
-                                maxlength="256"
-                                name="State"
-                                data-name="State"
-                                placeholder="Ex.: Riga"
-                                id="State"
-                                required=""
-                                autocomplete="on"
-                              />
-                            </div>
-                            <div class="form-input-items" id="cityWrap">
-                              <label for="City" class="label">City*</label>
-                              <input
-                                type="text"
-                                class="field w-input"
-                                maxlength="256"
-                                name="City"
-                                data-name="City"
-                                placeholder="Ex.: Riga"
-                                id="City"
-                                required=""
-                                autocomplete="on"
-                              />
-                            </div>
+                          <div class="form-input-items" id="streetWrap">
+                            <label for="Street" class="label">Street*</label>
+                            <input
+                              type="text"
+                              class="field w-input"
+                              maxlength="256"
+                              name="Street"
+                              data-name="Street"
+                              placeholder="Ex.: 48, Liela iela"
+                              id="Street"
+                              required=""
+                              autocomplete="on"
+                            />
                           </div>
-                          <div class="two-address-fields-wrapper">
-                            <div class="form-input-items" id="streetWrap">
-                              <label for="Street" class="label">Street*</label>
-                              <input
-                                type="text"
-                                class="field w-input"
-                                maxlength="256"
-                                name="Street"
-                                data-name="Street"
-                                placeholder="Ex.: 48, Liela iela"
-                                id="Street"
-                                required=""
-                                autocomplete="on"
-                              />
-                            </div>
 
-                            <div class="form-input-items" id="zipWrap">
-                              <label for="ZipCode" class="label"
-                                >Postal code*</label
-                              >
-                              <input
-                                type="text"
-                                class="field w-input"
-                                maxlength="256"
-                                name="ZipCode"
-                                data-name="ZipCode"
-                                placeholder="Ex.: 1234"
-                                id="ZipCode"
-                                required=""
-                                autocomplete="on"
-                              />
-                            </div>
+                          <div class="form-input-items" id="zipWrap">
+                            <label for="ZipCode" class="label"
+                              >Postal code*</label
+                            >
+                            <input
+                              type="text"
+                              class="field w-input"
+                              maxlength="256"
+                              name="ZipCode"
+                              data-name="ZipCode"
+                              placeholder="Ex.: 1234"
+                              id="ZipCode"
+                              required=""
+                              autocomplete="on"
+                            />
                           </div>
-                          <!-- </div> -->
                           <div class="note">
                             We will ship to the nearest parcel locker. Shipping
                             in Latvia is FREE!
@@ -2042,7 +2009,7 @@
         });
       });
     </script>
-    <script>
+    <!-- <script>
       var currentHost = window.location.hostname;
       var script = document.createElement("script");
       if (
@@ -2056,8 +2023,8 @@
         script.src = "https://stastiem.github.io/webflow-scripts/multi-step.js";
       }
       document.body.appendChild(script);
-    </script>
+    </script> -->
     <script id="google-maps-api" defer></script>
-    <!-- <script src="https://stastiem.github.io/webflow-scripts/staging-multi-step.js"></script> -->
+    <script src="./staging-multi-step.js"></script>
   </body>
 </html>
