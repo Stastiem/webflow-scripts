@@ -1,4 +1,5 @@
 //22-2-23 Update Push
+// AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU
 
 let x = 0;
 let curStep = 0;
@@ -81,11 +82,11 @@ function restrictAge() {
 restrictAge();
 
 // set language for google maps autocomplete depending on the site language
-googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU&callback=initAutocomplete&libraries=places`;
+googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&callback=initAutocomplete&libraries=places`;
 
 // when country is changed, change country in autocomplete function
 countryInputField.addEventListener("change", (e) => {
-  googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU&language=${e.target.value}&callback=initAutocomplete&libraries=places`;
+  googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&language=${e.target.value}&callback=initAutocomplete&libraries=places`;
   initAutocomplete(e.target.value);
 });
 
