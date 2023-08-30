@@ -1,5 +1,6 @@
 //22-2-23 Update Push
-// AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU
+// AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE - local
+// AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU - staging/production
 
 let x = 0;
 let curStep = 0;
@@ -50,24 +51,28 @@ let image_changed = false;
 let is_boy = true;
 
 // added new variables
-let autocomplete;
+let autocompleteCity;
+let autocompleteStr;
+let countryInputField = document.querySelector("#Country");
+let streetInputField = document.querySelector("#Street");
+let cityInputField = document.querySelector("#City");
+let zipCode = document.getElementById("ZipCode");
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
 const bookLang = document.getElementById("BookLanguage");
 const dateInput = document.getElementById("HeroDOB");
-const googleMapsScript = document.getElementById("google-maps-api");
-let countryInputField = document.querySelector("#Country");
-const city = document.getElementById("City");
-const street = document.getElementById("Street");
-const zipCode = document.getElementById("ZipCode");
 const phoneInputField = document.querySelector("#Phone");
 
 const detectBookLang = () => {
   const splittedHost = host.split(".");
-  if (splittedHost[0] === "stastiem") {
+  if (splittedHost[0] === "www") {
     bookLang.value = "en";
-  } else {
+  }
+  //   else if (splittedHost[0] === "uk") {
+  //     bookLang.value = "ua";
+  //   }
+  else {
     bookLang.value = splittedHost[0];
   }
 };
@@ -81,31 +86,23 @@ function restrictAge() {
 }
 restrictAge();
 
-// set language for google maps autocomplete depending on the site language
-googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&callback=initAutocomplete&libraries=places`;
-
-// when country is changed, change country in autocomplete function
 countryInputField.addEventListener("change", (e) => {
-  googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&language=${e.target.value}&callback=initAutocomplete&libraries=places`;
-  initAutocomplete(e.target.value);
+  initCityAutocomplete(e.target.value);
+  autocompleteStr.setComponentRestrictions({
+    country: countryInputField.value,
+  });
 });
-
-function initAutocomplete(selectedCountry = "lv") {
-  autocomplete = new google.maps.places.Autocomplete(
-    document.getElementById("City"),
-    {
-      types: ["(regions)"],
-    }
-  );
-  autocomplete.setComponentRestrictions({ country: selectedCountry });
-  autocomplete.addListener("place_changed", fillInAddress);
+function initCityAutocomplete(selectedCountry = "lv") {
+  autocompleteCity = new google.maps.places.Autocomplete(cityInputField, {
+    types: ["(regions)"],
+  });
+  autocompleteCity.setComponentRestrictions({ country: selectedCountry });
+  autocompleteCity.addListener("place_changed", fillInCity);
 }
-
-function fillInAddress() {
-  const place = autocomplete.getPlace();
-  // console.log(place);
-
-  // find address data by type of it
+function fillInCity() {
+  const place = autocompleteCity.getPlace();
+  console.log(place);
+  // find address data by type
   function findAddressData(data) {
     const dataObject = place.address_components.find((el) =>
       el.types.includes(data)
@@ -114,12 +111,12 @@ function fillInAddress() {
   }
 
   if (!place.geometry) {
-    document.getElementById("City").placeholder = "Enter a place";
+    cityInputField.placeholder = "Enter a place";
   } else {
-    // added different address fields for different countries
+    // different address fields for different countries
     switch (countryInputField.value) {
       case "lv":
-        document.getElementById("City").value = findAddressData("locality")
+        cityInputField.value = findAddressData("locality")
           ? findAddressData("administrative_area_level_1")
             ? findAddressData("locality") +
               ", " +
@@ -131,14 +128,14 @@ function fillInAddress() {
         break;
 
       case "gb":
-        document.getElementById("City").value =
+        cityInputField.value =
           findAddressData("locality") +
           ", " +
           findAddressData("administrative_area_level_2");
         break;
 
       case "de":
-        document.getElementById("City").value =
+        cityInputField.value =
           findAddressData("locality") +
           ", " +
           findAddressData("administrative_area_level_1");
@@ -146,10 +143,101 @@ function fillInAddress() {
       default:
         break;
     }
-    zipCode.value = findAddressData("postal_code");
-    validation();
+    document.getElementById("ZipCode").value = findAddressData("postal_code");
   }
+  // rectric autocomplete to city
+  function setCityBias(cityName) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: cityName }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK) {
+        const cityLocation = results[0].geometry.location;
+        const circle = new google.maps.Circle({
+          center: cityLocation,
+          radius: 10000, // Adjust the radius as needed
+        });
+
+        autocompleteStr.setBounds(circle.getBounds());
+      }
+    });
+  }
+  setCityBias(document.getElementById("City").value);
 }
+// google maps autocomplete for street
+autocompleteStr = new google.maps.places.Autocomplete(
+  document.getElementById("Street"),
+  {
+    types: ["address"],
+  }
+);
+autocompleteStr.addListener("place_changed", fillInAddress);
+
+function fillInAddress() {
+  const address = autocompleteStr.getPlace();
+  console.log(address);
+  function findAddressData(data) {
+    const dataObject = address.address_components.find((el) =>
+      el.types.includes(data)
+    );
+    return dataObject ? dataObject.long_name : "";
+  }
+
+  if (!address.geometry) {
+    streetInputField.placeholder = "Enter a place";
+  } else {
+    // different address fields for different countries
+    switch (countryInputField.value) {
+      case "lv":
+        streetInputField.value = findAddressData("street_number")
+          ? findAddressData("route") + ", " + findAddressData("street_number")
+          : findAddressData("route")
+          ? findAddressData("route")
+          : findAddressData("premise") || findAddressData("establishment");
+        break;
+
+      case "gb":
+        streetInputField.value =
+          findAddressData("route") + ", " + findAddressData("street_number");
+        break;
+
+      case "de":
+        streetInputField.value =
+          findAddressData("route") + ", " + findAddressData("street_number");
+        break;
+      default:
+        break;
+    }
+    document.getElementById("ZipCode").value = findAddressData("postal_code");
+  }
+  validation();
+}
+// validation();
+// // Replace with your API key
+// const apiKey = "AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE";
+
+// // Initialize the Google Places Service
+// const service = new google.maps.places.PlacesService(
+//   document.createElement("div")
+// );
+
+// // Construct the address query
+// const addressQuery = {
+//   query: "YOUR_STREET_NAME, YOUR_CITY, YOUR_COUNTRY",
+//   key: apiKey,
+// };
+// // Perform the search
+// service.textSearch(addressQuery, (results, status) => {
+//   if (status === google.maps.places.PlacesServiceStatus.OK) {
+//     // The results array will contain matching places
+//     if (results.length > 0) {
+//       const firstResult = results[0];
+//       console.log("Found Address:", firstResult.formatted_address);
+//     } else {
+//       console.log("No matching address found.");
+//     }
+//   } else {
+//     console.error("Place search request failed:");
+//   }
+// });
 
 // added dropdown list of countries to phone input
 const phoneInput = window.intlTelInput(phoneInputField, {
