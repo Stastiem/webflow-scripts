@@ -77,14 +77,22 @@ const detectBookLang = () => {
   }
 };
 
-// restrict ability to order books for children under 1 year old
+// restrict ability to order books for children under 10 month
 function restrictAge() {
   const today = new Date();
-  const pastYear = new Date(today);
-  pastYear.setFullYear(today.getFullYear() - 1);
-  dateInput.setAttribute("max", pastYear.toISOString().split("T")[0]);
+  const minDate = new Date(today);
+  minDate.setMonth(today.getMonth() - 10); // Subtract 10 months from the current date
+  dateInput.setAttribute("max", minDate.toISOString().split("T")[0]); // Set max date as 10 months ago
 }
+
 restrictAge();
+// function restrictAge() {
+//   const today = new Date();
+//   const pastYear = new Date(today);
+//   pastYear.setFullYear(today.getFullYear() - 1);
+//   dateInput.setAttribute("max", pastYear.toISOString().split("T")[0]);
+// }
+// restrictAge();
 
 countryInputField.addEventListener("change", (e) => {
   initCityAutocomplete(e.target.value);
