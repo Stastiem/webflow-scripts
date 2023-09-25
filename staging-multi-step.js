@@ -51,6 +51,7 @@ let image_changed = false;
 let is_boy = true;
 
 // added new variables
+let isTesting = false;
 let autocompleteCity;
 let autocompleteStr;
 let countryInputField = document.querySelector("#Country");
@@ -63,6 +64,17 @@ const port = urlFormly.port; // if live server is used, then the port is not emp
 const bookLang = document.getElementById("BookLanguage");
 const dateInput = document.getElementById("HeroDOB");
 const phoneInputField = document.querySelector("#Phone");
+const checkboxes = document.querySelectorAll(
+  "input[name=Audio], input[name=Painting], input[name=Card]"
+);
+const checkmarks = document.querySelectorAll(".check-mark");
+const refId = uuidv4();
+const clientRefId = document.querySelector(".ClientReferenceId");
+const additions = document.querySelectorAll(
+  "input[name=Audio], input[name=Painting], input[name=Card]"
+);
+
+clientRefId.value = refId;
 
 const detectBookLang = () => {
   const splittedHost = host.split(".");
@@ -86,13 +98,6 @@ function restrictAge() {
 }
 
 restrictAge();
-// function restrictAge() {
-//   const today = new Date();
-//   const pastYear = new Date(today);
-//   pastYear.setFullYear(today.getFullYear() - 1);
-//   dateInput.setAttribute("max", pastYear.toISOString().split("T")[0]);
-// }
-// restrictAge();
 
 countryInputField.addEventListener("change", (e) => {
   initCityAutocomplete(e.target.value);
@@ -218,34 +223,6 @@ function fillInAddress() {
   }
   validation();
 }
-// validation();
-// // Replace with your API key
-// const apiKey = "AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE";
-
-// // Initialize the Google Places Service
-// const service = new google.maps.places.PlacesService(
-//   document.createElement("div")
-// );
-
-// // Construct the address query
-// const addressQuery = {
-//   query: "YOUR_STREET_NAME, YOUR_CITY, YOUR_COUNTRY",
-//   key: apiKey,
-// };
-// // Perform the search
-// service.textSearch(addressQuery, (results, status) => {
-//   if (status === google.maps.places.PlacesServiceStatus.OK) {
-//     // The results array will contain matching places
-//     if (results.length > 0) {
-//       const firstResult = results[0];
-//       console.log("Found Address:", firstResult.formatted_address);
-//     } else {
-//       console.log("No matching address found.");
-//     }
-//   } else {
-//     console.error("Place search request failed:");
-//   }
-// });
 
 // added dropdown list of countries to phone input
 const phoneInput = window.intlTelInput(phoneInputField, {
@@ -269,9 +246,23 @@ phoneInputField.addEventListener("change", (e) => {
 if (host.includes("stastiem.webflow.io") || port !== "") {
   console.log("staging");
   environment.value = "staging";
+  isTesting = true;
 } else {
   console.log("production");
   environment.value = "production";
+}
+
+// Added logic for changing the checkmark style if the checkbox is checked.
+for (let i = 0; i < checkboxes.length; i++) {
+  checkboxes[i].addEventListener("change", () => {
+    if (checkboxes[i].checked) {
+      checkmarks[i].style.background = "#f0623d";
+      checkmarks[i].style.border = "1px solid #f0623d";
+    } else {
+      checkmarks[i].style.background = "transparent";
+      checkmarks[i].style.border = "1px solid rgba(0,0,0,0.15)";
+    }
+  });
 }
 
 $(progressbarClone).removeClass("current");
@@ -1703,3 +1694,75 @@ $("textarea").keypress(function (event) {
 // $('[data-form="multistep"]').on("submit", function () {
 //   // here you can return false, to avoid redirect
 // });
+var Webflow = Webflow || [];
+Webflow.push(function () {
+  $("form").on("submit", function (event) {
+    window.dataLayer.push({ event: "OrderFilled" });
+    event.preventDefault();
+    const fetchWithTimeout = (url, options, timeout = 6000) => {
+      return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Timeout")), timeout)
+        ),
+      ]);
+    };
+
+    const fetchWithRetry = async (url, options, retries = 3, delay = 1000) => {
+      let lastError;
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetchWithTimeout(url, options);
+          if (response.ok) {
+            return await response.json();
+          }
+        } catch (error) {
+          lastError = error;
+          const randomFactor = Math.random() * 0.5 + 0.5;
+          await new Promise((res) =>
+            setTimeout(res, delay * Math.pow(2, i) * randomFactor)
+          );
+        }
+      }
+      throw lastError;
+    };
+    const apiUrl = "https://stastiem.herokuapp.com/stripe/stripe-payment-url";
+    const website_url = "https://buy.stripe.com/4gw3ewb2C7PaaKQbII";
+
+    const headers = {
+      accept: "application/json",
+      "Content-Type": "application/json",
+    };
+    const bodyObject = {
+      products: ["book"],
+      customer_email: $("#Email").val(),
+      client_reference_id: $("#ClientReferenceId").val(),
+      language: $("#BookLanguage").val(),
+      testing: isTesting,
+    };
+
+    additions.forEach(
+      (el) => el.checked && bodyObject.products.push(el.id.toLowerCase())
+    );
+
+    fetchWithRetry(apiUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(bodyObject),
+    })
+      .then((data) => console.log(data.payment_url))
+      .catch((error) => {
+        console.log("Error:", error);
+        setTimeout(function () {
+          location.href =
+            website_url +
+            "?prefilled_email=" +
+            $("#Email").val() +
+            "&client_reference_id=" +
+            $("#ClientReferenceId").val() +
+            "&locale=" +
+            $("#BookLanguage").val();
+        }, 100);
+      });
+  });
+});
