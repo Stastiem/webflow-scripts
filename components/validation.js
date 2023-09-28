@@ -5,9 +5,8 @@ let domainAllowed = true;
 
 export function validateInput(inputField) {
   let emptyInputArr = [];
-  console.log(inputField);
   inputField.each(function (i) {
-    if ($(this).val() !== "") {
+    if ($(this).val() !== "" && $(this).val() !== null) {
       emptyInputArr = emptyInputArr.filter((y) => y.input !== i);
     } else {
       if (!emptyInputArr.find((y) => y.input === i)) {
@@ -48,15 +47,16 @@ export function validation(
   if ($(steps[x]).data("card")) {
     enableBtn();
   }
+  console.log($(steps[x]).find(":input"));
+  console.log($("#BookLanguage").val());
   let currentStep = $(steps[x]);
   let textInput = currentStep.find('input[type="text"][required]:visible');
-  let selectInput = currentStep.find("select[required]:visible");
+  let selectInput = currentStep.find("select[required]");
   let emailInput = currentStep.find('input[type="email"]:visible');
   let dateInput = currentStep.find('input[type="date"][required]:visible');
   let telInput = currentStep.find('input[type="tel"][required]:visible');
   let fileInput = currentStep.find('input[type="file"][required]:visible');
   let radioInput = currentStep.find('input[type="radio"][required]:visible');
-
   // radio button validation
   if (currentStep.find(":input[required]").is('[type="radio"]')) {
     if (radioInput.is(":checked")) {

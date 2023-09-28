@@ -94,7 +94,7 @@ Webflow.push(function () {
       headers,
       body: JSON.stringify(bodyObject),
     })
-      .then((data) => console.log(data.payment_url))
+      .then((data) => (location.href = data.payment_url))
       .catch((error) => {
         console.log("Error:", error);
         setTimeout(function () {
