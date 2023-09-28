@@ -1,6 +1,4 @@
 //22-2-23 Update Push
-// AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE - local
-// AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU - staging/production
 
 let x = 0;
 let curStep = 0;
