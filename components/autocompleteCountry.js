@@ -1,10 +1,12 @@
 export async function autocompleteCountry() {
   try {
     const response = await fetch(
-      "https://api.ipstack.com/check?access_key=f1ae51206259317fd67b5c88fcdfe7d8"
+      "http://api.ipstack.com/check?access_key=f1ae51206259317fd67b5c88fcdfe7d8"
     );
     const data = await response.json();
+    console.log(data);
     const userCountry = data.country_code.toLowerCase();
+    console.log(userCountry);
     const select = document.getElementById("Country");
 
     for (let i = 0; i < select.options.length; i++) {
