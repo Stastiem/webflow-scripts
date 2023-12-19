@@ -2,7 +2,7 @@
 
 import { changeImage } from "./components/changeImage.js";
 import { validation } from "./components/validation.js";
-import { autocompleteCountry } from "./components/autocompleteCountry.js";
+// import { autocompleteCountry } from "./components/autocompleteCountry.js";
 import "./components/location.js";
 import "./components/countryNumberAutocomplete.js";
 // import "../components/submitForm.js";
@@ -58,7 +58,7 @@ const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
 const bookLang = document.getElementById("BookLanguage");
 const dateInput = document.getElementById("HeroDOB");
-autocompleteCountry();
+// autocompleteCountry();
 
 const detectBookLang = () => {
   const splittedHost = host.split(".");
