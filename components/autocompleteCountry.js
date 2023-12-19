@@ -1,7 +1,7 @@
 export async function autocompleteCountry() {
   try {
     const response = await fetch(
-      "http://api.ipstack.com/check?access_key=f1ae51206259317fd67b5c88fcdfe7d8"
+      "https://api.ipstack.com/check?access_key=f1ae51206259317fd67b5c88fcdfe7d8"
     );
     const data = await response.json();
     const userCountry = data.country_code.toLowerCase();
