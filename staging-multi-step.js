@@ -4,7 +4,6 @@ import { changeImage } from "./components/changeImage.js";
 import { validation } from "./components/validation.js";
 import "./components/location.js";
 import "./components/countryNumberAutocomplete.js";
-import "./components/submitForm.js";
 
 let x = 0;
 let curStep = 0;
