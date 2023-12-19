@@ -1670,9 +1670,13 @@
                               <option value="lv">Latvia</option>
                               <option value="de">Germany</option>
                               <option value="gb">United Kingdom</option>
+                              <option value="at">Austria</option>
+                              <option value="hu">Hungary</option>
+                              <option value="no">Norway</option>
+                              <option value="lt">Lithuania</option>
                             </select>
                           </div>
-                          <div class="form-input-items" id="cityWrap">
+                          <!-- <div class="form-input-items" id="cityWrap">
                             <label for="City" class="label">City*</label>
                             <input
                               type="text"
@@ -1713,6 +1717,20 @@
                               data-name="ZipCode"
                               placeholder="Ex.: 1234"
                               id="ZipCode"
+                              required=""
+                              autocomplete="on"
+                            />
+                          </div> -->
+                          <div class="form-input-items" id="streetWrap">
+                            <label for="Street" class="label">Address *</label>
+                            <input
+                              type="text"
+                              class="field w-input"
+                              maxlength="256"
+                              name="Address"
+                              data-name="Address"
+                              placeholder="Ex.: Riga, Liela iela 13"
+                              id="Address"
                               required=""
                               autocomplete="on"
                             />
