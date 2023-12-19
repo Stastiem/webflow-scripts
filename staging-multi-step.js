@@ -1,10 +1,10 @@
 //22-2-23 Update Push
 
-import { changeImage } from "./components/changeImage";
+import { changeImage } from "./components/changeImage.js";
 import { validation } from "./components/validation.js";
-import "./components/location";
-import "./components/countryNumberAutocomplete";
-import "./components/submitForm";
+import "./components/location.js";
+import "./components/countryNumberAutocomplete.js";
+import "./components/submitForm.js";
 
 let x = 0;
 let curStep = 0;
