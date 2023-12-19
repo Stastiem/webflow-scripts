@@ -1,6 +1,4 @@
 //22-2-23 Update Push
-// AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE - local
-// AIzaSyBacJ90x1fjGipjArXGoRhC4eKijd9mjdU - staging/production
 
 let x = 0;
 let curStep = 0;
@@ -66,16 +64,21 @@ const phoneInputField = document.querySelector("#Phone");
 
 const detectBookLang = () => {
   const splittedHost = host.split(".");
-  if (splittedHost[0] === "www") {
-    bookLang.value = "en";
-  }
-  //   else if (splittedHost[0] === "uk") {
-  //     bookLang.value = "ua";
-  //   }
-  else {
-    bookLang.value = splittedHost[0];
+  const detectedLanguage = splittedHost[0];
+  for (let i = 0; i < bookLang.options.length; i++) {
+    const languageOption = bookLang.options[i];
+    if (languageOption.value === "en") {
+      languageOption.selected = detectedLanguage === "www";
+      // break;
+    }
+    if (languageOption.value === detectedLanguage) {
+      console.log(languageOption.value);
+      languageOption.selected = true;
+      break;
+    }
   }
 };
+detectBookLang();
 
 // restrict ability to order books for children under 10 month
 function restrictAge() {
@@ -86,13 +89,6 @@ function restrictAge() {
 }
 
 restrictAge();
-// function restrictAge() {
-//   const today = new Date();
-//   const pastYear = new Date(today);
-//   pastYear.setFullYear(today.getFullYear() - 1);
-//   dateInput.setAttribute("max", pastYear.toISOString().split("T")[0]);
-// }
-// restrictAge();
 
 countryInputField.addEventListener("change", (e) => {
   initCityAutocomplete(e.target.value);
