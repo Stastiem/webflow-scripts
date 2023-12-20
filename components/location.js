@@ -191,11 +191,11 @@ let countryInputField = document.querySelector("#Country");
 
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
-  if (e.target.value !== "lv" && e.target.value !== "") {
-    shippingBlock.style.display = "block";
-  } else {
-    shippingBlock.style.display = "none";
-  }
+  // if (e.target.value !== "lv" && e.target.value !== "") {
+  //   shippingBlock.style.display = "block";
+  // } else {
+  //   shippingBlock.style.display = "none";
+  // }
 });
 
 function initAutocomplete(selectedCountry = "lv") {
@@ -215,6 +215,7 @@ function initAutocomplete(selectedCountry = "lv") {
 
 function fillInAddress() {
   const place = autocompleteAddress.getPlace();
+  console.log(place);
   // console.log(place);
   if (!place.geometry) {
     addressInputField.placeholder = "Enter a valid address";
