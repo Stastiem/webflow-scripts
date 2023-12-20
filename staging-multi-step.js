@@ -55,8 +55,11 @@ let addressInputField = document.querySelector("#Address");
 // let autocompleteStr;
 let countryInputField = document.querySelector("#Country");
 let streetInputField = document.querySelector("#Street");
+console.log(streetInputField);
 let cityInputField = document.querySelector("#City");
+console.log(cityInputField);
 let zipCode = document.getElementById("ZipCode");
+console.log(zipCode);
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
