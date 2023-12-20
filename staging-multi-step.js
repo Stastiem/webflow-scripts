@@ -177,14 +177,14 @@ function fillInAddress() {
           : findAddressData("administrative_area_level_2", place) +
             ", " +
             findAddressData("administrative_area_level_1", place);
-        streetInputField.value = findAddressData("street_number", address)
-          ? findAddressData("route", address) +
+        streetInputField.value = findAddressData("street_number", place)
+          ? findAddressData("route", place) +
             ", " +
-            findAddressData("street_number", address)
-          : findAddressData("route", address)
-          ? findAddressData("route", address)
-          : findAddressData("premise", address) ||
-            findAddressData("establishment", address);
+            findAddressData("street_number", place)
+          : findAddressData("route", place)
+          ? findAddressData("route", place)
+          : findAddressData("premise", place) ||
+            findAddressData("establishment", place);
         break;
 
       default:
