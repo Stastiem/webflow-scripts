@@ -1167,7 +1167,7 @@ function updateStep() {
 
   $(progressbar).removeClass("current");
 
-  for (i = 0; i <= x; i++) {
+  for (let i = 0; i <= x; i++) {
     $(progressbar[i]).addClass("current");
   }
   if (reinitIX === true) {
