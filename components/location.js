@@ -193,6 +193,8 @@ countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
   if (e.target.value !== "lv" && e.target.value !== "") {
     shippingBlock.style.display = "block";
+  } else {
+    shippingBlock.style.display = "none";
   }
 });
 
