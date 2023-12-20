@@ -2,10 +2,8 @@
 
 import { changeImage } from "./components/changeImage.js";
 import { validation } from "./components/validation.js";
-// import { autocompleteCountry } from "./components/autocompleteCountry.js";
 import "./components/location.js";
 import "./components/countryNumberAutocomplete.js";
-// import "../components/submitForm.js";
 
 let x = 0;
 let curStep = 0;
@@ -58,14 +56,21 @@ const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
 const bookLang = document.getElementById("BookLanguage");
 const dateInput = document.getElementById("HeroDOB");
-// autocompleteCountry();
 
 const detectBookLang = () => {
   const splittedHost = host.split(".");
-  if (splittedHost[0] === "www") {
-    bookLang.value = "en";
-  } else {
-    bookLang.value = splittedHost[0];
+  const detectedLanguage = splittedHost[0];
+  for (let i = 0; i < bookLang.options.length; i++) {
+    const languageOption = bookLang.options[i];
+    if (languageOption.value === "en") {
+      languageOption.selected = detectedLanguage === "www";
+      // break;
+    }
+    if (languageOption.value === detectedLanguage) {
+      console.log(languageOption.value);
+      languageOption.selected = true;
+      break;
+    }
   }
 };
 
