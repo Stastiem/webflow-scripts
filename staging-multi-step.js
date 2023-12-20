@@ -154,6 +154,7 @@ async function autocompleteCountry() {
 
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
+  autocompleteAddress.setComponentRestrictions({ country: selectedCountry });
   if (e.target.value !== "lv" && e.target.value !== "") {
     shippingBlock.style.display = "block";
   } else {
@@ -164,8 +165,9 @@ countryInputField.addEventListener("change", (e) => {
 function initAutocomplete(selectedCountry = "lv") {
   autocompleteAddress = new google.maps.places.Autocomplete(addressInputField, {
     types: ["address"],
-    componentRestrictions: { country: selectedCountry },
+    // componentRestrictions: { country: selectedCountry },
   });
+  autocompleteAddress.setComponentRestrictions({ country: selectedCountry });
   autocompleteAddress.addListener("place_changed", fillInAddress);
 }
 
