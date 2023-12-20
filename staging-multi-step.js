@@ -171,8 +171,7 @@ function fillInAddress() {
       findAddressData("locality", place) ||
       findAddressData("postal_town", place);
     streetInputField.value =
-      findAddressData("route", address) +
-      findAddressData("street_number", address);
+      findAddressData("route", place) + findAddressData("street_number", place);
     zipCode.value = findAddressData("postal_code", place);
   }
   validation();
