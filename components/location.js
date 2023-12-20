@@ -162,6 +162,8 @@ async function autocompleteCountry() {
         initAutocomplete(option.value);
         if (option.value === "lv") {
           shippingBlock.style.display = "none";
+        } else {
+          shippingBlock.style.display = "block";
         }
         break;
       }
