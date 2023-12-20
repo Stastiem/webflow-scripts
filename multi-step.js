@@ -127,7 +127,7 @@ async function autocompleteCountry() {
         position.coords.latitude,
         position.coords.longitude
       );
-
+      console.log(userCountry);
       const select = document.getElementById("Country");
       for (let i = 0; i < select.options.length; i++) {
         const option = select.options[i];
