@@ -191,7 +191,7 @@ let countryInputField = document.querySelector("#Country");
 
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
-  if (e.target.value !== "lv" && option.value !== "") {
+  if (e.target.value !== "lv" && e.target.value !== "") {
     shippingBlock.style.display = "block";
   }
 });
