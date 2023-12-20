@@ -140,6 +140,12 @@
 //   }
 // }
 
+import { disableBtn } from "./disableBtn.js";
+import { enableBtn } from "./enableBtn.js";
+import { validateInput } from "./validation.js";
+
+const shippingBlock = document.querySelector(".form-radio-wrap");
+
 async function autocompleteCountry() {
   try {
     const position = await getCurrentPosition();
@@ -154,6 +160,9 @@ async function autocompleteCountry() {
       if (option.value === userCountry) {
         option.selected = true;
         initAutocomplete(option.value);
+        if (option.value === "lv") {
+          shippingBlock.style.display = "none";
+        }
         break;
       }
     }
@@ -176,16 +185,15 @@ async function getCountryFromCoordinates(latitude, longitude) {
   return data.countryCode.toLowerCase();
 }
 
-import { disableBtn } from "./disableBtn.js";
-import { enableBtn } from "./enableBtn.js";
-import { validateInput } from "./validation.js";
-
 let autocompleteAddress;
 let addressInputField = document.querySelector("#Address");
 let countryInputField = document.querySelector("#Country");
 
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
+  if (e.target.value === "lv") {
+    shippingBlock.style.display = "none";
+  }
 });
 
 function initAutocomplete(selectedCountry = "lv") {
