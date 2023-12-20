@@ -160,9 +160,7 @@ async function autocompleteCountry() {
       if (option.value === userCountry) {
         option.selected = true;
         initAutocomplete(option.value);
-        if (option.value === "lv") {
-          shippingBlock.style.display = "none";
-        } else {
+        if (option.value !== "lv" && option.value !== "") {
           shippingBlock.style.display = "block";
         }
         break;
@@ -193,9 +191,7 @@ let countryInputField = document.querySelector("#Country");
 
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
-  if (e.target.value === "lv") {
-    shippingBlock.style.display = "none";
-  } else {
+  if (e.target.value !== "lv" && option.value !== "") {
     shippingBlock.style.display = "block";
   }
 });
