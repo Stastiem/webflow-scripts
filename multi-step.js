@@ -94,14 +94,83 @@ restrictAge();
 
 const shippingBlock = document.querySelector(".form-radio-wrap");
 
-async function getGeolocationPermission() {
-  return new Promise((resolve) => {
-    navigator.permissions
-      .query({ name: "geolocation" })
-      .then((permissionStatus) => {
-        resolve(permissionStatus.state);
-      });
-  });
+// async function getGeolocationPermission() {
+//   return new Promise((resolve) => {
+//     navigator.permissions
+//       .query({ name: "geolocation" })
+//       .then((permissionStatus) => {
+//         resolve(permissionStatus.state);
+//       });
+//   });
+// }
+
+// function getCurrentPosition() {
+//   return new Promise((resolve, reject) => {
+//     navigator.geolocation.getCurrentPosition(resolve, reject);
+//   });
+// }
+
+// async function getCountryFromCoordinates(latitude, longitude) {
+//   const response = await fetch(
+//     `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+//   );
+//   const data = await response.json();
+//   return data.countryCode.toLowerCase();
+// }
+
+// async function autocompleteCountry() {
+//   try {
+//     const permissionStatus = await getGeolocationPermission();
+//     if (permissionStatus === "granted") {
+//       const position = await getCurrentPosition();
+//       const userCountry = await getCountryFromCoordinates(
+//         position.coords.latitude,
+//         position.coords.longitude
+//       );
+//       console.log(userCountry);
+//       const select = document.getElementById("Country");
+//       for (let i = 0; i < select.options.length; i++) {
+//         const option = select.options[i];
+//         if (option.value === userCountry) {
+//           option.selected = true;
+//           initAutocomplete(option.value);
+//           if (option.value !== "lv" && option.value !== "") {
+//             shippingBlock.style.display = "block";
+//           }
+//           break;
+//         }
+//       }
+//     } else {
+//       console.warn("Geolocation permission not granted.");
+//     }
+//   } catch (error) {
+//     console.error("Error during geolocation:", error);
+//     // Handle the error, show a message to the user, or retry the operation.
+//   }
+// }
+async function autocompleteCountry() {
+  try {
+    const position = await getCurrentPosition();
+    const userCountry = await getCountryFromCoordinates(
+      position.coords.latitude,
+      position.coords.longitude
+    );
+    const select = document.getElementById("Country");
+
+    for (let i = 0; i < select.options.length; i++) {
+      const option = select.options[i];
+      if (option.value === userCountry) {
+        option.selected = true;
+        initAutocomplete(option.value);
+        if (option.value !== "lv" && option.value !== "") {
+          shippingBlock.style.display = "block";
+        }
+        break;
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching country information:", error);
+  }
 }
 
 function getCurrentPosition() {
@@ -116,37 +185,6 @@ async function getCountryFromCoordinates(latitude, longitude) {
   );
   const data = await response.json();
   return data.countryCode.toLowerCase();
-}
-
-async function autocompleteCountry() {
-  try {
-    const permissionStatus = await getGeolocationPermission();
-    if (permissionStatus === "granted") {
-      const position = await getCurrentPosition();
-      const userCountry = await getCountryFromCoordinates(
-        position.coords.latitude,
-        position.coords.longitude
-      );
-      console.log(userCountry);
-      const select = document.getElementById("Country");
-      for (let i = 0; i < select.options.length; i++) {
-        const option = select.options[i];
-        if (option.value === userCountry) {
-          option.selected = true;
-          initAutocomplete(option.value);
-          if (option.value !== "lv" && option.value !== "") {
-            shippingBlock.style.display = "block";
-          }
-          break;
-        }
-      }
-    } else {
-      console.warn("Geolocation permission not granted.");
-    }
-  } catch (error) {
-    console.error("Error during geolocation:", error);
-    // Handle the error, show a message to the user, or retry the operation.
-  }
 }
 
 countryInputField.addEventListener("change", (e) => {
