@@ -54,9 +54,9 @@ let addressInputField = document.querySelector("#Address");
 // let autocompleteCity;
 // let autocompleteStr;
 let countryInputField = document.querySelector("#Country");
-// let streetInputField = document.querySelector("#Street");
-// let cityInputField = document.querySelector("#City");
-// let zipCode = document.getElementById("ZipCode");
+let streetInputField = document.querySelector("#Street");
+let cityInputField = document.querySelector("#City");
+let zipCode = document.getElementById("ZipCode");
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
@@ -150,12 +150,12 @@ function initAutocomplete(selectedCountry = "lv") {
   autocompleteAddress.addListener("place_changed", fillInAddress);
 }
 
-// function findAddressData(data, place) {
-//   const dataObject = place.address_components.find((el) =>
-//     el.types.includes(data)
-//   );
-//   return dataObject ? dataObject.long_name : "";
-// }
+function findAddressData(data, place) {
+  const dataObject = place.address_components.find((el) =>
+    el.types.includes(data)
+  );
+  return dataObject ? dataObject.long_name : "";
+}
 
 function fillInAddress() {
   const place = autocompleteAddress.getPlace();
@@ -164,13 +164,20 @@ function fillInAddress() {
     addressInputField.placeholder = "Enter a valid address";
   } else {
     addressInputField.value = place.formatted_address;
+    cityInputField.value =
+      findAddressData("locality", place) ||
+      findAddressData("postal_town", place);
+    streetInputField.value =
+      findAddressData("route", address) +
+      findAddressData("street_number", address);
+    zipCode.value = findAddressData("postal_code", place);
   }
-
-  if (validateInput($(':input[type="text"][required]:visible'))) {
-    enableBtn();
-  } else {
-    disableBtn();
-  }
+  validation();
+  // if (validateInput($(':input[type="text"][required]:visible'))) {
+  //   enableBtn();
+  // } else {
+  //   disableBtn();
+  // }
 }
 
 autocompleteCountry();

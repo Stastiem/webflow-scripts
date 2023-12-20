@@ -47,8 +47,8 @@ export function validation(
   if ($(steps[x]).data("card")) {
     enableBtn();
   }
-  console.log($(steps[x]).find(":input"));
-  console.log($("#BookLanguage").val());
+  // console.log($(steps[x]).find(":input"));
+  // console.log($("#BookLanguage").val());
   let currentStep = $(steps[x]);
   let textInput = currentStep.find('input[type="text"][required]:visible');
   let selectInput = currentStep.find("select[required]");
