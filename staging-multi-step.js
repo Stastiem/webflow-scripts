@@ -162,18 +162,41 @@ function findAddressData(data, place) {
 
 function fillInAddress() {
   const place = autocompleteAddress.getPlace();
-  // console.log(place);
   if (!place.geometry) {
     addressInputField.placeholder = "Enter a valid address";
   } else {
     addressInputField.value = place.formatted_address;
-    cityInputField.value =
-      findAddressData("locality", place) ||
-      findAddressData("postal_town", place);
-    streetInputField.value =
-      findAddressData("route", place) +
-      " " +
-      findAddressData("street_number", place);
+    switch (countryInputField.value) {
+      case "lv":
+        cityInputField.value = findAddressData("locality", place)
+          ? findAddressData("administrative_area_level_1", place)
+            ? findAddressData("locality", place) +
+              ", " +
+              findAddressData("administrative_area_level_1", place)
+            : findAddressData("locality", place)
+          : findAddressData("administrative_area_level_2", place) +
+            ", " +
+            findAddressData("administrative_area_level_1", place);
+        streetInputField.value = findAddressData("street_number", address)
+          ? findAddressData("route", address) +
+            ", " +
+            findAddressData("street_number", address)
+          : findAddressData("route", address)
+          ? findAddressData("route", address)
+          : findAddressData("premise", address) ||
+            findAddressData("establishment", address);
+        break;
+
+      default:
+        cityInputField.value =
+          findAddressData("locality", place) ||
+          findAddressData("postal_town", place);
+        streetInputField.value =
+          findAddressData("route", place) +
+          " " +
+          findAddressData("street_number", place);
+        break;
+    }
     zipCode.value = findAddressData("postal_code", place);
   }
   validation();
