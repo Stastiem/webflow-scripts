@@ -699,7 +699,7 @@ let autocompleteAddress;
 let addressInputField = document.querySelector("#Address");
 // let autocompleteCity;
 // let autocompleteStr;
-// let countryInputField = document.querySelector("#Country");
+let countryInputField = document.querySelector("#Country");
 // let streetInputField = document.querySelector("#Street");
 // let cityInputField = document.querySelector("#City");
 // let zipCode = document.getElementById("ZipCode");
