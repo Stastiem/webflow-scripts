@@ -154,7 +154,7 @@ async function autocompleteCountry() {
 
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
-  autocompleteAddress.setComponentRestrictions({ country: selectedCountry });
+  autocompleteAddress.setComponentRestrictions({ country: e.target.value });
   if (e.target.value !== "lv" && e.target.value !== "") {
     shippingBlock.style.display = "block";
   } else {
