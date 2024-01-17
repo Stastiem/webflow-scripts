@@ -3,6 +3,7 @@
 let x = 0;
 let curStep = 0;
 let steps = $('[data-form="step"]'); // node elements with data-form="step" attribute (divs)
+console.log(steps);
 let progressbarClone = $('[data-form="progress-indicator"]').clone();
 let progressbar;
 let fill = false;
