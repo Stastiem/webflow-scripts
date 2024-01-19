@@ -681,7 +681,7 @@ function validateEmail(email, blockDomain) {
 
 function validation() {
   //conditional logic
-
+  console.log(steps[x]);
   if ($(steps[x]).data("card")) {
     enableBtn();
   }
