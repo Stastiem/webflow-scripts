@@ -1834,3 +1834,10 @@ $("textarea").keypress(function (event) {
     $(this).val($(this).val() + "\n");
   }
 });
+
+////////////////////////////////////////////////
+
+if (new URL(window.location.href).searchParams.size > 0) {
+  document.querySelectorAll(".next-button")[0].click();
+  // console.log("clicked", document.querySelectorAll(".next-button")[0]);
+}
