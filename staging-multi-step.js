@@ -68,6 +68,151 @@ const bookLang = document.getElementById("BookLanguage");
 const dateInput = document.getElementById("HeroDOB");
 const phoneInputField = document.querySelector("#Phone");
 
+///////////////////////////////////////////////////////////
+
+const freeDelSpan = document.querySelector(".free-delivery-span");
+const paidDelSpan = document.querySelector(".fast-delivery-span");
+function calculateDeliveryDate(deliveryType) {
+  const orderDateTime = new Date();
+  const orderDayOfWeek = orderDateTime.getDay();
+  let deliveryDay = 5;
+  let weeksToAdd = orderDayOfWeek >= 3 && orderDayOfWeek <= 6 ? 2 : 1;
+  if (deliveryType === "free") {
+    weeksToAdd += 2;
+  }
+  const deliveryDate = new Date(orderDateTime);
+  deliveryDate.setDate(
+    orderDateTime.getDate() +
+      weeksToAdd * 7 +
+      ((deliveryDay - orderDayOfWeek + 7) % 7)
+  );
+  return deliveryDate.toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+  });
+}
+freeDelSpan.textContent =
+  "Delivery by " +
+  calculateDeliveryDate("paid") +
+  " to " +
+  calculateDeliveryDate("free");
+paidDelSpan.textContent =
+  "Delivery to door by " + calculateDeliveryDate("paid");
+
+///////////////////////////////////////////////////////////
+
+const refId = uuidv4();
+const clientRefId = document.querySelector(".ClientReferenceId");
+clientRefId.value = refId;
+
+const checkboxes = document.querySelectorAll(
+  "input[name=Audio], input[name=Painting], input[name=Card]"
+);
+document.getElementById("Book").setAttribute("disabled", "disabled");
+const checkmarks = document.querySelectorAll(".check-mark");
+const paintingQuantity = document.querySelector(".painting-quantity");
+for (let i = 0; i < checkboxes.length; i++) {
+  checkboxes[i].addEventListener("change", () => {
+    if (checkboxes[i].checked) {
+      checkmarks[i + 1].style.background = "#f0623d";
+      checkmarks[i + 1].style.border = "1px solid #f0623d";
+      if (checkboxes[i].id === "Painting") {
+        paintingQuantity.textContent = 1;
+        document.querySelectorAll(".additions-checkbox")[1].style.border =
+          "2px solid #f0623d";
+      }
+    } else {
+      checkmarks[i + 1].style.background = "transparent";
+      checkmarks[i + 1].style.border = "1px solid rgba(0,0,0,0.15)";
+      if (checkboxes[i].id === "Painting") {
+        paintingQuantity.textContent = 0;
+        document.querySelectorAll(".additions-checkbox")[1].style.border =
+          "1px solid rgba(0,0,0,0.15)";
+        document.querySelector(".painting-price").textContent = 17.49;
+      }
+    }
+  });
+}
+
+function incrementCounter(counterId) {
+  const counterInput = document.querySelector(`.${counterId}`);
+  const currentValue = parseInt(counterInput.textContent);
+  counterInput.textContent = currentValue + 1;
+  if (counterInput.className === "book-quantity") {
+    if (currentValue + 1 > 1) {
+      document.querySelector(".book-price").textContent = (
+        49.0 +
+        39.0 * 0.75 * currentValue
+      ).toFixed(2);
+    }
+  }
+  if (counterInput.className === "painting-quantity") {
+    checkboxes[0].checked = true;
+    document.querySelectorAll(".additions-checkbox")[1].style.border =
+      "2px solid #f0623d";
+    checkmarks[1].style.background = "#f0623d";
+    checkmarks[1].style.border = "1px solid #f0623d";
+    if (currentValue > 0) {
+      document.querySelector(".painting-price").textContent = (
+        17.49 *
+        (currentValue + 1)
+      ).toFixed(2);
+    }
+  }
+}
+
+function decrementCounter(counterId) {
+  const counterInput = document.querySelector(`.${counterId}`);
+  const currentValue = parseInt(counterInput.textContent);
+  if (currentValue > 1 && counterInput.className === "book-quantity") {
+    counterInput.textContent = currentValue - 1;
+    if (currentValue - 1 > 1) {
+      document.querySelector(".book-price").textContent = (
+        49.0 +
+        39.0 * 0.75 * (currentValue - 2)
+      ).toFixed(2);
+      console.log(currentValue - 1);
+    }
+    if (currentValue - 1 === 1) {
+      document.querySelector(".book-price").textContent = (49.0).toFixed(2);
+    }
+  }
+  if (currentValue > 0 && counterInput.className !== "book-quantity") {
+    counterInput.textContent = currentValue - 1;
+    if (currentValue === 1) {
+      checkboxes[0].checked = false;
+      document.querySelectorAll(".additions-checkbox")[1].style.border =
+        "1px solid rgba(0,0,0,0.15)";
+      checkmarks[1].style.background = "transparent";
+      checkmarks[1].style.border = "1px solid rgba(0,0,0,0.15)";
+    }
+    if (currentValue > 0) {
+      document.querySelector(".painting-price").textContent = (
+        17.49 *
+        (currentValue - 1)
+      ).toFixed(2);
+    }
+    if (currentValue - 1 === 0) {
+      document.querySelector(".painting-price").textContent = 17.49;
+    }
+  }
+}
+
+document
+  .getElementById("book-decr-btn")
+  .addEventListener("click", () => decrementCounter("book-quantity"));
+document
+  .getElementById("book-incr-btn")
+  .addEventListener("click", () => incrementCounter("book-quantity"));
+document
+  .getElementById("paint-decr-btn")
+  .addEventListener("click", () => decrementCounter("painting-quantity"));
+document
+  .getElementById("paint-incr-btn")
+  .addEventListener("click", () => incrementCounter("painting-quantity"));
+
+///////////////////////////////////////////////////////////
+
 const detectBookLang = () => {
   const splittedHost = host.split(".");
   const detectedLanguage = splittedHost[0];
