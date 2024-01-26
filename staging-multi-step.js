@@ -1028,7 +1028,7 @@ function validation() {
     //     setAllChecksToTrue();
     //   });
 
-    $(".div-block-8 .link-back-top.w-inline-block").on("click", function () {
+    $(".div-block-10 .link-back-top.w-inline-block").on("click", function () {
       console.log("User clicked back" + $(this).val());
       enableBtn();
       setAllChecksToTrue();
