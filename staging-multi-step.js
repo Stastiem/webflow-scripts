@@ -1019,6 +1019,13 @@ function validation() {
         enableBtn();
         setAllChecksToTrue();
       });
+    $(steps[x])
+      .find(".link-back-top.w-inline-block")
+      .on("click", function () {
+        console.log("User clicked back" + $(this).val());
+        enableBtn();
+        setAllChecksToTrue();
+      });
 
     $(steps[x])
       .find("select[required]")
