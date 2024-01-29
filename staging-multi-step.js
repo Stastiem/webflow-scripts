@@ -1851,7 +1851,6 @@ $("textarea").keypress(function (event) {
 
 ////////////////////////////////////////////////
 
-if (new URL(window.location.href).searchParams.size > 0) {
-  document.querySelectorAll(".next-button")[0].click();
-  // console.log("clicked", document.querySelectorAll(".next-button")[0]);
-}
+// if (new URL(window.location.href).searchParams.size > 0) {
+//   document.querySelectorAll(".next-button")[0].click();
+// }
