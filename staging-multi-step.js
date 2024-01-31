@@ -1846,6 +1846,3 @@ $("textarea").keypress(function (event) {
 // if (new URL(window.location.href).searchParams.size > 0) {
 //   document.querySelectorAll(".next-button")[0].click();
 // }
-for (let i = 0; i < usecaseList.children.length; i++) {
-  placeholderStrings.push(usecaseList.children[i].textContent);
-}
