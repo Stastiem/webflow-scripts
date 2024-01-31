@@ -56,11 +56,8 @@ let addressInputField = document.querySelector("#Address");
 // let autocompleteStr;
 let countryInputField = document.querySelector("#Country");
 let streetInputField = document.querySelector("#Street");
-console.log(streetInputField);
 let cityInputField = document.querySelector("#City");
-console.log(cityInputField);
 let zipCode = document.getElementById("ZipCode");
-console.log(zipCode);
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
@@ -419,28 +416,23 @@ function changeImage() {
     const imageElement1 = document.getElementsByClassName("image-5")[0];
     console.log(imageElement1);
     const imageElement2 = document.getElementById(
-      // "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-f2b54ff2"
-      "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-1c4231df"
+      "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-bb2afb5e"
     );
     console.log(imageElement2);
     const imageElement3 = document.getElementById(
-      // "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-f2b54ff2"
-      "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-1c4231df"
+      "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-bb2afb5e"
     );
     console.log(imageElement3);
     const imageElement4 = document.getElementById(
-      // "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-f2b54ff2"
-      "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-1c4231df"
+      "w-node-_25f84b08-0f04-40be-1572-3f2f58604517-bb2afb5e"
     );
     console.log(imageElement4);
     const imageElement5 = document.getElementById(
-      // "w-node-_47f06dcd-89d6-8710-a41b-fa0d1a830a72-f2b54ff2"
-      "w-node-_47f06dcd-89d6-8710-a41b-fa0d1a830a72-1c4231df"
+      "w-node-_849935ee-c179-fac0-7c7d-6b73f00f2905-bb2afb5e"
     );
     console.log(imageElement5);
     const imageElement6 = document.getElementById(
-      // "w-node-ce4f6a12-c0fa-b8c4-ea5d-29324ea4ee96-f2b54ff2"
-      "w-node-ce4f6a12-c0fa-b8c4-ea5d-29324ea4ee96-1c4231df"
+      "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-bb2afb5e"
     );
     console.log(imageElement6);
 
@@ -1854,3 +1846,10 @@ $("textarea").keypress(function (event) {
 // if (new URL(window.location.href).searchParams.size > 0) {
 //   document.querySelectorAll(".next-button")[0].click();
 // }
+for (let i = 0; i < usecaseList.children.length; i++) {
+  placeholderStrings.push(
+    <a href="https://stastiem.webflow.io/#occasion-section">
+      `${usecaseList.children[i].textContent}`
+    </a>
+  );
+}
