@@ -1847,9 +1847,5 @@ $("textarea").keypress(function (event) {
 //   document.querySelectorAll(".next-button")[0].click();
 // }
 for (let i = 0; i < usecaseList.children.length; i++) {
-  placeholderStrings.push(
-    <a href="https://stastiem.webflow.io/#occasion-section">
-      `${usecaseList.children[i].textContent}`
-    </a>
-  );
+  placeholderStrings.push(usecaseList.children[i].textContent);
 }
