@@ -228,12 +228,11 @@ const detectBookLang = () => {
 };
 detectBookLang();
 
-// restrict ability to order books for children under 10 month
 function restrictAge() {
   const today = new Date();
   const minDate = new Date(today);
-  minDate.setMonth(today.getMonth() - 10); // Subtract 10 months from the current date
-  dateInput.setAttribute("max", minDate.toISOString().split("T")[0]); // Set max date as 10 months ago
+  minDate.setMonth(today.getMonth() - 10);
+  dateInput.setAttribute("max", minDate.toISOString().split("T")[0]);
 }
 
 restrictAge();
@@ -280,8 +279,17 @@ async function autocompleteCountry() {
         if (option.value === userCountry) {
           option.selected = true;
           initAutocomplete(option.value);
-          if (option.value !== "lv" && option.value !== "") {
+          if (
+            option.value !== "lv" &&
+            option.value !== "" &&
+            option.value !== "gb"
+          ) {
             shippingBlock.style.display = "block";
+          }
+          if (option.value === "gb") {
+            document.querySelector(".shipping note").textContent =
+              "The cost of shipping to the united kingdom is 10 pounds.";
+            document.getElementById("fast-shipping").checked = true;
           }
           break;
         }
@@ -291,7 +299,6 @@ async function autocompleteCountry() {
     }
   } catch (error) {
     console.error("Error during geolocation:", error);
-    // Handle the error, show a message to the user, or retry the operation.
   }
 }
 
