@@ -405,7 +405,7 @@ phoneInputField.addEventListener("change", (e) => {
 });
 
 // added new field to form data object which shows if order made during staging or production
-if (host.includes("stastiem.webflow.io") || port !== "") {
+if (host.includes("blossomreads.webflow.io") || port !== "") {
   console.log("staging");
   environment.value = "staging";
 } else {
