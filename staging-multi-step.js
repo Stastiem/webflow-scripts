@@ -305,10 +305,19 @@ async function autocompleteCountry() {
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
   autocompleteAddress.setComponentRestrictions({ country: e.target.value });
-  if (e.target.value !== "lv" && e.target.value !== "") {
+  if (
+    e.target.value !== "lv" &&
+    e.target.value !== "" &&
+    e.target.value !== "gb"
+  ) {
     shippingBlock.style.display = "block";
   } else {
     shippingBlock.style.display = "none";
+  }
+  if (e.target.value === "gb") {
+    document.querySelector(".shipping note").textContent =
+      "The cost of shipping to the united kingdom is 10 pounds.";
+    document.getElementById("fast-shipping").checked = true;
   }
 });
 
