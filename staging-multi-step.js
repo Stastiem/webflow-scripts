@@ -287,7 +287,7 @@ async function autocompleteCountry() {
             shippingBlock.style.display = "block";
           }
           if (option.value === "gb") {
-            document.querySelector(".shipping note").textContent =
+            document.querySelector(".shipping-note").textContent =
               "The cost of shipping to the united kingdom is 10 pounds.";
             document.getElementById("fast-shipping").checked = true;
           }
@@ -315,7 +315,7 @@ countryInputField.addEventListener("change", (e) => {
     shippingBlock.style.display = "none";
   }
   if (e.target.value === "gb") {
-    document.querySelector(".shipping note").textContent =
+    document.querySelector(".shipping-note").textContent =
       "The cost of shipping to the united kingdom is 10 pounds.";
     document.getElementById("fast-shipping").checked = true;
   }
