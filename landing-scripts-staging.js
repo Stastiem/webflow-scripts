@@ -12,6 +12,9 @@ const heroGender = document.querySelector('input[name="HeroGender"]:checked');
 const heroName = document.getElementById("HeroName");
 const heroDOB = document.getElementById("HeroDOB");
 const bookLanguage = document.getElementById("BookLanguage");
+const newHeight = window.innerHeight;
+const featuresHero = document.querySelector(".features-wrapper-hero");
+const featuresSeparated = document.querySelector(".features-metrics");
 const instagramDataEn = [
   document.querySelector(".sn-list-en"),
   document.querySelector(".reviews-list-en"),
@@ -34,6 +37,7 @@ function showHideContent() {
   }
 }
 showHideContent();
+
 // Function that detects current domain //////////////////////////////////////////////////////////////////////////
 function detectLanguage() {
   const domain = window.location.hostname;
@@ -51,7 +55,20 @@ function detectLanguage() {
   }
 }
 
-// Fetch function to detect user's country ///////////////////////////////////////////////
+// Change book language according to the domain //////////////////////////////////////////////////////////////////
+const detectBookLang = () => {
+  const currentLanguage = detectLanguage();
+  const bookLanguage = document.getElementById("BookLanguage");
+  bookLanguage.options.forEach((el) => {
+    console.log(el);
+    if (el.value === currentLanguage) {
+      el.selected = true;
+    }
+  });
+};
+detectBookLang();
+
+// Fetch function to detect user's country ////////////////////////////////////////////////////////////////////
 fetch("https://ipapi.co/json/")
   .then((response) => response.json())
   .then((data) => {
@@ -62,7 +79,7 @@ fetch("https://ipapi.co/json/")
   })
   .catch((error) => console.error("Error fetching IP information:", error));
 
-// Age restriction //////////////////////////////////////////////////////////////////////
+// Age restriction ///////////////////////////////////////////////////////////////////////////////////////////
 function restrictAge() {
   const today = new Date();
   const minDate = new Date(today);
@@ -73,7 +90,7 @@ function restrictAge() {
 }
 restrictAge();
 
-// Mobile swiper settings ///////////////////////////////////////////////////////////////
+// Mobile swiper settings ////////////////////////////////////////////////////////////////////////////////////
 const swiper = new Swiper(".swiper", {
   direction: "horizontal",
   loop: true,
@@ -89,7 +106,7 @@ const swiper = new Swiper(".swiper", {
   },
 });
 
-// Added new buttons to the desktop slider /////////////////////////////////////////////////
+// Added new buttons to the desktop slider //////////////////////////////////////////////////////////////////////
 nextArrow.addEventListener("click", function () {
   var nextButton = slider.querySelector(".w-slider-arrow-right");
   nextButton.click();
@@ -99,7 +116,7 @@ prevArrow.addEventListener("click", function () {
   prevButton.click();
 });
 
-// Display text on slides corresponding to the chosen language ////////////////////////////
+// Display text on slides corresponding to the chosen language /////////////////////////////////////////////////
 function showTextBlock(language) {
   const textBlocks = document.querySelectorAll(
     ".slide-text-block, .slide-text-block-lv, .slide-text-block-de, .slide-text-block-ru, .slide-text-block-uk"
@@ -158,7 +175,7 @@ function showTextBlock(language) {
   applyLanguageStyles(mobTextBlocks, "block-mob");
 }
 
-// Function that stores data in local storage //////////////////////////////////////////
+// Function that stores data in local storage ///////////////////////////////////////////////////////////////
 function storeData(value, name) {
   if (value) {
     localStorage.setItem(name, value);
@@ -167,7 +184,7 @@ function storeData(value, name) {
   }
 }
 
-// Function that converts select value to the image id ////////////////////////////////
+// Function that converts select value to the image id /////////////////////////////////////////////////////
 function convertToClassName(str) {
   const convertedString = str.toLowerCase().replace(/\s+/g, "-");
   return convertedString + "-img";
@@ -204,7 +221,7 @@ function changeOccasionImageFromInput(e) {
   updateButtonText();
 }
 
-// Function that saves THEME SELECT value in local storage //////////////////////////////
+// Function that saves THEME SELECT value in local storage ///////////////////////////////////////////////////
 function changeThemeFromSelect(select) {
   var selectedTheme = select.value;
   select.nextElementSibling.value = selectedTheme;
@@ -212,8 +229,9 @@ function changeThemeFromSelect(select) {
   updateButtonText();
 }
 
-// Function that saves THEME INPUT value in local storage //////////////////////////////
+// Function that saves THEME INPUT value in local storage ///////////////////////////////////////////////////
 function changeThemeFromInput(e) {
+  /////////////////////
   var inputThemeValue = event.target.value;
   storeData(inputThemeValue, "theme");
   updateButtonText();
@@ -237,7 +255,7 @@ function updateButtonText() {
   document.getElementById("occasion-submit-btn").textContent = buttonText;
 }
 
-// Function that saves first step data in local storage //////////////////////////////
+// Function that saves first step data in local storage ///////////////////////////////////////////////////
 firstFormStepLP.addEventListener("submit", function (event) {
   const formData = {
     HeroGender: heroGender.value,
@@ -247,3 +265,16 @@ firstFormStepLP.addEventListener("submit", function (event) {
   };
   localStorage.setItem("formData", JSON.stringify(formData));
 });
+
+// Show/hide features section depending on the view height ///////////////////////////////////////////////////
+function handleWindowResize() {
+  if (newHeight < 750) {
+    featuresHero.style.display = "none";
+    featuresSeparated.style.display = "block";
+  } else {
+    featuresHero.style.display = "flex";
+    featuresSeparated.style.display = "none";
+  }
+  console.log("Window height:", newHeight);
+}
+window.addEventListener("resize", handleWindowResize);
