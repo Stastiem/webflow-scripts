@@ -193,7 +193,7 @@ function changeOccasionImage(selectElement) {
 }
 
 // Function that saves OCCASION INPUT value in local storage, changes submit btn text content and changes active image
-function changeOccasionImageFromInput(event) {
+function changeOccasionImageFromInput(e) {
   var inputValue = event.target.value;
   var allImages = document.querySelectorAll(".image-container");
   allImages.forEach(function (image) {
@@ -213,7 +213,7 @@ function changeThemeFromSelect(select) {
 }
 
 // Function that saves THEME INPUT value in local storage //////////////////////////////
-function changeThemeFromInput(event) {
+function changeThemeFromInput(e) {
   var inputThemeValue = event.target.value;
   storeData(inputThemeValue, "theme");
   updateButtonText();
