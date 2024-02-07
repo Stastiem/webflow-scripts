@@ -3,6 +3,7 @@
 let x = 0;
 let curStep = 0;
 let steps = $('[data-form="step"]'); // node elements with data-form="step" attribute (divs)
+console.log(steps);
 let progressbarClone = $('[data-form="progress-indicator"]').clone();
 let progressbar;
 let fill = false;
@@ -64,6 +65,206 @@ const bookLang = document.getElementById("BookLanguage");
 const dateInput = document.getElementById("HeroDOB");
 const phoneInputField = document.querySelector("#Phone");
 
+///////////////////////////////////////////////////////////
+
+function toggleCheckbox(checkboxId, checkmarkId) {
+  const checkboxField = document.getElementById(checkboxId);
+  const checkmark = document.querySelector(checkmarkId);
+  checkboxField.checked = !checkboxField.checked;
+  checkmark.classList.toggle(
+    "occasion-checkmark-checked",
+    checkboxField.checked
+  );
+}
+document
+  .querySelector(".occasion-field-label")
+  .addEventListener("click", function () {
+    toggleCheckbox("IsOccasion", ".occasion-checkmark");
+  });
+document
+  .querySelector(".theme-field-label")
+  .addEventListener("click", function () {
+    toggleCheckbox("IsTheme", ".theme-checkmark");
+  });
+document
+  .querySelector(".style-checkbox")
+  .addEventListener("click", function () {
+    toggleCheckbox("StyleRandom", ".style-checkmark");
+  });
+function handleOccasionCheckboxChange() {
+  const occasionCheckbox = document.getElementById("IsOccasion");
+  const occasionCombobox = document.querySelector(".occasion-combobox");
+  if (occasionCheckbox.checked) {
+    occasionCombobox.classList.add("visible");
+  } else {
+    occasionCombobox.classList.remove("visible");
+    document.getElementById("occasion").value = "";
+    document.getElementById("occasion-input").value = "";
+  }
+}
+function handleThemeCheckboxChange() {
+  const themeCheckbox = document.getElementById("IsTheme");
+  const themeCombobox = document.querySelector(".theme-combobox");
+  if (themeCheckbox.checked) {
+    themeCombobox.classList.add("visible");
+  } else {
+    themeCombobox.classList.remove("visible");
+    document.getElementById("theme").value = "";
+    document.getElementById("theme-input").value = "";
+  }
+}
+document
+  .getElementById("IsOccasion")
+  .addEventListener("change", handleOccasionCheckboxChange);
+document
+  .getElementById("IsTheme")
+  .addEventListener("change", handleThemeCheckboxChange);
+
+///////////////////////////////////////////////////////////
+
+const freeDelSpan = document.querySelector(".free-delivery-span");
+const paidDelSpan = document.querySelector(".fast-delivery-span");
+function calculateDeliveryDate(deliveryType) {
+  const orderDateTime = new Date();
+  const orderDayOfWeek = orderDateTime.getDay();
+  let deliveryDay = 5;
+  let weeksToAdd = orderDayOfWeek >= 3 && orderDayOfWeek <= 6 ? 2 : 1;
+  if (deliveryType === "free") {
+    weeksToAdd += 2;
+  }
+  const deliveryDate = new Date(orderDateTime);
+  deliveryDate.setDate(
+    orderDateTime.getDate() +
+      weeksToAdd * 7 +
+      ((deliveryDay - orderDayOfWeek + 7) % 7)
+  );
+  return deliveryDate.toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+  });
+}
+freeDelSpan.textContent =
+  "Delivery by " +
+  calculateDeliveryDate("paid") +
+  " to " +
+  calculateDeliveryDate("free");
+paidDelSpan.textContent =
+  "Delivery to door by " + calculateDeliveryDate("paid");
+
+///////////////////////////////////////////////////////////
+
+const refId = uuidv4();
+const clientRefId = document.querySelector(".ClientReferenceId");
+clientRefId.value = refId;
+
+const checkboxes = document.querySelectorAll(
+  "input[name=Audio], input[name=Painting], input[name=Card]"
+);
+document.getElementById("Book").setAttribute("disabled", "disabled");
+const checkmarks = document.querySelectorAll(".check-mark");
+const paintingQuantity = document.querySelector(".painting-quantity");
+for (let i = 0; i < checkboxes.length; i++) {
+  checkboxes[i].addEventListener("change", () => {
+    if (checkboxes[i].checked) {
+      checkmarks[i + 1].style.background = "#f0623d";
+      checkmarks[i + 1].style.border = "1px solid #f0623d";
+      if (checkboxes[i].id === "Painting") {
+        paintingQuantity.textContent = 1;
+        document.querySelectorAll(".additions-checkbox")[1].style.border =
+          "2px solid #f0623d";
+      }
+    } else {
+      checkmarks[i + 1].style.background = "transparent";
+      checkmarks[i + 1].style.border = "1px solid rgba(0,0,0,0.15)";
+      if (checkboxes[i].id === "Painting") {
+        paintingQuantity.textContent = 0;
+        document.querySelectorAll(".additions-checkbox")[1].style.border =
+          "1px solid rgba(0,0,0,0.15)";
+        document.querySelector(".painting-price").textContent = 17.49;
+      }
+    }
+  });
+}
+
+function incrementCounter(counterId) {
+  const counterInput = document.querySelector(`.${counterId}`);
+  const currentValue = parseInt(counterInput.textContent);
+  counterInput.textContent = currentValue + 1;
+  if (counterInput.className === "book-quantity") {
+    if (currentValue + 1 > 1) {
+      document.querySelector(".book-price").textContent = (
+        49.0 +
+        39.0 * 0.75 * currentValue
+      ).toFixed(2);
+    }
+  }
+  if (counterInput.className === "painting-quantity") {
+    checkboxes[0].checked = true;
+    document.querySelectorAll(".additions-checkbox")[1].style.border =
+      "2px solid #f0623d";
+    checkmarks[1].style.background = "#f0623d";
+    checkmarks[1].style.border = "1px solid #f0623d";
+    if (currentValue > 0) {
+      document.querySelector(".painting-price").textContent = (
+        17.49 *
+        (currentValue + 1)
+      ).toFixed(2);
+    }
+  }
+}
+
+function decrementCounter(counterId) {
+  const counterInput = document.querySelector(`.${counterId}`);
+  const currentValue = parseInt(counterInput.textContent);
+  if (currentValue > 1 && counterInput.className === "book-quantity") {
+    counterInput.textContent = currentValue - 1;
+    if (currentValue - 1 > 1) {
+      document.querySelector(".book-price").textContent = (
+        49.0 +
+        39.0 * 0.75 * (currentValue - 2)
+      ).toFixed(2);
+      console.log(currentValue - 1);
+    }
+    if (currentValue - 1 === 1) {
+      document.querySelector(".book-price").textContent = (49.0).toFixed(2);
+    }
+  }
+  if (currentValue > 0 && counterInput.className !== "book-quantity") {
+    counterInput.textContent = currentValue - 1;
+    if (currentValue === 1) {
+      checkboxes[0].checked = false;
+      document.querySelectorAll(".additions-checkbox")[1].style.border =
+        "1px solid rgba(0,0,0,0.15)";
+      checkmarks[1].style.background = "transparent";
+      checkmarks[1].style.border = "1px solid rgba(0,0,0,0.15)";
+    }
+    if (currentValue > 0) {
+      document.querySelector(".painting-price").textContent = (
+        17.49 *
+        (currentValue - 1)
+      ).toFixed(2);
+    }
+    if (currentValue - 1 === 0) {
+      document.querySelector(".painting-price").textContent = 17.49;
+    }
+  }
+}
+
+document
+  .getElementById("book-decr-btn")
+  .addEventListener("click", () => decrementCounter("book-quantity"));
+document
+  .getElementById("book-incr-btn")
+  .addEventListener("click", () => incrementCounter("book-quantity"));
+document
+  .getElementById("paint-decr-btn")
+  .addEventListener("click", () => decrementCounter("painting-quantity"));
+document
+  .getElementById("paint-incr-btn")
+  .addEventListener("click", () => incrementCounter("painting-quantity"));
+
+///////////////////////////////////////////////////////////
+
 const detectBookLang = () => {
   const splittedHost = host.split(".");
   const detectedLanguage = splittedHost[0];
@@ -82,95 +283,25 @@ const detectBookLang = () => {
 };
 detectBookLang();
 
-// restrict ability to order books for children under 10 month
 function restrictAge() {
   const today = new Date();
   const minDate = new Date(today);
-  minDate.setMonth(today.getMonth() - 10); // Subtract 10 months from the current date
-  dateInput.setAttribute("max", minDate.toISOString().split("T")[0]); // Set max date as 10 months ago
+  minDate.setMonth(today.getMonth() - 10);
+  dateInput.setAttribute("max", minDate.toISOString().split("T")[0]);
 }
 
 restrictAge();
 
 const shippingBlock = document.querySelector(".form-radio-wrap");
 
-// async function getGeolocationPermission() {
-//   return new Promise((resolve) => {
-//     navigator.permissions
-//       .query({ name: "geolocation" })
-//       .then((permissionStatus) => {
-//         resolve(permissionStatus.state);
-//       });
-//   });
-// }
-
-// function getCurrentPosition() {
-//   return new Promise((resolve, reject) => {
-//     navigator.geolocation.getCurrentPosition(resolve, reject);
-//   });
-// }
-
-// async function getCountryFromCoordinates(latitude, longitude) {
-//   const response = await fetch(
-//     `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-//   );
-//   const data = await response.json();
-//   return data.countryCode.toLowerCase();
-// }
-
-// async function autocompleteCountry() {
-//   try {
-//     const permissionStatus = await getGeolocationPermission();
-//     if (permissionStatus === "granted") {
-//       const position = await getCurrentPosition();
-//       const userCountry = await getCountryFromCoordinates(
-//         position.coords.latitude,
-//         position.coords.longitude
-//       );
-//       console.log(userCountry);
-//       const select = document.getElementById("Country");
-//       for (let i = 0; i < select.options.length; i++) {
-//         const option = select.options[i];
-//         if (option.value === userCountry) {
-//           option.selected = true;
-//           initAutocomplete(option.value);
-//           if (option.value !== "lv" && option.value !== "") {
-//             shippingBlock.style.display = "block";
-//           }
-//           break;
-//         }
-//       }
-//     } else {
-//       console.warn("Geolocation permission not granted.");
-//     }
-//   } catch (error) {
-//     console.error("Error during geolocation:", error);
-//     // Handle the error, show a message to the user, or retry the operation.
-//   }
-// }
-async function autocompleteCountry() {
-  try {
-    const position = await getCurrentPosition();
-    const userCountry = await getCountryFromCoordinates(
-      position.coords.latitude,
-      position.coords.longitude
-    );
-    const select = document.getElementById("Country");
-
-    for (let i = 0; i < select.options.length; i++) {
-      const option = select.options[i];
-      if (option.value === userCountry) {
-        option.selected = true;
-        initAutocomplete(option.value);
-        if (option.value !== "lv" && option.value !== "") {
-          shippingBlock.style.display = "block";
-        }
-        break;
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching country information:", error);
-  }
+async function getGeolocationPermission() {
+  return new Promise((resolve) => {
+    navigator.permissions
+      .query({ name: "geolocation" })
+      .then((permissionStatus) => {
+        resolve(permissionStatus.state);
+      });
+  });
 }
 
 function getCurrentPosition() {
@@ -187,13 +318,61 @@ async function getCountryFromCoordinates(latitude, longitude) {
   return data.countryCode.toLowerCase();
 }
 
+async function autocompleteCountry() {
+  try {
+    const permissionStatus = await getGeolocationPermission();
+    if (permissionStatus === "granted") {
+      const position = await getCurrentPosition();
+      const userCountry = await getCountryFromCoordinates(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+
+      const select = document.getElementById("Country");
+      for (let i = 0; i < select.options.length; i++) {
+        const option = select.options[i];
+        if (option.value === userCountry) {
+          option.selected = true;
+          initAutocomplete(option.value);
+          if (
+            option.value !== "lv" &&
+            option.value !== "" &&
+            option.value !== "gb"
+          ) {
+            shippingBlock.style.display = "block";
+          }
+          if (option.value === "gb") {
+            document.querySelector(".shipping-note").textContent =
+              "The cost of shipping to the UK is 10 pounds.";
+            document.getElementById("fast-shipping").checked = true;
+          }
+          break;
+        }
+      }
+    } else {
+      console.warn("Geolocation permission not granted.");
+    }
+  } catch (error) {
+    console.error("Error during geolocation:", error);
+  }
+}
+
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
   autocompleteAddress.setComponentRestrictions({ country: e.target.value });
-  if (e.target.value !== "lv" && e.target.value !== "") {
+  if (
+    e.target.value !== "lv" &&
+    e.target.value !== "" &&
+    e.target.value !== "gb"
+  ) {
     shippingBlock.style.display = "block";
   } else {
     shippingBlock.style.display = "none";
+  }
+  if (e.target.value === "gb") {
+    document.querySelector(".shipping-note").textContent =
+      "The cost of shipping to the UK is 10 pounds.";
+    document.getElementById("fast-shipping").checked = true;
   }
 });
 
@@ -281,7 +460,7 @@ phoneInputField.addEventListener("change", (e) => {
 });
 
 // added new field to form data object which shows if order made during staging or production
-if (host.includes("stastiem.webflow.io") || port !== "") {
+if (host.includes("blossomreads.webflow.io") || port !== "") {
   console.log("staging");
   environment.value = "staging";
 } else {
@@ -308,28 +487,23 @@ function changeImage() {
     const imageElement1 = document.getElementsByClassName("image-5")[0];
     console.log(imageElement1);
     const imageElement2 = document.getElementById(
-      // "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-f2b54ff2"
-      "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-1c4231df"
+      "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-bb2afb5e"
     );
     console.log(imageElement2);
     const imageElement3 = document.getElementById(
-      // "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-f2b54ff2"
-      "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-1c4231df"
+      "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-bb2afb5e"
     );
     console.log(imageElement3);
     const imageElement4 = document.getElementById(
-      // "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-f2b54ff2"
-      "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-1c4231df"
+      "w-node-_25f84b08-0f04-40be-1572-3f2f58604517-bb2afb5e"
     );
     console.log(imageElement4);
     const imageElement5 = document.getElementById(
-      // "w-node-_47f06dcd-89d6-8710-a41b-fa0d1a830a72-f2b54ff2"
-      "w-node-_47f06dcd-89d6-8710-a41b-fa0d1a830a72-1c4231df"
+      "w-node-_849935ee-c179-fac0-7c7d-6b73f00f2905-bb2afb5e"
     );
     console.log(imageElement5);
     const imageElement6 = document.getElementById(
-      // "w-node-ce4f6a12-c0fa-b8c4-ea5d-29324ea4ee96-f2b54ff2"
-      "w-node-ce4f6a12-c0fa-b8c4-ea5d-29324ea4ee96-1c4231df"
+      "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-bb2afb5e"
     );
     console.log(imageElement6);
 
@@ -715,7 +889,7 @@ function validateEmail(email, blockDomain) {
 
 function validation() {
   //conditional logic
-
+  console.log(steps[x]);
   if ($(steps[x]).data("card")) {
     enableBtn();
   }
@@ -908,6 +1082,20 @@ function validation() {
         enableBtn();
         setAllChecksToTrue();
       });
+
+    // $(steps[x])
+    //   .find(".link-back-top.w-inline-block")
+    //   .on("click", function () {
+    //     console.log("User clicked back" + $(this).val());
+    //     enableBtn();
+    //     setAllChecksToTrue();
+    //   });
+
+    $(".div-block-10 .link-back-top.w-inline-block").on("click", function () {
+      console.log("User clicked back" + $(this).val());
+      enableBtn();
+      setAllChecksToTrue();
+    });
 
     $(steps[x])
       .find("select[required]")
@@ -1723,3 +1911,9 @@ $("textarea").keypress(function (event) {
     $(this).val($(this).val() + "\n");
   }
 });
+
+////////////////////////////////////////////////
+
+// if (new URL(window.location.href).searchParams.size > 0) {
+//   document.querySelectorAll(".next-button")[0].click();
+// }

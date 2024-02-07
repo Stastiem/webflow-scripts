@@ -1,5 +1,5 @@
 // Scripts for the landing page (staging)
-// Updated 05.02.2024
+// Updated 07.02.2024
 
 const domain = window.location.hostname;
 const prevArrow = document.getElementById("prev-btn");
