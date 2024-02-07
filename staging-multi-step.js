@@ -67,6 +67,61 @@ const phoneInputField = document.querySelector("#Phone");
 
 ///////////////////////////////////////////////////////////
 
+function toggleCheckbox(checkboxId, checkmarkId) {
+  const checkboxField = document.getElementById(checkboxId);
+  const checkmark = document.querySelector(checkmarkId);
+  checkboxField.checked = !checkboxField.checked;
+  checkmark.classList.toggle(
+    "occasion-checkmark-checked",
+    checkboxField.checked
+  );
+}
+document
+  .querySelector(".occasion-field-label")
+  .addEventListener("click", function () {
+    toggleCheckbox("IsOccasion", ".occasion-checkmark");
+  });
+document
+  .querySelector(".theme-field-label")
+  .addEventListener("click", function () {
+    toggleCheckbox("IsTheme", ".theme-checkmark");
+  });
+document
+  .querySelector(".style-checkbox")
+  .addEventListener("click", function () {
+    toggleCheckbox("StyleRandom", ".style-checkmark");
+  });
+function handleOccasionCheckboxChange() {
+  const occasionCheckbox = document.getElementById("IsOccasion");
+  const occasionCombobox = document.querySelector(".occasion-combobox");
+  if (occasionCheckbox.checked) {
+    occasionCombobox.classList.add("visible");
+  } else {
+    occasionCombobox.classList.remove("visible");
+    document.getElementById("occasion").value = "";
+    document.getElementById("occasion-input").value = "";
+  }
+}
+function handleThemeCheckboxChange() {
+  const themeCheckbox = document.getElementById("IsTheme");
+  const themeCombobox = document.querySelector(".theme-combobox");
+  if (themeCheckbox.checked) {
+    themeCombobox.classList.add("visible");
+  } else {
+    themeCombobox.classList.remove("visible");
+    document.getElementById("theme").value = "";
+    document.getElementById("theme-input").value = "";
+  }
+}
+document
+  .getElementById("IsOccasion")
+  .addEventListener("change", handleOccasionCheckboxChange);
+document
+  .getElementById("IsTheme")
+  .addEventListener("change", handleThemeCheckboxChange);
+
+///////////////////////////////////////////////////////////
+
 const freeDelSpan = document.querySelector(".free-delivery-span");
 const paidDelSpan = document.querySelector(".fast-delivery-span");
 function calculateDeliveryDate(deliveryType) {
