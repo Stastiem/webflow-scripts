@@ -12,7 +12,6 @@ const heroGender = document.querySelector('input[name="HeroGender"]:checked');
 const heroName = document.getElementById("HeroName");
 const heroDOB = document.getElementById("HeroDOB");
 const bookLanguage = document.getElementById("BookLanguage");
-const newHeight = window.innerHeight;
 const featuresHero = document.querySelector(".features-wrapper-hero");
 const featuresSeparated = document.querySelector(".features-metrics");
 const instagramDataEn = [
@@ -265,6 +264,7 @@ firstFormStepLP.addEventListener("submit", function (event) {
 
 // Show/hide features section depending on the view height ///////////////////////////////////////////////////
 function handleWindowResize() {
+  const newHeight = window.innerHeight;
   if (newHeight < 750) {
     featuresHero.style.display = "none";
     featuresSeparated.style.display = "block";
