@@ -33,7 +33,7 @@ function showHideContent() {
     instagramDataLv.forEach((el) => (el.style.display = "none"));
   }
 }
-
+showHideContent();
 // Function that detects current domain //////////////////////////////////////////////////////////////////////////
 function detectLanguage() {
   const domain = window.location.hostname;
@@ -52,7 +52,7 @@ function detectLanguage() {
 }
 
 // Fetch function to detect user's country ///////////////////////////////////////////////
-fetch("https://freegeoip.app/json/")
+fetch("https://ipapi.co/json/")
   .then((response) => response.json())
   .then((data) => {
     if (data.country_code === "GB") {
