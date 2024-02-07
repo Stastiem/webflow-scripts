@@ -58,13 +58,11 @@ function detectLanguage() {
 // Change book language according to the domain //////////////////////////////////////////////////////////////////
 const detectBookLang = () => {
   const currentLanguage = detectLanguage();
-  const bookLanguage = document.getElementById("BookLanguage");
-  bookLanguage.options.forEach((el) => {
-    console.log(el);
-    if (el.value === currentLanguage) {
-      el.selected = true;
+  for (let i = 0; i < bookLanguage.options.length; i++) {
+    if (bookLanguage.options[i].value === currentLanguage) {
+      bookLanguage.options[i].selected = true;
     }
-  });
+  }
 };
 detectBookLang();
 
@@ -231,7 +229,6 @@ function changeThemeFromSelect(select) {
 
 // Function that saves THEME INPUT value in local storage ///////////////////////////////////////////////////
 function changeThemeFromInput(e) {
-  /////////////////////
   var inputThemeValue = event.target.value;
   storeData(inputThemeValue, "theme");
   updateButtonText();
