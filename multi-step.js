@@ -427,6 +427,12 @@ async function autocompleteCountry() {
               "The cost of shipping to the UK is 10 pounds.";
             document.getElementById("fast-shipping").checked = true;
             document.getElementById("free-shipping").disabled = true;
+            document
+              .querySelector(".free-shipping-radio")
+              .classList.remove("w--redirected-checked");
+            document
+              .querySelector(".fast-shipping-radio")
+              .classList.add("w--redirected-checked");
           }
           break;
         }
@@ -452,6 +458,12 @@ countryInputField.addEventListener("change", (e) => {
       "The cost of shipping to the UK is 10 pounds.";
     document.getElementById("fast-shipping").checked = true;
     document.getElementById("free-shipping").disabled = true;
+    document
+      .querySelector(".free-shipping-radio")
+      .classList.remove("w--redirected-checked");
+    document
+      .querySelector(".fast-shipping-radio")
+      .classList.add("w--redirected-checked");
   }
 });
 
