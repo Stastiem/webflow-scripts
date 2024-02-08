@@ -419,17 +419,14 @@ async function autocompleteCountry() {
         if (option.value === userCountry) {
           option.selected = true;
           initAutocomplete(option.value);
-          if (
-            option.value !== "lv" &&
-            option.value !== "" &&
-            option.value !== "gb"
-          ) {
+          if (option.value !== "lv" && option.value !== "") {
             shippingBlock.style.display = "block";
           }
           if (option.value === "gb") {
             document.querySelector(".shipping-note").textContent =
               "The cost of shipping to the UK is 10 pounds.";
             document.getElementById("fast-shipping").checked = true;
+            document.getElementById("free-shipping").disabled = true;
           }
           break;
         }
