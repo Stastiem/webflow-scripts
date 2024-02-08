@@ -120,6 +120,91 @@ document
   .getElementById("IsTheme")
   .addEventListener("change", handleThemeCheckboxChange);
 
+function loadStoredValues() {
+  var storedOccasion = localStorage.getItem("occasion");
+  var storedTheme = localStorage.getItem("theme");
+  if (storedOccasion) {
+    toggleCheckbox("IsOccasion", ".occasion-checkmark");
+    handleOccasionCheckboxChange();
+  }
+  if (storedTheme) {
+    toggleCheckbox("IsTheme", ".theme-checkmark");
+    handleThemeCheckboxChange();
+  }
+  document.getElementById("occasion").value = storedOccasion;
+  document.getElementById("occasion-input").value = storedOccasion;
+  document.getElementById("theme").value = storedTheme;
+  document.getElementById("theme-input").value = storedTheme;
+  var occasionSelect = document.getElementById("occasion");
+  for (var i = 0; i < occasionSelect.options.length; i++) {
+    if (occasionSelect.options[i].value === storedOccasion) {
+      occasionSelect.selectedIndex = i;
+      break;
+    }
+  }
+  var themeSelect = document.getElementById("theme");
+  for (var j = 0; j < themeSelect.options.length; j++) {
+    if (themeSelect.options[j].value === storedTheme) {
+      themeSelect.selectedIndex = j;
+      break;
+    }
+  }
+  setTimeout(function () {
+    localStorage.removeItem("occasion");
+    localStorage.removeItem("theme");
+  }, 5000);
+}
+loadStoredValues();
+let heroData = localStorage.getItem("formData");
+if (heroData) {
+  const formData = JSON.parse(heroData);
+  const heroGenderRadioButton = document.querySelector(
+    'input[name="HeroGender"][value="' + formData.HeroGender + '"]'
+  );
+  heroGenderRadioButton.checked = true;
+  let sibling = heroGenderRadioButton.previousElementSibling;
+  while (sibling) {
+    if (sibling.classList.contains("radio-button")) {
+      sibling.classList.add("w--redirected-checked");
+      break;
+    }
+    sibling = sibling.previousElementSibling;
+  }
+  document.getElementById("HeroName").value = formData.HeroName;
+  document.getElementById("HeroDOB").value = formData.HeroDOB;
+  document.getElementById("BookLanguage").value = formData.BookLanguage;
+  localStorage.removeItem("formData");
+}
+
+function stepVisible() {
+  const formStepsItems = document.querySelectorAll('[data-form="step"]');
+  if (formStepsItems.length >= 3) {
+    const secondElement = formStepsItems[0].querySelectorAll(
+      ".steps-form-element"
+    )[1];
+    const thirdElement = formStepsItems[1].querySelector(".steps-form-element");
+    if (secondElement && thirdElement) {
+      formStepsItems[0]
+        .querySelector(".steps-right-col")
+        .appendChild(thirdElement);
+      formStepsItems[1]
+        .querySelector(".steps-right-col")
+        .appendChild(secondElement);
+      secondElement.querySelector(".current-step").textContent = 2;
+    }
+  }
+  const stepContainer = document.querySelector(".step-wrapper");
+  const stepIndicators = document.querySelectorAll(".step-indicator");
+  if (stepIndicators.length >= 2) {
+    const firstElement = stepIndicators[0];
+    const secondElement = stepIndicators[1];
+    stepContainer.insertBefore(secondElement, firstElement);
+  }
+}
+if (new URL(document.location).searchParams.get("redirect_from") === "themes") {
+  stepVisible();
+}
+
 ///////////////////////////////////////////////////////////
 
 const freeDelSpan = document.querySelector(".free-delivery-span");
