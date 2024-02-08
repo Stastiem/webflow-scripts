@@ -265,7 +265,8 @@ firstFormStepLP.addEventListener("submit", function (event) {
 // Show/hide features section depending on the view height ///////////////////////////////////////////////////
 function handleWindowResize() {
   const newHeight = window.innerHeight;
-  if (newHeight < 750) {
+  const newWidth = window.innerWidth;
+  if (newHeight < 750 && newWidth > 700) {
     featuresHero.style.display = "none";
     featuresSeparated.style.display = "block";
   } else {
