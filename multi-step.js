@@ -51,13 +51,15 @@ let is_boy = true;
 
 // added new variables
 let autocompleteAddress;
+let currency = "eur";
+
 let addressInputField = document.querySelector("#Address");
-// let autocompleteCity;
-// let autocompleteStr;
 let countryInputField = document.querySelector("#Country");
 let streetInputField = document.querySelector("#Street");
 let cityInputField = document.querySelector("#City");
 let zipCode = document.getElementById("ZipCode");
+const priceSymbols = document.querySelectorAll(".price-symbol");
+const priceLetters = document.querySelectorAll(".price-letters");
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
@@ -66,6 +68,16 @@ const dateInput = document.getElementById("HeroDOB");
 const phoneInputField = document.querySelector("#Phone");
 
 ///////////////////////////////////////////////////////////
+
+fetch("https://ipapi.co/json/")
+  .then((response) => response.json())
+  .then((data) => {
+    if (data.country_code === "GB") {
+      priceSymbols.forEach((el) => (el.textContent = "£"));
+      priceLetters.forEach((el) => (el.textContent = "GBP"));
+    }
+  })
+  .catch((error) => console.error("Error fetching IP information:", error));
 
 function toggleCheckbox(checkboxId, checkmarkId) {
   const checkboxField = document.getElementById(checkboxId);
@@ -403,6 +415,24 @@ async function getCountryFromCoordinates(latitude, longitude) {
   return data.countryCode.toLowerCase();
 }
 
+function customizeShipping(value) {
+  if (value === "gb") {
+    document.querySelector(".shipping-note").textContent =
+      "The cost of shipping to the UK is 10 pounds.";
+    document.getElementById("fast-shipping").checked = true;
+    document.getElementById("free-shipping").disabled = true;
+    document
+      .querySelector(".free-shipping-radio")
+      .classList.remove("w--redirected-checked");
+    document
+      .querySelector(".fast-shipping-radio")
+      .classList.add("w--redirected-checked");
+    currency = "gbp";
+    priceSymbols.forEach((el) => (el.textContent = "£"));
+    priceLetters.forEach((el) => (el.textContent = "GBP"));
+  }
+}
+
 async function autocompleteCountry() {
   try {
     const permissionStatus = await getGeolocationPermission();
@@ -422,18 +452,22 @@ async function autocompleteCountry() {
           if (option.value !== "lv" && option.value !== "") {
             shippingBlock.style.display = "block";
           }
-          if (option.value === "gb") {
-            document.querySelector(".shipping-note").textContent =
-              "The cost of shipping to the UK is 10 pounds.";
-            document.getElementById("fast-shipping").checked = true;
-            document.getElementById("free-shipping").disabled = true;
-            document
-              .querySelector(".free-shipping-radio")
-              .classList.remove("w--redirected-checked");
-            document
-              .querySelector(".fast-shipping-radio")
-              .classList.add("w--redirected-checked");
-          }
+          // if (option.value === "gb") {
+          //   document.querySelector(".shipping-note").textContent =
+          //     "The cost of shipping to the UK is 10 pounds.";
+          //   document.getElementById("fast-shipping").checked = true;
+          //   document.getElementById("free-shipping").disabled = true;
+          //   document
+          //     .querySelector(".free-shipping-radio")
+          //     .classList.remove("w--redirected-checked");
+          //   document
+          //     .querySelector(".fast-shipping-radio")
+          //     .classList.add("w--redirected-checked");
+          //   currency = "gbp";
+          //   priceSymbols.forEach((el) => (el.textContent = "£"));
+          //   priceLetters.forEach((el) => (el.textContent = "GBP"));
+          // }
+          customizeShipping(option.value);
           break;
         }
       }
@@ -453,18 +487,22 @@ countryInputField.addEventListener("change", (e) => {
   } else {
     shippingBlock.style.display = "none";
   }
-  if (e.target.value === "gb") {
-    document.querySelector(".shipping-note").textContent =
-      "The cost of shipping to the UK is 10 pounds.";
-    document.getElementById("fast-shipping").checked = true;
-    document.getElementById("free-shipping").disabled = true;
-    document
-      .querySelector(".free-shipping-radio")
-      .classList.remove("w--redirected-checked");
-    document
-      .querySelector(".fast-shipping-radio")
-      .classList.add("w--redirected-checked");
-  }
+  // if (e.target.value === "gb") {
+  //   document.querySelector(".shipping-note").textContent =
+  //     "The cost of shipping to the UK is 10 pounds.";
+  //   document.getElementById("fast-shipping").checked = true;
+  //   document.getElementById("free-shipping").disabled = true;
+  //   document
+  //     .querySelector(".free-shipping-radio")
+  //     .classList.remove("w--redirected-checked");
+  //   document
+  //     .querySelector(".fast-shipping-radio")
+  //     .classList.add("w--redirected-checked");
+  //   currency = "gbp";
+  //   priceSymbols.forEach((el) => (el.textContent = "£"));
+  //   priceLetters.forEach((el) => (el.textContent = "GBP"));
+  // }
+  customizeShipping(e.target.value);
 });
 
 function initAutocomplete(selectedCountry = "lv") {
