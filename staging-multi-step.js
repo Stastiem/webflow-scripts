@@ -423,6 +423,14 @@ function customizeShipping(value) {
     currency = "gbp";
     priceSymbols.forEach((el) => (el.textContent = "£"));
     priceLetters.forEach((el) => (el.textContent = "GBP"));
+    const freeShippingRadio = document.querySelector(".free-shipping-radio");
+    const shippingHint = document.querySelector(".shipping-hint");
+    freeShippingRadio.addEventListener("mouseover", function () {
+      shippingHint.style.display = "block";
+    });
+    freeShippingRadio.addEventListener("mouseout", function () {
+      shippingHint.style.display = "none";
+    });
   }
 }
 
