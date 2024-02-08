@@ -403,6 +403,29 @@ async function getCountryFromCoordinates(latitude, longitude) {
   return data.countryCode.toLowerCase();
 }
 
+function customizeShipping(value) {
+  if (value === "gb") {
+    document.querySelector(".shipping-note").textContent =
+      "The cost of shipping to the UK is 10 pounds.";
+    document.getElementById("fast-shipping").checked = true;
+    document.getElementById("free-shipping").disabled = true;
+    document
+      .querySelector(".free-shipping-radio")
+      .classList.remove("w--redirected-checked");
+    document.querySelector(".free-shipping-radio").style.backgroundColor =
+      "#dddddd60";
+    document.querySelector(".free-shipping-radio").style.zIndex = 0;
+    document.querySelector(".free-delivery-text").style.color = "#999999";
+    document.querySelector(".free-delivery-span").style.color = "#999999";
+    document
+      .querySelector(".fast-shipping-radio")
+      .classList.add("w--redirected-checked");
+    currency = "gbp";
+    priceSymbols.forEach((el) => (el.textContent = "£"));
+    priceLetters.forEach((el) => (el.textContent = "GBP"));
+  }
+}
+
 async function autocompleteCountry() {
   try {
     const permissionStatus = await getGeolocationPermission();
@@ -422,18 +445,7 @@ async function autocompleteCountry() {
           if (option.value !== "lv" && option.value !== "") {
             shippingBlock.style.display = "block";
           }
-          if (option.value === "gb") {
-            document.querySelector(".shipping-note").textContent =
-              "The cost of shipping to the UK is 10 pounds.";
-            document.getElementById("fast-shipping").checked = true;
-            document.getElementById("free-shipping").disabled = true;
-            document
-              .querySelector(".free-shipping-radio")
-              .classList.remove("w--redirected-checked");
-            document
-              .querySelector(".fast-shipping-radio")
-              .classList.add("w--redirected-checked");
-          }
+          customizeShipping(option.value);
           break;
         }
       }
@@ -453,18 +465,7 @@ countryInputField.addEventListener("change", (e) => {
   } else {
     shippingBlock.style.display = "none";
   }
-  if (e.target.value === "gb") {
-    document.querySelector(".shipping-note").textContent =
-      "The cost of shipping to the UK is 10 pounds.";
-    document.getElementById("fast-shipping").checked = true;
-    document.getElementById("free-shipping").disabled = true;
-    document
-      .querySelector(".free-shipping-radio")
-      .classList.remove("w--redirected-checked");
-    document
-      .querySelector(".fast-shipping-radio")
-      .classList.add("w--redirected-checked");
-  }
+  customizeShipping(e.target.value);
 });
 
 function initAutocomplete(selectedCountry = "lv") {
