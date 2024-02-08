@@ -478,6 +478,11 @@ countryInputField.addEventListener("change", (e) => {
     shippingBlock.style.display = "none";
   }
   customizeShipping(e.target.value);
+  if (e.target.value !== "gb") {
+    priceSymbols.forEach((el) => (el.textContent = "€"));
+    priceLetters.forEach((el) => (el.textContent = "EUR"));
+    currency = "eur";
+  }
 });
 
 function initAutocomplete(selectedCountry = "lv") {
