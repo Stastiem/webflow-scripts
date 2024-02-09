@@ -270,10 +270,14 @@ function handleWindowResize() {
   if (newHeight < 750 && newWidth > 700) {
     featuresHero.style.display = "none";
     featuresSeparated.style.display = "block";
+    heroLinkDown.style.display = "none";
+    featuresLinkDown.style.display = "block";
   } else {
     featuresHero.style.display = "flex";
     featuresSeparated.style.display = "none";
+    heroLinkDown.style.display = "block";
   }
   console.log("Window height:", newHeight);
 }
+window.addEventListener("load", handleWindowResize);
 window.addEventListener("resize", handleWindowResize);

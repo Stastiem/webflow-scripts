@@ -277,7 +277,9 @@ function handleWindowResize() {
   } else {
     featuresHero.style.display = "flex";
     featuresSeparated.style.display = "none";
+    heroLinkDown.style.display = "block";
   }
   console.log("Window height:", newHeight);
 }
+window.addEventListener("load", handleWindowResize);
 window.addEventListener("resize", handleWindowResize);
