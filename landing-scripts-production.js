@@ -14,6 +14,9 @@ const heroDOB = document.getElementById("HeroDOB");
 const bookLanguage = document.getElementById("BookLanguage");
 const featuresHero = document.querySelector(".features-wrapper-hero");
 const featuresSeparated = document.querySelector(".features-metrics");
+const heroLinkDown = document.querySelector(".scroll-link-hero");
+const featuresLinkDown = document.querySelector(".scroll-link-features");
+
 const instagramDataEn = [
   document.querySelector(".sn-list-en"),
   document.querySelector(".reviews-list-en"),
