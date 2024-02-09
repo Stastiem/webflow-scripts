@@ -56,7 +56,12 @@ function detectLanguage() {
       return "en";
   }
 }
-
+window.addEventListener("load", () => {
+  console.log(detectLanguage());
+  document.getElementById("langInputOccasion").value = detectLanguage();
+  document.getElementById("langInputHero").value = detectLanguage();
+  document.getElementById("langInputFooter").value = detectLanguage();
+});
 // Change book language according to the domain //////////////////////////////////////////////////////////////////
 const detectBookLang = () => {
   const currentLanguage = detectLanguage();
