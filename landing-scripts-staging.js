@@ -14,6 +14,9 @@ const heroDOB = document.getElementById("HeroDOB");
 const bookLanguage = document.getElementById("BookLanguage");
 const featuresHero = document.querySelector(".features-wrapper-hero");
 const featuresSeparated = document.querySelector(".features-metrics");
+const heroLinkDown = document.querySelector(".scroll-link-hero");
+const featuresLinkDown = document.querySelector(".scroll-link-features");
+
 const instagramDataEn = [
   document.querySelector(".sn-list-en"),
   document.querySelector(".reviews-list-en"),
@@ -269,6 +272,8 @@ function handleWindowResize() {
   if (newHeight < 750 && newWidth > 700) {
     featuresHero.style.display = "none";
     featuresSeparated.style.display = "block";
+    heroLinkDown.style.display = "none";
+    featuresLinkDown.style.display = "block";
   } else {
     featuresHero.style.display = "flex";
     featuresSeparated.style.display = "none";
