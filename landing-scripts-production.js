@@ -284,3 +284,11 @@ function handleWindowResize() {
 }
 window.addEventListener("load", handleWindowResize);
 window.addEventListener("resize", handleWindowResize);
+
+// Randomize slides /////////////////////////////////////////////////////////////////////////////////////////
+const heroMask = document.querySelector(".hero-mask");
+const children = Array.from(heroMask.children);
+children.sort(() => Math.random() - 0.5);
+children.forEach((child) => {
+  heroMask.appendChild(child);
+});
