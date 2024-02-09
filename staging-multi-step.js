@@ -414,7 +414,8 @@ function customizeShipping(value) {
       .classList.remove("w--redirected-checked");
     document.querySelector(".free-shipping-radio").style.backgroundColor =
       "#dddddd60";
-    document.querySelector(".free-shipping-radio").style.zIndex = 0;
+    document.querySelector(".free-shipping-radio").style.borderColor =
+      "#dddddd60";
     document.querySelector(".free-delivery-text").style.color = "#999999";
     document.querySelector(".free-delivery-span").style.color = "#999999";
     document
