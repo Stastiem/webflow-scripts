@@ -275,17 +275,19 @@ firstFormStepLP.addEventListener("submit", function (event) {
 function handleWindowResize() {
   const newHeight = window.innerHeight;
   const newWidth = window.innerWidth;
-  if (newHeight < 750 && newWidth > 700) {
-    featuresHero.style.display = "none";
-    featuresSeparated.style.display = "block";
-    heroLinkDown.style.display = "none";
-    featuresLinkDown.style.display = "block";
+  const heroSection = document.querySelector(".hero-heading-left");
+  if (newHeight < 800 && newWidth > 700) {
+    heroSection.style.height = "auto";
+    // featuresHero.style.display = "none";
+    // featuresSeparated.style.display = "block";
+    // heroLinkDown.style.display = "none";
+    // featuresLinkDown.style.display = "block";
   } else {
-    featuresHero.style.display = "flex";
-    featuresSeparated.style.display = "none";
-    heroLinkDown.style.display = "block";
+    heroSection.style.height = "100vh";
+    // featuresHero.style.display = "flex";
+    // featuresSeparated.style.display = "none";
+    // heroLinkDown.style.display = "block";
   }
-  console.log("Window height:", newHeight);
 }
 window.addEventListener("load", handleWindowResize);
 window.addEventListener("resize", handleWindowResize);
