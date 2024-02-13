@@ -276,7 +276,7 @@ function handleWindowResize() {
   const newHeight = window.innerHeight;
   const newWidth = window.innerWidth;
   const heroSection = document.querySelector(".hero-heading-left");
-  if (newHeight < 800 && newWidth > 700) {
+  if (newHeight < 800) {
     heroSection.style.height = "auto";
     // featuresHero.style.display = "none";
     // featuresSeparated.style.display = "block";
