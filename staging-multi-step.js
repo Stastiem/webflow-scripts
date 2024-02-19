@@ -67,6 +67,44 @@ const phoneInputField = document.querySelector("#Phone");
 
 ///////////////////////////////////////////////////////////
 
+var occasionCheckbox = document.getElementById("IsOccasion");
+var occasionInput = document.getElementById("occasion-input");
+var occasionSelect = document.getElementById("occasion");
+var themeCheckbox = document.getElementById("IsTheme");
+var themeInput = document.getElementById("theme-input");
+var themeSelect = document.getElementById("theme");
+var continueButton = document.querySelector(".next-button");
+
+function checkInputs() {
+  var occasionEmpty =
+    occasionCheckbox.checked &&
+    occasionInput.value === "" &&
+    occasionSelect.value === "";
+  var themeEmpty =
+    themeCheckbox.checked &&
+    themeInput.value === "" &&
+    themeSelect.value === "";
+
+  if (occasionEmpty || themeEmpty) {
+    disableBtn();
+  } else {
+    enableBtn();
+  }
+}
+
+// Add event listeners to the checkboxes and input fields
+occasionCheckbox.addEventListener("change", checkInputs);
+occasionInput.addEventListener("input", checkInputs);
+occasionSelect.addEventListener("change", checkInputs);
+themeCheckbox.addEventListener("change", checkInputs);
+themeInput.addEventListener("input", checkInputs);
+themeSelect.addEventListener("change", checkInputs);
+
+// Initially check inputs on page load
+checkInputs();
+
+///////////////////////////////////////////////////////////
+
 function toggleCheckbox(checkboxId, checkmarkId) {
   const checkboxField = document.getElementById(checkboxId);
   const checkmark = document.querySelector(checkmarkId);
