@@ -1,4 +1,4 @@
-// Scripts for the landing page (production)
+// Scripts for the landing page (staging)
 // Updated 07.02.2024
 
 const domain = window.location.hostname;
@@ -17,13 +17,15 @@ const featuresSeparated = document.querySelector(".features-metrics");
 const heroLinkDown = document.querySelector(".scroll-link-hero");
 const featuresLinkDown = document.querySelector(".scroll-link-features");
 
-const instagramDataEn = [
+const websiteDataEn = [
   document.querySelector(".sn-list-en"),
   document.querySelector(".reviews-list-en"),
+  document.querySelector(".bg-image-en"),
 ];
-const instagramDataLv = [
+const websiteDataLv = [
   document.querySelector(".sn-list-lv"),
   document.querySelector(".reviews-list-lv"),
+  document.querySelector(".bg-image-lv"),
 ];
 
 // Show/hide content according to the current domain ///////////////////////////////////////////////////////////////
@@ -31,11 +33,11 @@ function showHideContent() {
   const currentLanguage = detectLanguage();
   currentLanguage === "en" ? showTextBlock() : showTextBlock(currentLanguage);
   if (currentLanguage === "lv") {
-    instagramDataEn.forEach((el) => (el.style.display = "none"));
-    instagramDataLv.forEach((el) => (el.style.display = "flex"));
+    websiteDataEn.forEach((el) => (el.style.display = "none"));
+    websiteDataLv.forEach((el) => (el.style.display = "flex"));
   } else {
-    instagramDataEn.forEach((el) => (el.style.display = "flex"));
-    instagramDataLv.forEach((el) => (el.style.display = "none"));
+    websiteDataEn.forEach((el) => (el.style.display = "flex"));
+    websiteDataLv.forEach((el) => (el.style.display = "none"));
   }
 }
 showHideContent();
@@ -56,12 +58,7 @@ function detectLanguage() {
       return "en";
   }
 }
-window.addEventListener("load", () => {
-  console.log(detectLanguage());
-  document.getElementById("langInputOccasion").value = detectLanguage();
-  document.getElementById("langInputHero").value = detectLanguage();
-  document.getElementById("langInputFooter").value = detectLanguage();
-});
+
 // Change book language according to the domain //////////////////////////////////////////////////////////////////
 const detectBookLang = () => {
   const currentLanguage = detectLanguage();
@@ -245,7 +242,7 @@ function changeThemeFromInput(e) {
 function updateButtonText() {
   var occasion = localStorage.getItem("occasion");
   var theme = localStorage.getItem("theme");
-  var buttonText = "BOOK FOR";
+  var buttonText = "ORDER FOR";
 
   if (occasion) {
     buttonText += " " + occasion;
@@ -256,16 +253,15 @@ function updateButtonText() {
   if (theme && !occasion) {
     buttonText = "book with " + theme;
   }
-  document.getElementById("occasion-submit-btn").textContent = buttonText;
+  document.getElementById("occasion-submit-btn").value = buttonText;
 }
 
 // Function that saves first step data in local storage ///////////////////////////////////////////////////
 firstFormStepLP.addEventListener("submit", function (event) {
   const formData = {
-    HeroGender: document.querySelector('input[name="HeroGender"]:checked')
-      .value,
-    HeroName: document.getElementById("HeroName").value,
-    HeroDOB: document.getElementById("HeroDOB").value,
+    HeroGender: heroGender.value,
+    HeroName: heroName.value,
+    HeroDOB: heroDOB.value,
     BookLanguage: document.getElementById("BookLanguage").value,
   };
   localStorage.setItem("formData", JSON.stringify(formData));

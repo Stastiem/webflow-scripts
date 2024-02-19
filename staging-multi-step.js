@@ -92,15 +92,13 @@ function checkInputs() {
   }
 }
 
-// Add event listeners to the checkboxes and input fields
 occasionCheckbox.addEventListener("change", checkInputs);
-occasionInput.addEventListener("change", checkInputs);
+occasionInput.addEventListener("input", checkInputs);
 occasionSelect.addEventListener("change", checkInputs);
 themeCheckbox.addEventListener("change", checkInputs);
-themeInput.addEventListener("change", checkInputs);
+themeInput.addEventListener("input", checkInputs);
 themeSelect.addEventListener("change", checkInputs);
 
-// Initially check inputs on page load
 checkInputs();
 
 ///////////////////////////////////////////////////////////

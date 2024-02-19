@@ -69,6 +69,42 @@ const phoneInputField = document.querySelector("#Phone");
 
 ///////////////////////////////////////////////////////////
 
+var occasionCheckbox = document.getElementById("IsOccasion");
+var occasionInput = document.getElementById("occasion-input");
+var occasionSelect = document.getElementById("occasion");
+var themeCheckbox = document.getElementById("IsTheme");
+var themeInput = document.getElementById("theme-input");
+var themeSelect = document.getElementById("theme");
+var continueButton = document.querySelector(".next-button");
+
+function checkInputs() {
+  var occasionEmpty =
+    occasionCheckbox.checked &&
+    occasionInput.value === "" &&
+    occasionSelect.value === "";
+  var themeEmpty =
+    themeCheckbox.checked &&
+    themeInput.value === "" &&
+    themeSelect.value === "";
+
+  if (occasionEmpty || themeEmpty) {
+    disableBtn();
+  } else {
+    enableBtn();
+  }
+}
+
+occasionCheckbox.addEventListener("change", checkInputs);
+occasionInput.addEventListener("input", checkInputs);
+occasionSelect.addEventListener("change", checkInputs);
+themeCheckbox.addEventListener("change", checkInputs);
+themeInput.addEventListener("input", checkInputs);
+themeSelect.addEventListener("change", checkInputs);
+
+checkInputs();
+
+///////////////////////////////////////////////////////////
+
 fetch("https://ipapi.co/json/")
   .then((response) => response.json())
   .then((data) => {
