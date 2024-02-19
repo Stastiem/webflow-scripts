@@ -17,13 +17,15 @@ const featuresSeparated = document.querySelector(".features-metrics");
 const heroLinkDown = document.querySelector(".scroll-link-hero");
 const featuresLinkDown = document.querySelector(".scroll-link-features");
 
-const instagramDataEn = [
+const websiteDataEn = [
   document.querySelector(".sn-list-en"),
   document.querySelector(".reviews-list-en"),
+  document.querySelector(".bg-image-en"),
 ];
-const instagramDataLv = [
+const websiteDataLv = [
   document.querySelector(".sn-list-lv"),
   document.querySelector(".reviews-list-lv"),
+  document.querySelector(".bg-image-lv"),
 ];
 
 // Show/hide content according to the current domain ///////////////////////////////////////////////////////////////
@@ -31,11 +33,11 @@ function showHideContent() {
   const currentLanguage = detectLanguage();
   currentLanguage === "en" ? showTextBlock() : showTextBlock(currentLanguage);
   if (currentLanguage === "lv") {
-    instagramDataEn.forEach((el) => (el.style.display = "none"));
-    instagramDataLv.forEach((el) => (el.style.display = "flex"));
+    websiteDataEn.forEach((el) => (el.style.display = "none"));
+    websiteDataLv.forEach((el) => (el.style.display = "flex"));
   } else {
-    instagramDataEn.forEach((el) => (el.style.display = "flex"));
-    instagramDataLv.forEach((el) => (el.style.display = "none"));
+    websiteDataEn.forEach((el) => (el.style.display = "flex"));
+    websiteDataLv.forEach((el) => (el.style.display = "none"));
   }
 }
 showHideContent();
