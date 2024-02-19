@@ -86,9 +86,11 @@ function checkInputs() {
     themeSelect.value === "";
 
   if (occasionEmpty || themeEmpty) {
-    disableBtn();
+    continueButton.style.pointerEvents = "none";
+    continueButton.style.opacity = "0.4";
   } else {
-    enableBtn();
+    continueButton.style.pointerEvents = "auto";
+    continueButton.style.opacity = "1";
   }
 }
 
