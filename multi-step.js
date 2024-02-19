@@ -88,11 +88,9 @@ function checkInputs() {
     themeSelect.value === "";
 
   if (occasionEmpty || themeEmpty) {
-    continueButton.style.pointerEvents = "none";
-    continueButton.style.opacity = "0.4";
+    disableBtn();
   } else {
-    continueButton.style.pointerEvents = "auto";
-    continueButton.style.opacity = "1";
+    enableBtn();
   }
 }
 
