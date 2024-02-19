@@ -67,6 +67,8 @@ const detectBookLang = () => {
       bookLanguage.options[i].selected = true;
     }
   }
+  document.getElementById("langInputOccasion").value = currentLanguage;
+  document.getElementById("langInputHero").value = currentLanguage;
 };
 detectBookLang();
 
