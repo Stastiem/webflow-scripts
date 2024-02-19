@@ -2027,21 +2027,34 @@
         });
       });
     </script>
-    <!-- <script>
-      var currentHost = window.location.hostname;
-      var script = document.createElement("script");
-      if (
-        currentHost.includes("stastiem.webflow.io") ||
-        currentHost.includes("127")
-      ) {
-        // script.src = "./staging-multi-step.js";
-        script.src =
-          "https://stastiem.github.io/webflow-scripts/staging-multi-step.js";
-      } else {
-        script.src = "https://stastiem.github.io/webflow-scripts/multi-step.js";
-      }
-      document.body.appendChild(script);
-    </script> -->
+    <script>
+      var Webflow = Webflow || [];
+      Webflow.push(function () {
+        $("#Occasion-Form").on("submit", function (event) {
+          event.preventDefault();
+          const occasionSelect = document.getElementById("occasion-selector");
+          const occasionInput = document.getElementById("occasion-input");
+          const themeSelect = document.getElementById("theme");
+          const themeInput = document.getElementById("theme-input");
+          const occasionOption = Array.from(occasionSelect.options).find(
+            (option) => option.value === occasionInput.value
+          );
+          if (occasionOption) {
+            occasionInput.value = "";
+          } else {
+            occasionSelect.value = "";
+          }
+          const themeOption = Array.from(themeSelect.options).find(
+            (option) => option.value === themeInput.value
+          );
+          if (themeOption) {
+            themeInput.value = "";
+          } else {
+            themeSelect.value = "";
+          }
+        });
+      });
+    </script>
     <script id="google-maps-api" defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRMOibgbPFCnvJ1IZjVTIVgYPRE7pk0rE&libraries=places"></script>
     <script src="./local-multi-step.js" type="module"></script>

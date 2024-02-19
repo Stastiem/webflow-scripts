@@ -186,6 +186,15 @@ function storeData(value, name) {
   }
 }
 
+// Function to save data in local storage only during form submission //////////////////////////////////////////////
+function saveFormData() {
+  var occasion = document.getElementById("occasion-input").value;
+  var theme = document.getElementById("theme-input").value;
+  storeData(occasion, "occasion");
+  storeData(theme, "theme");
+  updateButtonText();
+}
+
 // Function that converts select value to the image id /////////////////////////////////////////////////////
 function convertToClassName(str) {
   const convertedString = str.toLowerCase().replace(/\s+/g, "-");
@@ -207,7 +216,6 @@ function changeOccasionImage(selectElement) {
       .classList.add("active");
   }
   selectElement.nextElementSibling.value = selectedOption;
-  storeData(selectedOption, "occasion");
   updateButtonText();
 }
 
@@ -219,7 +227,6 @@ function changeOccasionImageFromInput(e) {
     image.classList.remove("active");
   });
   document.getElementById("type-your-own-img").classList.add("active");
-  storeData(inputValue, "occasion");
   updateButtonText();
 }
 
@@ -227,21 +234,18 @@ function changeOccasionImageFromInput(e) {
 function changeThemeFromSelect(select) {
   var selectedTheme = select.value;
   select.nextElementSibling.value = selectedTheme;
-  storeData(selectedTheme, "theme");
   updateButtonText();
 }
 
 // Function that saves THEME INPUT value in local storage ///////////////////////////////////////////////////
 function changeThemeFromInput(e) {
-  var inputThemeValue = event.target.value;
-  storeData(inputThemeValue, "theme");
   updateButtonText();
 }
 
 // Function that updates submit btn value according to selected values //////////////////////////////////////////
 function updateButtonText() {
-  var occasion = localStorage.getItem("occasion");
-  var theme = localStorage.getItem("theme");
+  var occasion = document.getElementById("occasion-input").value;
+  var theme = document.getElementById("theme-input").value;
   var buttonText = "ORDER FOR";
 
   if (occasion) {
@@ -255,6 +259,34 @@ function updateButtonText() {
   }
   document.getElementById("occasion-submit-btn").value = buttonText;
 }
+
+var Webflow = Webflow || [];
+Webflow.push(function () {
+  $("#Occasion-Form").on("submit", function (event) {
+    event.preventDefault();
+    saveFormData();
+    const occasionSelect = document.getElementById("occasion-selector");
+    const occasionInput = document.getElementById("occasion-input");
+    const themeSelect = document.getElementById("theme");
+    const themeInput = document.getElementById("theme-input");
+    const occasionOption = Array.from(occasionSelect.options).find(
+      (option) => option.value === occasionInput.value
+    );
+    if (occasionOption) {
+      occasionInput.value = "";
+    } else {
+      occasionSelect.value = "";
+    }
+    const themeOption = Array.from(themeSelect.options).find(
+      (option) => option.value === themeInput.value
+    );
+    if (themeOption) {
+      themeInput.value = "";
+    } else {
+      themeSelect.value = "";
+    }
+  });
+});
 
 // Function that saves first step data in local storage ///////////////////////////////////////////////////
 firstFormStepLP.addEventListener("submit", function (event) {
