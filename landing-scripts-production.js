@@ -242,12 +242,11 @@ function changeThemeFromInput(e) {
 
 // Function that updates submit btn value according to selected values //////////////////////////////////////////
 function updateButtonText() {
-  var occasion = localStorage.getItem("occasion");
-  var theme = localStorage.getItem("theme");
-  var buttonText = "ORDER FOR";
-
+  var occasion = document.getElementById("occasion-input").value;
+  var theme = document.getElementById("theme-input").value;
+  var buttonText = "ORDER";
   if (occasion) {
-    buttonText += " " + occasion;
+    buttonText += " for " + occasion;
     if (theme) {
       buttonText += " with " + theme;
     }
@@ -255,7 +254,7 @@ function updateButtonText() {
   if (theme && !occasion) {
     buttonText = "book with " + theme;
   }
-  document.getElementById("occasion-submit-btn").value = buttonText;
+  document.getElementById("occasion-submit-btn").textContent = buttonText;
 }
 
 // Function that saves first step data in local storage ///////////////////////////////////////////////////
