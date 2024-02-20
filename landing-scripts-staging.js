@@ -67,25 +67,66 @@ const detectBookLang = () => {
       bookLanguage.options[i].selected = true;
     }
   }
+  document.getElementById("langInputOccasion").value = currentLanguage;
+  document.getElementById("langInputHero").value = currentLanguage;
 };
 detectBookLang();
 
 // Typed string settings ///////////////////////////////////////////////////////////////////////////////////////////
-document.getElementById("element").textContent = "";
+const typingString = document.getElementById("element");
+typingString.textContent = "";
 const usecaseList = document.getElementById("usecases");
 let placeholderStrings = [];
 for (let i = 0; i < usecaseList.children.length; i++) {
   placeholderStrings.push(usecaseList.children[i].textContent);
 }
-var typed = new Typed("#element", {
-  strings: placeholderStrings,
-  typeSpeed: 50,
-  backDelay: 700,
-  startDelay: 0,
-  backSpeed: 50,
-  showCursor: false,
-  loop: true,
-});
+function typingTextEffect(
+  el,
+  texts,
+  currentIndex = 0,
+  textIndex = 0,
+  isTyping = true
+) {
+  const paragraph = el;
+  const currentText = texts[currentIndex];
+
+  if (isTyping) {
+    paragraph.textContent += currentText[textIndex];
+    if (textIndex === currentText.length - 1) {
+      setTimeout(
+        () => typingTextEffect(el, texts, currentIndex, textIndex, false),
+        700
+      ); // Wait 1 second before deletion
+    } else {
+      setTimeout(
+        () =>
+          typingTextEffect(el, texts, currentIndex, textIndex + 1, isTyping),
+        50
+      );
+    }
+  } else {
+    if (paragraph.textContent.length > 0) {
+      paragraph.textContent = paragraph.textContent.slice(0, -1);
+      setTimeout(
+        () => typingTextEffect(el, texts, currentIndex, textIndex, isTyping),
+        50
+      );
+    } else {
+      const nextIndex = (currentIndex + 1) % texts.length; // Move to the next text in the array, looping back to the beginning if needed
+      setTimeout(() => typingTextEffect(el, texts, nextIndex, 0, true), 50); // Wait 1 second before typing new text
+    }
+  }
+}
+typingTextEffect(typingString, placeholderStrings);
+// var typed = new Typed("#element", {
+//   strings: placeholderStrings,
+//   typeSpeed: 50,
+//   backDelay: 700,
+//   startDelay: 0,
+//   backSpeed: 50,
+//   showCursor: false,
+//   loop: true,
+// });
 
 // Fetch function to detect user's country ////////////////////////////////////////////////////////////////////
 fetch("https://ipapi.co/json/")
@@ -203,15 +244,6 @@ function storeData(value, name) {
   }
 }
 
-// Function to save data in local storage only during form submission //////////////////////////////////////////////
-function saveFormData() {
-  var occasion = document.getElementById("occasion-input").value;
-  var theme = document.getElementById("theme-input").value;
-  storeData(occasion, "occasion");
-  storeData(theme, "theme");
-  updateButtonText();
-}
-
 // Function that converts select value to the image id /////////////////////////////////////////////////////
 function convertToClassName(str) {
   const convertedString = str.toLowerCase().replace(/\s+/g, "-");
@@ -233,6 +265,7 @@ function changeOccasionImage(selectElement) {
       .classList.add("active");
   }
   selectElement.nextElementSibling.value = selectedOption;
+  storeData(selectedOption, "occasion");
   updateButtonText();
 }
 
@@ -244,6 +277,7 @@ function changeOccasionImageFromInput(e) {
     image.classList.remove("active");
   });
   document.getElementById("type-your-own-img").classList.add("active");
+  storeData(inputValue, "occasion");
   updateButtonText();
 }
 
@@ -251,11 +285,14 @@ function changeOccasionImageFromInput(e) {
 function changeThemeFromSelect(select) {
   var selectedTheme = select.value;
   select.nextElementSibling.value = selectedTheme;
+  storeData(selectedTheme, "theme");
   updateButtonText();
 }
 
 // Function that saves THEME INPUT value in local storage ///////////////////////////////////////////////////
 function changeThemeFromInput(e) {
+  var inputThemeValue = event.target.value;
+  storeData(inputThemeValue, "theme");
   updateButtonText();
 }
 
@@ -275,34 +312,6 @@ function updateButtonText() {
   }
   document.getElementById("occasion-submit-btn").textContent = buttonText;
 }
-
-var Webflow = Webflow || [];
-Webflow.push(function () {
-  $("#Occasion-Form").on("submit", function (event) {
-    event.preventDefault();
-    saveFormData();
-    const occasionSelect = document.getElementById("occasion-selector");
-    const occasionInput = document.getElementById("occasion-input");
-    const themeSelect = document.getElementById("theme");
-    const themeInput = document.getElementById("theme-input");
-    const occasionOption = Array.from(occasionSelect.options).find(
-      (option) => option.value === occasionInput.value
-    );
-    if (occasionOption) {
-      occasionInput.value = "";
-    } else {
-      occasionSelect.value = "";
-    }
-    const themeOption = Array.from(themeSelect.options).find(
-      (option) => option.value === themeInput.value
-    );
-    if (themeOption) {
-      themeInput.value = "";
-    } else {
-      themeSelect.value = "";
-    }
-  });
-});
 
 // Function that saves first step data in local storage ///////////////////////////////////////////////////
 firstFormStepLP.addEventListener("submit", function (event) {
