@@ -85,38 +85,92 @@ function typingTextEffect(
   texts,
   currentIndex = 0,
   textIndex = 0,
-  isTyping = true
+  isTyping = true,
+  typingSpeed = 50,
+  deletionSpeed = 50,
+  pauseBeforeTypingNewText = 1000
 ) {
   const paragraph = el;
   const currentText = texts[currentIndex];
+  let displayText = paragraph.textContent;
 
   if (isTyping) {
-    paragraph.textContent += currentText[textIndex];
-    if (textIndex === currentText.length - 1) {
-      setTimeout(
-        () => typingTextEffect(el, texts, currentIndex, textIndex, false),
-        700
-      ); // Wait 1 second before deletion
-    } else {
+    // Typing effect
+    displayText += currentText[textIndex];
+    paragraph.textContent = displayText;
+
+    if (textIndex < currentText.length - 1) {
       setTimeout(
         () =>
-          typingTextEffect(el, texts, currentIndex, textIndex + 1, isTyping),
-        50
+          typingTextEffect(
+            el,
+            texts,
+            currentIndex,
+            textIndex + 1,
+            isTyping,
+            typingSpeed,
+            deletionSpeed,
+            pauseBeforeTypingNewText
+          ),
+        typingSpeed
+      );
+    } else {
+      // Start deletion after typing completes
+      setTimeout(
+        () =>
+          typingTextEffect(
+            el,
+            texts,
+            currentIndex,
+            textIndex,
+            false,
+            typingSpeed,
+            deletionSpeed,
+            pauseBeforeTypingNewText
+          ),
+        pauseBeforeTypingNewText
       );
     }
   } else {
-    if (paragraph.textContent.length > 0) {
-      paragraph.textContent = paragraph.textContent.slice(0, -1);
+    // Deletion effect
+    if (displayText.length > 0) {
+      displayText = displayText.slice(0, -1);
+      paragraph.textContent = displayText;
       setTimeout(
-        () => typingTextEffect(el, texts, currentIndex, textIndex, isTyping),
-        50
+        () =>
+          typingTextEffect(
+            el,
+            texts,
+            currentIndex,
+            textIndex,
+            isTyping,
+            typingSpeed,
+            deletionSpeed,
+            pauseBeforeTypingNewText
+          ),
+        deletionSpeed
       );
     } else {
-      const nextIndex = (currentIndex + 1) % texts.length; // Move to the next text in the array, looping back to the beginning if needed
-      setTimeout(() => typingTextEffect(el, texts, nextIndex, 0, true), 50); // Wait 1 second before typing new text
+      // Start typing new text after deletion completes
+      const nextIndex = (currentIndex + 1) % texts.length;
+      setTimeout(
+        () =>
+          typingTextEffect(
+            el,
+            texts,
+            nextIndex,
+            0,
+            true,
+            typingSpeed,
+            deletionSpeed,
+            pauseBeforeTypingNewText
+          ),
+        pauseBeforeTypingNewText
+      );
     }
   }
 }
+
 typingTextEffect(typingString, placeholderStrings);
 // var typed = new Typed("#element", {
 //   strings: placeholderStrings,
