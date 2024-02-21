@@ -88,7 +88,8 @@ function typingTextEffect(
   isTyping = true,
   typingSpeed = 50,
   deletionSpeed = 50,
-  pauseBeforeTypingNewText = 1000
+  pauseBeforeTypingNewText = 50,
+  pauseBeforeDeletingText = 700
 ) {
   const paragraph = el;
   const currentText = texts[currentIndex];
@@ -110,7 +111,8 @@ function typingTextEffect(
             isTyping,
             typingSpeed,
             deletionSpeed,
-            pauseBeforeTypingNewText
+            pauseBeforeTypingNewText,
+            pauseBeforeDeletingText
           ),
         typingSpeed
       );
@@ -126,9 +128,10 @@ function typingTextEffect(
             false,
             typingSpeed,
             deletionSpeed,
-            pauseBeforeTypingNewText
+            pauseBeforeTypingNewText,
+            pauseBeforeDeletingText
           ),
-        pauseBeforeTypingNewText
+        pauseBeforeDeletingText
       );
     }
   } else {
@@ -146,7 +149,8 @@ function typingTextEffect(
             isTyping,
             typingSpeed,
             deletionSpeed,
-            pauseBeforeTypingNewText
+            pauseBeforeTypingNewText,
+            pauseBeforeDeletingText
           ),
         deletionSpeed
       );
@@ -163,7 +167,8 @@ function typingTextEffect(
             true,
             typingSpeed,
             deletionSpeed,
-            pauseBeforeTypingNewText
+            pauseBeforeTypingNewText,
+            pauseBeforeDeletingText
           ),
         pauseBeforeTypingNewText
       );
