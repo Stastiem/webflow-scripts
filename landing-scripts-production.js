@@ -287,27 +287,6 @@ firstFormStepLP.addEventListener("submit", function (event) {
   localStorage.setItem("formData", JSON.stringify(formData));
 });
 
-// Show/hide features section depending on the view height ///////////////////////////////////////////////////
-function handleWindowResize() {
-  const newHeight = window.innerHeight;
-  const newWidth = window.innerWidth;
-  const heroSection = document.querySelector(".hero-heading-left");
-  if (newHeight < 1000) {
-    heroSection.style.height = "auto";
-    // featuresHero.style.display = "none";
-    // featuresSeparated.style.display = "block";
-    // heroLinkDown.style.display = "none";
-    // featuresLinkDown.style.display = "block";
-  } else {
-    heroSection.style.height = "100vh";
-    // featuresHero.style.display = "flex";
-    // featuresSeparated.style.display = "none";
-    // heroLinkDown.style.display = "block";
-  }
-}
-window.addEventListener("load", handleWindowResize);
-window.addEventListener("resize", handleWindowResize);
-
 // Randomize slides /////////////////////////////////////////////////////////////////////////////////////////
 const mask = document.querySelector(".mask");
 const children = Array.from(mask.children);
