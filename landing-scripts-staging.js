@@ -80,112 +80,112 @@ let placeholderStrings = [];
 for (let i = 0; i < usecaseList.children.length; i++) {
   placeholderStrings.push(usecaseList.children[i].textContent);
 }
-function typingTextEffect(
-  el,
-  texts,
-  currentIndex = 0,
-  textIndex = 0,
-  isTyping = true,
-  typingSpeed = 50,
-  deletionSpeed = 50,
-  pauseBeforeTypingNewText = 50,
-  pauseBeforeDeletingText = 700
-) {
-  const paragraph = el;
-  const currentText = texts[currentIndex];
-  let displayText = paragraph.textContent;
+// function typingTextEffect(
+//   el,
+//   texts,
+//   currentIndex = 0,
+//   textIndex = 0,
+//   isTyping = true,
+//   typingSpeed = 50,
+//   deletionSpeed = 50,
+//   pauseBeforeTypingNewText = 50,
+//   pauseBeforeDeletingText = 700
+// ) {
+//   const paragraph = el;
+//   const currentText = texts[currentIndex];
+//   let displayText = paragraph.textContent;
 
-  if (isTyping) {
-    // Typing effect
-    displayText += currentText[textIndex];
-    paragraph.textContent = displayText;
+//   if (isTyping) {
+//     // Typing effect
+//     displayText += currentText[textIndex];
+//     paragraph.textContent = displayText;
 
-    if (textIndex < currentText.length - 1) {
-      setTimeout(
-        () =>
-          typingTextEffect(
-            el,
-            texts,
-            currentIndex,
-            textIndex + 1,
-            isTyping,
-            typingSpeed,
-            deletionSpeed,
-            pauseBeforeTypingNewText,
-            pauseBeforeDeletingText
-          ),
-        typingSpeed
-      );
-    } else {
-      // Start deletion after typing completes
-      setTimeout(
-        () =>
-          typingTextEffect(
-            el,
-            texts,
-            currentIndex,
-            textIndex,
-            false,
-            typingSpeed,
-            deletionSpeed,
-            pauseBeforeTypingNewText,
-            pauseBeforeDeletingText
-          ),
-        pauseBeforeDeletingText
-      );
-    }
-  } else {
-    // Deletion effect
-    if (displayText.length > 0) {
-      displayText = displayText.slice(0, -1);
-      paragraph.textContent = displayText;
-      setTimeout(
-        () =>
-          typingTextEffect(
-            el,
-            texts,
-            currentIndex,
-            textIndex,
-            isTyping,
-            typingSpeed,
-            deletionSpeed,
-            pauseBeforeTypingNewText,
-            pauseBeforeDeletingText
-          ),
-        deletionSpeed
-      );
-    } else {
-      // Start typing new text after deletion completes
-      const nextIndex = (currentIndex + 1) % texts.length;
-      setTimeout(
-        () =>
-          typingTextEffect(
-            el,
-            texts,
-            nextIndex,
-            0,
-            true,
-            typingSpeed,
-            deletionSpeed,
-            pauseBeforeTypingNewText,
-            pauseBeforeDeletingText
-          ),
-        pauseBeforeTypingNewText
-      );
-    }
-  }
-}
+//     if (textIndex < currentText.length - 1) {
+//       setTimeout(
+//         () =>
+//           typingTextEffect(
+//             el,
+//             texts,
+//             currentIndex,
+//             textIndex + 1,
+//             isTyping,
+//             typingSpeed,
+//             deletionSpeed,
+//             pauseBeforeTypingNewText,
+//             pauseBeforeDeletingText
+//           ),
+//         typingSpeed
+//       );
+//     } else {
+//       // Start deletion after typing completes
+//       setTimeout(
+//         () =>
+//           typingTextEffect(
+//             el,
+//             texts,
+//             currentIndex,
+//             textIndex,
+//             false,
+//             typingSpeed,
+//             deletionSpeed,
+//             pauseBeforeTypingNewText,
+//             pauseBeforeDeletingText
+//           ),
+//         pauseBeforeDeletingText
+//       );
+//     }
+//   } else {
+//     // Deletion effect
+//     if (displayText.length > 0) {
+//       displayText = displayText.slice(0, -1);
+//       paragraph.textContent = displayText;
+//       setTimeout(
+//         () =>
+//           typingTextEffect(
+//             el,
+//             texts,
+//             currentIndex,
+//             textIndex,
+//             isTyping,
+//             typingSpeed,
+//             deletionSpeed,
+//             pauseBeforeTypingNewText,
+//             pauseBeforeDeletingText
+//           ),
+//         deletionSpeed
+//       );
+//     } else {
+//       // Start typing new text after deletion completes
+//       const nextIndex = (currentIndex + 1) % texts.length;
+//       setTimeout(
+//         () =>
+//           typingTextEffect(
+//             el,
+//             texts,
+//             nextIndex,
+//             0,
+//             true,
+//             typingSpeed,
+//             deletionSpeed,
+//             pauseBeforeTypingNewText,
+//             pauseBeforeDeletingText
+//           ),
+//         pauseBeforeTypingNewText
+//       );
+//     }
+//   }
+// }
 
-typingTextEffect(typingString, placeholderStrings);
-// var typed = new Typed("#element", {
-//   strings: placeholderStrings,
-//   typeSpeed: 50,
-//   backDelay: 700,
-//   startDelay: 0,
-//   backSpeed: 50,
-//   showCursor: false,
-//   loop: true,
-// });
+// typingTextEffect(typingString, placeholderStrings);
+var typed = new Typed("#element", {
+  strings: placeholderStrings,
+  typeSpeed: 50,
+  backDelay: 700,
+  startDelay: 0,
+  backSpeed: 50,
+  showCursor: false,
+  loop: true,
+});
 
 // Fetch function to detect user's country ////////////////////////////////////////////////////////////////////
 fetch("https://ipapi.co/json/")
