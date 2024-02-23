@@ -21,11 +21,13 @@ const websiteDataEn = [
   document.querySelector(".sn-list-en"),
   document.querySelector(".reviews-list-en"),
   document.querySelector(".bg-image-en"),
+  document.querySelector(".pricing-image-en"),
 ];
 const websiteDataLv = [
   document.querySelector(".sn-list-lv"),
   document.querySelector(".reviews-list-lv"),
   document.querySelector(".bg-image-lv"),
+  document.querySelector(".pricing-image-lv"),
 ];
 
 // Show/hide content according to the current domain ///////////////////////////////////////////////////////////////
