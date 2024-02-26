@@ -112,6 +112,15 @@ fetch("https://ipapi.co/json/")
       priceSymbols.forEach((el) => (el.textContent = "£"));
       priceLetters.forEach((el) => (el.textContent = "GBP"));
     }
+    const select = document.getElementById("Country");
+    for (let i = 0; i < select.options.length; i++) {
+      const option = select.options[i];
+      if (option.value === data.country_code.toLowerCase()) {
+        option.selected = true;
+        initAutocomplete(option.value);
+        break;
+      }
+    }
   })
   .catch((error) => console.error("Error fetching IP information:", error));
 
@@ -638,15 +647,13 @@ function changeImage() {
   if (image_changed == false) {
     console.log("Updating 3. step picture, uploading guide");
 
-    const imageElement1 = document.getElementsByClassName("image-5")[0];
-    console.log(imageElement1);
-    const imageElement2 = document.getElementById(
-      "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-6f25ecf0"
-    );
-    console.log(imageElement2);
-    const imageElement3 = document.getElementById(
-      "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-6f25ecf0"
-    );
+    // const imageElement1 = document.getElementsByClassName("image-5")[0];
+    // const imageElement2 = document.getElementById(
+    //   "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-6f25ecf0"
+    // );
+    // const imageElement3 = document.getElementById(
+    //   "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-6f25ecf0"
+    // );
     console.log(imageElement3);
     const imageElement4 = document.getElementById(
       "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-6f25ecf0"
@@ -678,16 +685,16 @@ function changeImage() {
     }
 
     if (is_boy) {
-      updateImage(imageElement1, "boy1", ".png");
-      updateImage(imageElement2, "boy2", ".png");
-      updateImage(imageElement3, "boy3", ".png");
+      // updateImage(imageElement1, "boy1", ".png");
+      // updateImage(imageElement2, "boy2", ".png");
+      // updateImage(imageElement3, "boy3", ".png");
       updateImage(imageElement4, "boy4", ".png");
       updateImage(imageElement5, "boy5", ".png");
       updateImage(imageElement6, "boy6", ".png");
     } else {
-      updateImage(imageElement1, "girl1", ".png");
-      updateImage(imageElement2, "girl2", ".png");
-      updateImage(imageElement3, "girl3", ".png");
+      // updateImage(imageElement1, "girl1", ".png");
+      // updateImage(imageElement2, "girl2", ".png");
+      // updateImage(imageElement3, "girl3", ".png");
       updateImage(imageElement4, "girl4", ".png");
       updateImage(imageElement5, "girl5", ".png");
       updateImage(imageElement6, "girl6", ".png");
