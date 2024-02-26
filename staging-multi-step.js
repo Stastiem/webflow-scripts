@@ -51,6 +51,7 @@ let is_boy = true;
 
 // added new variables
 let autocompleteAddress;
+let currency = "eur";
 let addressInputField = document.querySelector("#Address");
 // let autocompleteCity;
 // let autocompleteStr;
