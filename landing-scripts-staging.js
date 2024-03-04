@@ -33,7 +33,7 @@ const websiteDataLv = [
 // Show/hide content according to the current domain ///////////////////////////////////////////////////////////////
 function showHideContent() {
   const currentLanguage = detectLanguage();
-  currentLanguage === "en" ? showTextBlock() : showTextBlock(currentLanguage);
+  // currentLanguage === "en" ? showTextBlock() : showTextBlock(currentLanguage);
   if (currentLanguage === "lv") {
     websiteDataEn.forEach((el) => (el.style.display = "none"));
     websiteDataLv.forEach((el) => (el.style.display = "flex"));
