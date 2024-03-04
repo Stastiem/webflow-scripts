@@ -386,9 +386,9 @@ firstFormStepLP.addEventListener("submit", function (event) {
 });
 
 // Randomize slides /////////////////////////////////////////////////////////////////////////////////////////
-const mask = document.querySelector(".mask");
-const children = Array.from(mask.children);
-children.sort(() => Math.random() - 0.5);
-children.forEach((child) => {
-  mask.appendChild(child);
-});
+// const mask = document.querySelector(".mask");
+// const children = Array.from(mask.children);
+// children.sort(() => Math.random() - 0.5);
+// children.forEach((child) => {
+//   mask.appendChild(child);
+// });
