@@ -238,63 +238,63 @@ prevArrow.addEventListener("click", function () {
 });
 
 // Display text on slides corresponding to the chosen language /////////////////////////////////////////////////
-function showTextBlock(language) {
-  const textBlocks = document.querySelectorAll(
-    ".slide-text-block, .slide-text-block-lv, .slide-text-block-de, .slide-text-block-ru, .slide-text-block-uk"
-  );
-  const mobTextBlocks = document.querySelectorAll(
-    ".slide-text-block-mob, .slide-text-block-mob-lv, .slide-text-block-mob-de, .slide-text-block-mob-ru, .slide-text-block-mob-uk"
-  );
+// function showTextBlock(language) {
+//   const textBlocks = document.querySelectorAll(
+//     ".slide-text-block, .slide-text-block-lv, .slide-text-block-de, .slide-text-block-ru, .slide-text-block-uk"
+//   );
+//   const mobTextBlocks = document.querySelectorAll(
+//     ".slide-text-block-mob, .slide-text-block-mob-lv, .slide-text-block-mob-de, .slide-text-block-mob-ru, .slide-text-block-mob-uk"
+//   );
 
-  const applyLanguageStyles = (blocks, blockSuffix) => {
-    blocks.forEach((block) => {
-      switch (language) {
-        case "lv":
-          block.style.display = block.classList.contains(
-            `slide-text-${blockSuffix}-lv`
-          )
-            ? "block"
-            : "none";
-          break;
-        case "de":
-          block.style.display = block.classList.contains(
-            `slide-text-${blockSuffix}-de`
-          )
-            ? "block"
-            : "none";
-          break;
-        case "ru":
-          block.style.display = block.classList.contains(
-            `slide-text-${blockSuffix}-ru`
-          )
-            ? "block"
-            : "none";
-          break;
-        case "uk":
-          block.style.display = block.classList.contains(
-            `slide-text-${blockSuffix}-uk`
-          )
-            ? "block"
-            : "none";
-          break;
-        default:
-          if (
-            !block.classList.contains(`slide-text-${blockSuffix}-lv`) &&
-            !block.classList.contains(`slide-text-${blockSuffix}-de`) &&
-            !block.classList.contains(`slide-text-${blockSuffix}-ru`) &&
-            !block.classList.contains(`slide-text-${blockSuffix}-uk`) &&
-            block.classList.contains(`slide-text-${blockSuffix}`)
-          ) {
-            block.style.display = "block";
-          } else {
-            block.style.display = "none";
-          }
-      }
-    });
-  };
-  applyLanguageStyles(textBlocks, "block");
-  applyLanguageStyles(mobTextBlocks, "block-mob");
-}
+//   const applyLanguageStyles = (blocks, blockSuffix) => {
+//     blocks.forEach((block) => {
+//       switch (language) {
+//         case "lv":
+//           block.style.display = block.classList.contains(
+//             `slide-text-${blockSuffix}-lv`
+//           )
+//             ? "block"
+//             : "none";
+//           break;
+//         case "de":
+//           block.style.display = block.classList.contains(
+//             `slide-text-${blockSuffix}-de`
+//           )
+//             ? "block"
+//             : "none";
+//           break;
+//         case "ru":
+//           block.style.display = block.classList.contains(
+//             `slide-text-${blockSuffix}-ru`
+//           )
+//             ? "block"
+//             : "none";
+//           break;
+//         case "uk":
+//           block.style.display = block.classList.contains(
+//             `slide-text-${blockSuffix}-uk`
+//           )
+//             ? "block"
+//             : "none";
+//           break;
+//         default:
+//           if (
+//             !block.classList.contains(`slide-text-${blockSuffix}-lv`) &&
+//             !block.classList.contains(`slide-text-${blockSuffix}-de`) &&
+//             !block.classList.contains(`slide-text-${blockSuffix}-ru`) &&
+//             !block.classList.contains(`slide-text-${blockSuffix}-uk`) &&
+//             block.classList.contains(`slide-text-${blockSuffix}`)
+//           ) {
+//             block.style.display = "block";
+//           } else {
+//             block.style.display = "none";
+//           }
+//       }
+//     });
+//   };
+//   applyLanguageStyles(textBlocks, "block");
+//   applyLanguageStyles(mobTextBlocks, "block-mob");
+// }
 
 // Function that stores data in local storage ///////////////////////////////////////////////////////////////
 function storeData(value, name) {
