@@ -513,14 +513,17 @@ function customizeShipping(value) {
   } else {
     document.querySelector(".shipping-note").textContent =
       "Free standard shipping to your door or nearest parcel machine. For quicker delivery, select our express option.";
-    document
-      .querySelector(".free-shipping-radio")
-      .classList.add("w--redirected-checked");
     document.getElementById("free-shipping").disabled = false;
     document.getElementById("free-shipping").checked = true;
     priceSymbols.forEach((el) => (el.textContent = "€"));
     priceLetters.forEach((el) => (el.textContent = "EUR"));
     document.querySelector(".shipping-hint").style.display = "none";
+    document.querySelector(".free-shipping-radio").removeAttribute("style"); // Remove inline styles
+    document.querySelector(".free-delivery-text").removeAttribute("style"); // Remove inline styles
+    document.querySelector(".free-delivery-span").removeAttribute("style"); // Remove inline styles
+    document
+      .querySelector(".fast-shipping-radio")
+      .classList.remove("w--redirected-checked");
   }
 }
 
