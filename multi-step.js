@@ -69,15 +69,22 @@ const phoneInputField = document.querySelector("#Phone");
 
 ///////////////////////////////////////////////////////////
 
-var occasionCheckbox = document.getElementById("IsOccasion");
-var occasionInput = document.getElementById("occasion-input");
-var occasionSelect = document.getElementById("occasion");
-var themeCheckbox = document.getElementById("IsTheme");
-var themeInput = document.getElementById("theme-input");
-var themeSelect = document.getElementById("theme");
-var continueButton = document.querySelector(".next-button");
+// var occasionCheckbox = document.getElementById("IsOccasion");
+// var occasionInput = document.getElementById("occasion-input");
+// var occasionSelect = document.getElementById("occasion");
+// var themeCheckbox = document.getElementById("IsTheme");
+// var themeInput = document.getElementById("theme-input");
+// var themeSelect = document.getElementById("theme");
+// var continueButton = document.querySelector(".next-button");
 
 function checkInputs() {
+  var occasionCheckbox = document.getElementById("IsOccasion");
+  var occasionInput = document.getElementById("occasion-input");
+  var occasionSelect = document.getElementById("occasion");
+  var themeCheckbox = document.getElementById("IsTheme");
+  var themeInput = document.getElementById("theme-input");
+  var themeSelect = document.getElementById("theme");
+  // var continueButton = document.querySelector(".next-button");
   var occasionEmpty =
     occasionCheckbox.checked &&
     occasionInput.value === "" &&
@@ -97,12 +104,14 @@ function checkInputs() {
   }
 }
 
-occasionCheckbox.addEventListener("change", checkInputs);
-occasionInput.addEventListener("input", checkInputs);
-occasionSelect.addEventListener("change", checkInputs);
-themeCheckbox.addEventListener("change", checkInputs);
-themeInput.addEventListener("input", checkInputs);
-themeSelect.addEventListener("change", checkInputs);
+document.getElementById("IsOccasion").addEventListener("change", checkInputs);
+document
+  .getElementById("occasion-input")
+  .addEventListener("input", checkInputs);
+document.getElementById("occasion").addEventListener("change", checkInputs);
+document.getElementById("IsTheme").addEventListener("change", checkInputs);
+document.getElementById("theme-input").addEventListener("input", checkInputs);
+document.getElementById("theme").addEventListener("change", checkInputs);
 document.getElementById("StyleRandom").addEventListener("change", checkInputs);
 
 checkInputs();
