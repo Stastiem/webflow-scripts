@@ -2106,7 +2106,12 @@ $('[data-form="progress-indicator"]').on("click", clickableIndicator);
 updateStep();
 
 document.addEventListener("keypress", function (event) {
-  if (event.target.tagName.toLowerCase() === "textarea") {
+  const textareaId = event.target.id;
+
+  if (
+    textareaId === "PersonalisationNote" ||
+    textareaId === "DedicationMessage"
+  ) {
     const textarea = event.target;
     textarea.focus();
 
