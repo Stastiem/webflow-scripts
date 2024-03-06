@@ -2105,25 +2105,23 @@ progressbar = $('[data-form="progress"]').children();
 $('[data-form="progress-indicator"]').on("click", clickableIndicator);
 updateStep();
 
-document.addEventListener("keypress", function (event) {
-  const textareaId = event.target.id;
+var textareaIds = ["PersonalisationNote", "DedicationMessage"];
 
-  if (
-    textareaId === "PersonalisationNote" ||
-    textareaId === "DedicationMessage"
-  ) {
-    const textarea = event.target;
-    console.log(event.target.value);
-    textarea.focus();
-
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    if (event.shiftKey && event.key === "Enter") {
-      textarea.value += "\n";
-    }
+textareaIds.forEach(function (id) {
+  var textarea = document.getElementById(id);
+  if (textarea) {
+    textarea.addEventListener("keypress", function (event) {
+      console.log(event.target.value);
+      this.focus();
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.value += "\n";
+      }
+      // if (event.shiftKey && event.key === "Enter") {
+      //   this.value += "<br/>";
+      // }
+    });
   }
 });
 
