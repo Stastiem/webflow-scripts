@@ -2113,6 +2113,7 @@ document.addEventListener("keypress", function (event) {
     textareaId === "DedicationMessage"
   ) {
     const textarea = event.target;
+    console.log(event.target.value);
     textarea.focus();
 
     if (event.key === "Enter" && !event.shiftKey) {
