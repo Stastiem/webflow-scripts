@@ -82,7 +82,103 @@ let placeholderStrings = [];
 for (let i = 0; i < usecaseList.children.length; i++) {
   placeholderStrings.push(usecaseList.children[i].textContent);
 }
+// function typingTextEffect(
+//   el,
+//   texts,
+//   currentIndex = 0,
+//   textIndex = 0,
+//   isTyping = true,
+//   typingSpeed = 50,
+//   deletionSpeed = 50,
+//   pauseBeforeTypingNewText = 50,
+//   pauseBeforeDeletingText = 700
+// ) {
+//   const paragraph = el;
+//   const currentText = texts[currentIndex];
+//   let displayText = paragraph.textContent;
 
+//   if (isTyping) {
+//     // Typing effect
+//     displayText += currentText[textIndex];
+//     paragraph.textContent = displayText;
+
+//     if (textIndex < currentText.length - 1) {
+//       setTimeout(
+//         () =>
+//           typingTextEffect(
+//             el,
+//             texts,
+//             currentIndex,
+//             textIndex + 1,
+//             isTyping,
+//             typingSpeed,
+//             deletionSpeed,
+//             pauseBeforeTypingNewText,
+//             pauseBeforeDeletingText
+//           ),
+//         typingSpeed
+//       );
+//     } else {
+//       // Start deletion after typing completes
+//       setTimeout(
+//         () =>
+//           typingTextEffect(
+//             el,
+//             texts,
+//             currentIndex,
+//             textIndex,
+//             false,
+//             typingSpeed,
+//             deletionSpeed,
+//             pauseBeforeTypingNewText,
+//             pauseBeforeDeletingText
+//           ),
+//         pauseBeforeDeletingText
+//       );
+//     }
+//   } else {
+//     // Deletion effect
+//     if (displayText.length > 0) {
+//       displayText = displayText.slice(0, -1);
+//       paragraph.textContent = displayText;
+//       setTimeout(
+//         () =>
+//           typingTextEffect(
+//             el,
+//             texts,
+//             currentIndex,
+//             textIndex,
+//             isTyping,
+//             typingSpeed,
+//             deletionSpeed,
+//             pauseBeforeTypingNewText,
+//             pauseBeforeDeletingText
+//           ),
+//         deletionSpeed
+//       );
+//     } else {
+//       // Start typing new text after deletion completes
+//       const nextIndex = (currentIndex + 1) % texts.length;
+//       setTimeout(
+//         () =>
+//           typingTextEffect(
+//             el,
+//             texts,
+//             nextIndex,
+//             0,
+//             true,
+//             typingSpeed,
+//             deletionSpeed,
+//             pauseBeforeTypingNewText,
+//             pauseBeforeDeletingText
+//           ),
+//         pauseBeforeTypingNewText
+//       );
+//     }
+//   }
+// }
+
+// typingTextEffect(typingString, placeholderStrings);
 var typed = new Typed("#element", {
   strings: placeholderStrings,
   typeSpeed: 50,
@@ -230,7 +326,7 @@ function changeOccasionImage(selectElement) {
       .classList.add("active");
   }
   selectElement.nextElementSibling.value = selectedOption;
-  storeData(selectedOption, "occasion");
+  // storeData(selectedOption, "occasion");
   updateButtonText();
 }
 
@@ -242,7 +338,7 @@ function changeOccasionImageFromInput(e) {
     image.classList.remove("active");
   });
   document.getElementById("type-your-own-img").classList.add("active");
-  storeData(inputValue, "occasion");
+  // storeData(inputValue, "occasion");
   updateButtonText();
 }
 
@@ -250,14 +346,14 @@ function changeOccasionImageFromInput(e) {
 function changeThemeFromSelect(select) {
   var selectedTheme = select.value;
   select.nextElementSibling.value = selectedTheme;
-  storeData(selectedTheme, "theme");
+  // storeData(selectedTheme, "theme");
   updateButtonText();
 }
 
 // Function that saves THEME INPUT value in local storage ///////////////////////////////////////////////////
 function changeThemeFromInput(e) {
   var inputThemeValue = event.target.value;
-  storeData(inputThemeValue, "theme");
+  // storeData(inputThemeValue, "theme");
   updateButtonText();
 }
 
@@ -288,6 +384,12 @@ firstFormStepLP.addEventListener("submit", function (event) {
     BookLanguage: document.getElementById("BookLanguage").value,
   };
   localStorage.setItem("formData", JSON.stringify(formData));
+});
+
+document.getElementById("Occasion-Form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  storeData(e.target.elements["occasion-input"].value, "occasion");
+  storeData(e.target.elements["theme-input"].value, "theme");
 });
 
 // Randomize slides /////////////////////////////////////////////////////////////////////////////////////////
