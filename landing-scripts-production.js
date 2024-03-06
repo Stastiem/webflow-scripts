@@ -281,9 +281,10 @@ function updateButtonText() {
 // Function that saves first step data in local storage ///////////////////////////////////////////////////
 firstFormStepLP.addEventListener("submit", function (event) {
   const formData = {
-    HeroGender: heroGender.value,
-    HeroName: heroName.value,
-    HeroDOB: heroDOB.value,
+    HeroGender: document.querySelector('input[name="HeroGender"]:checked')
+      .value,
+    HeroName: document.getElementById("HeroName").value,
+    HeroDOB: document.getElementById("HeroDOB").value,
     BookLanguage: document.getElementById("BookLanguage").value,
   };
   localStorage.setItem("formData", JSON.stringify(formData));
