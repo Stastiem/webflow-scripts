@@ -654,7 +654,7 @@ function changeImage() {
     // const imageElement3 = document.getElementById(
     //   "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-6f25ecf0"
     // );
-    console.log(imageElement3);
+    // console.log(imageElement3);
     const imageElement4 = document.getElementById(
       "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-6f25ecf0"
     );
