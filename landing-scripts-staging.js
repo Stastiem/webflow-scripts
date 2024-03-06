@@ -326,7 +326,7 @@ function changeOccasionImage(selectElement) {
       .classList.add("active");
   }
   selectElement.nextElementSibling.value = selectedOption;
-  storeData(selectedOption, "occasion");
+  // storeData(selectedOption, "occasion");
   updateButtonText();
 }
 
@@ -338,7 +338,7 @@ function changeOccasionImageFromInput(e) {
     image.classList.remove("active");
   });
   document.getElementById("type-your-own-img").classList.add("active");
-  storeData(inputValue, "occasion");
+  // storeData(inputValue, "occasion");
   updateButtonText();
 }
 
@@ -346,14 +346,14 @@ function changeOccasionImageFromInput(e) {
 function changeThemeFromSelect(select) {
   var selectedTheme = select.value;
   select.nextElementSibling.value = selectedTheme;
-  storeData(selectedTheme, "theme");
+  // storeData(selectedTheme, "theme");
   updateButtonText();
 }
 
 // Function that saves THEME INPUT value in local storage ///////////////////////////////////////////////////
 function changeThemeFromInput(e) {
   var inputThemeValue = event.target.value;
-  storeData(inputThemeValue, "theme");
+  // storeData(inputThemeValue, "theme");
   updateButtonText();
 }
 
@@ -384,6 +384,12 @@ firstFormStepLP.addEventListener("submit", function (event) {
     BookLanguage: document.getElementById("BookLanguage").value,
   };
   localStorage.setItem("formData", JSON.stringify(formData));
+});
+
+document.getElementById("Occasion-Form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  storeData(e.target.elements["occasion-input"].value, "occasion");
+  storeData(e.target.elements["theme-input"].value, "theme");
 });
 
 // Randomize slides /////////////////////////////////////////////////////////////////////////////////////////
