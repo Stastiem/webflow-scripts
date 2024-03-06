@@ -86,7 +86,10 @@ function checkInputs() {
     themeInput.value === "" &&
     themeSelect.value === "";
 
-  if (occasionEmpty || themeEmpty) {
+  if (
+    (occasionCheckbox.checked && occasionEmpty) ||
+    (themeCheckbox.checked && themeEmpty)
+  ) {
     disableBtn();
   } else {
     enableBtn();
@@ -99,6 +102,7 @@ occasionSelect.addEventListener("change", checkInputs);
 themeCheckbox.addEventListener("change", checkInputs);
 themeInput.addEventListener("input", checkInputs);
 themeSelect.addEventListener("change", checkInputs);
+document.getElementById("StyleRandom").addEventListener("change", checkInputs);
 
 checkInputs();
 
