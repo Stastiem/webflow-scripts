@@ -162,39 +162,57 @@ document
   .addEventListener("change", handleThemeCheckboxChange);
 
 function loadStoredValues() {
-  var storedOccasion = localStorage.getItem("occasion");
-  var storedTheme = localStorage.getItem("theme");
-  if (storedOccasion) {
-    toggleCheckbox("IsOccasion", ".occasion-checkmark");
-    handleOccasionCheckboxChange();
-  }
-  if (storedTheme) {
-    toggleCheckbox("IsTheme", ".theme-checkmark");
-    handleThemeCheckboxChange();
-  }
-  document.getElementById("occasion").value = storedOccasion;
-  document.getElementById("occasion-input").value = storedOccasion;
-  document.getElementById("theme").value = storedTheme;
-  document.getElementById("theme-input").value = storedTheme;
-  var occasionSelect = document.getElementById("occasion");
-  for (var i = 0; i < occasionSelect.options.length; i++) {
-    if (occasionSelect.options[i].value === storedOccasion) {
-      occasionSelect.selectedIndex = i;
-      break;
+  document.addEventListener("DOMContentLoaded", function () {
+    var storedOccasion = localStorage.getItem("occasion");
+    var storedTheme = localStorage.getItem("theme");
+    if (storedOccasion) {
+      toggleCheckbox("IsOccasion", ".occasion-checkmark");
+      handleOccasionCheckboxChange();
     }
-  }
-  var themeSelect = document.getElementById("theme");
-  for (var j = 0; j < themeSelect.options.length; j++) {
-    if (themeSelect.options[j].value === storedTheme) {
-      themeSelect.selectedIndex = j;
-      break;
+    if (storedTheme) {
+      toggleCheckbox("IsTheme", ".theme-checkmark");
+      handleThemeCheckboxChange();
     }
-  }
-  setTimeout(function () {
-    localStorage.removeItem("occasion");
-    localStorage.removeItem("theme");
-  }, 5000);
+    // Set stored values into input fields and selects
+    if (storedOccasion) {
+      document.getElementById("occasion").value = storedOccasion;
+      document.getElementById("occasion-input").value = storedOccasion;
+      var occasionSelect = document.getElementById("occasion");
+      for (var i = 0; i < occasionSelect.options.length; i++) {
+        if (occasionSelect.options[i].value === storedOccasion) {
+          occasionSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+    if (storedTheme) {
+      document.getElementById("theme").value = storedTheme;
+      document.getElementById("theme-input").value = storedTheme;
+      var themeSelect = document.getElementById("theme");
+      for (var j = 0; j < themeSelect.options.length; j++) {
+        if (themeSelect.options[j].value === storedTheme) {
+          themeSelect.selectedIndex = j;
+          break;
+        }
+      }
+    }
+    // Remove stored values after 5 seconds
+    setTimeout(function () {
+      localStorage.removeItem("occasion");
+      localStorage.removeItem("theme");
+    }, 5000);
+  });
 }
+
+// Call loadStoredValues() function
+loadStoredValues();
+
+// Event listener for form submission
+document.getElementById("Occasion-Form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  storeData(e.target.elements["occasion-input"].value, "occasion");
+  storeData(e.target.elements["theme-input"].value, "theme");
+});
 loadStoredValues();
 let heroData = localStorage.getItem("formData");
 if (heroData) {
