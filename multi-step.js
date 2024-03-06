@@ -481,6 +481,16 @@ async function getCountryFromCoordinates(latitude, longitude) {
   return data.countryCode.toLowerCase();
 }
 
+function handleMouseOver() {
+  document.querySelector(".shipping-hint").style.display = "block";
+}
+
+function handleMouseOut() {
+  document.querySelector(".shipping-hint").style.display = "none";
+}
+
+const freeShippingRadio = document.querySelector(".free-shipping-radio");
+
 function customizeShipping(value) {
   if (value === "gb") {
     document.querySelector(".shipping-note").textContent =
@@ -502,14 +512,8 @@ function customizeShipping(value) {
     currency = "gbp";
     priceSymbols.forEach((el) => (el.textContent = "£"));
     priceLetters.forEach((el) => (el.textContent = "GBP"));
-    const freeShippingRadio = document.querySelector(".free-shipping-radio");
-    const shippingHint = document.querySelector(".shipping-hint");
-    freeShippingRadio.addEventListener("mouseover", function () {
-      shippingHint.style.display = "block";
-    });
-    freeShippingRadio.addEventListener("mouseout", function () {
-      shippingHint.style.display = "none";
-    });
+    freeShippingRadio.addEventListener("mouseover", handleMouseOver);
+    freeShippingRadio.addEventListener("mouseout", handleMouseOut);
   } else {
     document.querySelector(".shipping-note").textContent =
       "Free standard shipping to your door or nearest parcel machine. For quicker delivery, select our express option.";
@@ -524,6 +528,11 @@ function customizeShipping(value) {
     document
       .querySelector(".fast-shipping-radio")
       .classList.remove("w--redirected-checked");
+    document
+      .querySelector(".free-shipping-radio")
+      .classList.add("w--redirected-checked");
+    freeShippingRadio.removeEventListener("mouseover", handleMouseOver);
+    freeShippingRadio.removeEventListener("mouseout", handleMouseOut);
   }
 }
 
