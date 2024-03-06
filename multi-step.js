@@ -2105,16 +2105,26 @@ progressbar = $('[data-form="progress"]').children();
 $('[data-form="progress-indicator"]').on("click", clickableIndicator);
 updateStep();
 
-$("textarea").keypress(function (event) {
-  $(this).focus();
-  if (event.key == "Enter") {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+var textareas = document.querySelectorAll("textarea");
 
-  if (event.shiftKey && event.key == "Enter") {
-    $(this).val($(this).val() + "\n");
-  }
+// Iterate over each textarea element
+textareas.forEach(function (textarea) {
+  // Add event listener for keypress event
+  textarea.addEventListener("keypress", function (event) {
+    // Focus on the current textarea
+    this.focus();
+
+    // Prevent default behavior of Enter key
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    // Add a newline if Shift+Enter is pressed
+    if (event.shiftKey && event.key === "Enter") {
+      this.value += "\n";
+    }
+  });
 });
 
 ////////////////////////////////////////////////
