@@ -93,7 +93,8 @@ function checkInputs() {
     themeCheckbox.checked &&
     themeInput.value === "" &&
     themeSelect.value === "";
-
+  console.log(occasionEmpty);
+  console.log(themeEmpty);
   if (occasionEmpty || themeEmpty) {
     disableBtn();
   } else {
