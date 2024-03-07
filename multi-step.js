@@ -96,8 +96,10 @@ function checkInputs() {
   console.log(occasionEmpty);
   console.log(themeEmpty);
   if (occasionEmpty || themeEmpty) {
+    console.log("disabling btn");
     disableBtn();
   } else {
+    console.log("enabling btn");
     enableBtn();
   }
 }
