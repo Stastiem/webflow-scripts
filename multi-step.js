@@ -1952,6 +1952,7 @@ $('[data-form="back-btn"]').on("click", function () {
 
 $(steps)
   .find(":input")
+  .attr("required", true)
   .on("input", function (input) {
     validation();
   });
