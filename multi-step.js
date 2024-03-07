@@ -114,7 +114,7 @@ document.getElementById("theme-input").addEventListener("input", checkInputs);
 document.getElementById("theme").addEventListener("change", checkInputs);
 document.getElementById("StyleRandom").addEventListener("change", checkInputs);
 
-checkInputs();
+// checkInputs();
 
 ///////////////////////////////////////////////////////////
 
