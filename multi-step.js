@@ -97,10 +97,16 @@ function checkInputs() {
   console.log(themeEmpty);
   if (occasionEmpty || themeEmpty) {
     console.log("disabling btn");
-    disableBtn();
+    $('[data-form="next-btn"]').css({
+      opacity: "0.4",
+      "pointer-events": "none",
+    });
   } else {
     console.log("enabling btn");
-    enableBtn();
+    $('[data-form="next-btn"]').css({
+      opacity: "1",
+      "pointer-events": "auto",
+    });
   }
 }
 
