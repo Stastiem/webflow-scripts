@@ -97,6 +97,7 @@ function checkInputs() {
   console.log(themeEmpty);
   if (occasionEmpty || themeEmpty) {
     console.log("disabling btn");
+    console.log($('[data-form="next-btn"]'));
     $('[data-form="next-btn"]').css({
       opacity: "0.4",
       "pointer-events": "none",
