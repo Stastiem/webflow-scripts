@@ -198,50 +198,50 @@ document
   .addEventListener("change", handleThemeCheckboxChange);
 
 function loadStoredValues() {
-  document.addEventListener("DOMContentLoaded", function () {
-    console.log("document uploaded");
-    var storedOccasion = localStorage.getItem("occasion");
-    var storedTheme = localStorage.getItem("theme");
-    console.log(storedOccasion);
-    if (storedOccasion) {
-      toggleCheckbox("IsOccasion", ".occasion-checkmark");
-      handleOccasionCheckboxChange();
-    }
-    if (storedTheme) {
-      toggleCheckbox("IsTheme", ".theme-checkmark");
-      handleThemeCheckboxChange();
-    }
-    // Set stored values into input fields and selects
-    if (storedOccasion) {
-      console.log("found stored occasion");
-      document.getElementById("occasion").value = storedOccasion;
-      document.getElementById("occasion-input").value = storedOccasion;
-      var occasionSelect = document.getElementById("occasion");
-      for (var i = 0; i < occasionSelect.options.length; i++) {
-        if (occasionSelect.options[i].value === storedOccasion) {
-          occasionSelect.selectedIndex = i;
-          break;
-        }
+  // document.addEventListener("DOMContentLoaded", function () {
+  console.log("document uploaded");
+  var storedOccasion = localStorage.getItem("occasion");
+  var storedTheme = localStorage.getItem("theme");
+  console.log(storedOccasion);
+  if (storedOccasion) {
+    toggleCheckbox("IsOccasion", ".occasion-checkmark");
+    handleOccasionCheckboxChange();
+  }
+  if (storedTheme) {
+    toggleCheckbox("IsTheme", ".theme-checkmark");
+    handleThemeCheckboxChange();
+  }
+  // Set stored values into input fields and selects
+  if (storedOccasion) {
+    console.log("found stored occasion");
+    document.getElementById("occasion").value = storedOccasion;
+    document.getElementById("occasion-input").value = storedOccasion;
+    var occasionSelect = document.getElementById("occasion");
+    for (var i = 0; i < occasionSelect.options.length; i++) {
+      if (occasionSelect.options[i].value === storedOccasion) {
+        occasionSelect.selectedIndex = i;
+        break;
       }
     }
-    if (storedTheme) {
-      document.getElementById("theme").value = storedTheme;
-      document.getElementById("theme-input").value = storedTheme;
-      var themeSelect = document.getElementById("theme");
-      for (var j = 0; j < themeSelect.options.length; j++) {
-        if (themeSelect.options[j].value === storedTheme) {
-          themeSelect.selectedIndex = j;
-          break;
-        }
+  }
+  if (storedTheme) {
+    document.getElementById("theme").value = storedTheme;
+    document.getElementById("theme-input").value = storedTheme;
+    var themeSelect = document.getElementById("theme");
+    for (var j = 0; j < themeSelect.options.length; j++) {
+      if (themeSelect.options[j].value === storedTheme) {
+        themeSelect.selectedIndex = j;
+        break;
       }
     }
-    // Remove stored values after 5 seconds
-    setTimeout(function () {
-      console.log("deleting stored data");
-      localStorage.removeItem("occasion");
-      localStorage.removeItem("theme");
-    }, 5000);
-  });
+  }
+  // Remove stored values after 5 seconds
+  setTimeout(function () {
+    console.log("deleting stored data");
+    localStorage.removeItem("occasion");
+    localStorage.removeItem("theme");
+  }, 5000);
+  // });
 }
 loadStoredValues();
 let heroData = localStorage.getItem("formData");
