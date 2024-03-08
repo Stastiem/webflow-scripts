@@ -199,8 +199,10 @@ document
 
 function loadStoredValues() {
   document.addEventListener("DOMContentLoaded", function () {
+    console.log("document uploaded");
     var storedOccasion = localStorage.getItem("occasion");
     var storedTheme = localStorage.getItem("theme");
+    console.log(storedOccasion);
     if (storedOccasion) {
       toggleCheckbox("IsOccasion", ".occasion-checkmark");
       handleOccasionCheckboxChange();
@@ -211,6 +213,7 @@ function loadStoredValues() {
     }
     // Set stored values into input fields and selects
     if (storedOccasion) {
+      console.log("found stored occasion");
       document.getElementById("occasion").value = storedOccasion;
       document.getElementById("occasion-input").value = storedOccasion;
       var occasionSelect = document.getElementById("occasion");
@@ -234,6 +237,7 @@ function loadStoredValues() {
     }
     // Remove stored values after 5 seconds
     setTimeout(function () {
+      console.log("deleting stored data");
       localStorage.removeItem("occasion");
       localStorage.removeItem("theme");
     }, 5000);
