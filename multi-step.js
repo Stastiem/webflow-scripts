@@ -438,16 +438,18 @@ document
 const detectBookLang = () => {
   const splittedHost = host.split(".");
   const detectedLanguage = splittedHost[0];
-  for (let i = 0; i < bookLang.options.length; i++) {
-    const languageOption = bookLang.options[i];
-    if (languageOption.value === "en") {
-      languageOption.selected = detectedLanguage === "www";
-      // break;
-    }
-    if (languageOption.value === detectedLanguage) {
-      console.log(languageOption.value);
-      languageOption.selected = true;
-      break;
+  if (!heroData) {
+    for (let i = 0; i < bookLang.options.length; i++) {
+      const languageOption = bookLang.options[i];
+      if (languageOption.value === "en") {
+        languageOption.selected = detectedLanguage === "www";
+        // break;
+      }
+      if (languageOption.value === detectedLanguage) {
+        console.log(languageOption.value);
+        languageOption.selected = true;
+        break;
+      }
     }
   }
 };
