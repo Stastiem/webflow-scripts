@@ -142,18 +142,21 @@ fetch("https://ipapi.co/json/")
       }
     }
     currency = "gbp";
-    if (e.target.value !== "lv" && e.target.value !== "") {
+    if (
+      data.country_code.toLowerCase() !== "lv" &&
+      data.country_code.toLowerCase() !== ""
+    ) {
       shippingBlock.style.display = "block";
     } else {
       shippingBlock.style.display = "none";
     }
-    customizeShipping(e.target.value);
-    if (e.target.value !== "gb") {
+    customizeShipping(data.country_code.toLowerCase());
+    if (data.country_code.toLowerCase() !== "gb") {
       priceSymbols.forEach((el) => (el.textContent = "€"));
       priceLetters.forEach((el) => (el.textContent = "EUR"));
       currency = "eur";
     }
-    customizeShipping(data.country_code.toLowerCase());
+    // customizeShipping(data.country_code.toLowerCase());
   })
   .catch((error) => console.error("Error fetching IP information:", error));
 
