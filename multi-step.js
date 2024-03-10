@@ -141,6 +141,19 @@ fetch("https://ipapi.co/json/")
         break;
       }
     }
+    currency = "gbp";
+    if (e.target.value !== "lv" && e.target.value !== "") {
+      shippingBlock.style.display = "block";
+    } else {
+      shippingBlock.style.display = "none";
+    }
+    customizeShipping(e.target.value);
+    if (e.target.value !== "gb") {
+      priceSymbols.forEach((el) => (el.textContent = "€"));
+      priceLetters.forEach((el) => (el.textContent = "EUR"));
+      currency = "eur";
+    }
+    customizeShipping(data.country_code.toLowerCase());
   })
   .catch((error) => console.error("Error fetching IP information:", error));
 
