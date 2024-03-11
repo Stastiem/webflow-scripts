@@ -52,13 +52,14 @@ let is_boy = true;
 // added new variables
 let autocompleteAddress;
 let currency = "eur";
+
 let addressInputField = document.querySelector("#Address");
-// let autocompleteCity;
-// let autocompleteStr;
 let countryInputField = document.querySelector("#Country");
 let streetInputField = document.querySelector("#Street");
 let cityInputField = document.querySelector("#City");
 let zipCode = document.getElementById("ZipCode");
+const priceSymbols = document.querySelectorAll(".price-symbol");
+const priceLetters = document.querySelectorAll(".price-letters");
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
@@ -68,15 +69,22 @@ const phoneInputField = document.querySelector("#Phone");
 
 ///////////////////////////////////////////////////////////
 
-var occasionCheckbox = document.getElementById("IsOccasion");
-var occasionInput = document.getElementById("occasion-input");
-var occasionSelect = document.getElementById("occasion");
-var themeCheckbox = document.getElementById("IsTheme");
-var themeInput = document.getElementById("theme-input");
-var themeSelect = document.getElementById("theme");
-var continueButton = document.querySelector(".next-button");
+// var occasionCheckbox = document.getElementById("IsOccasion");
+// var occasionInput = document.getElementById("occasion-input");
+// var occasionSelect = document.getElementById("occasion");
+// var themeCheckbox = document.getElementById("IsTheme");
+// var themeInput = document.getElementById("theme-input");
+// var themeSelect = document.getElementById("theme");
+// var continueButton = document.querySelector(".next-button");
 
 function checkInputs() {
+  var occasionCheckbox = document.getElementById("IsOccasion");
+  var occasionInput = document.getElementById("occasion-input");
+  var occasionSelect = document.getElementById("occasion");
+  var themeCheckbox = document.getElementById("IsTheme");
+  var themeInput = document.getElementById("theme-input");
+  var themeSelect = document.getElementById("theme");
+  // var continueButton = document.querySelector(".next-button");
   var occasionEmpty =
     occasionCheckbox.checked &&
     occasionInput.value === "" &&
@@ -85,28 +93,72 @@ function checkInputs() {
     themeCheckbox.checked &&
     themeInput.value === "" &&
     themeSelect.value === "";
-
-  if (
-    (occasionCheckbox.checked && occasionEmpty) ||
-    (themeCheckbox.checked && themeEmpty)
-  ) {
-    disableBtn();
+  console.log(occasionEmpty);
+  console.log(themeEmpty);
+  if (occasionEmpty || themeEmpty) {
+    console.log("disabling btn");
+    console.log($('[data-form="next-btn"]'));
+    $('[data-form="next-btn"]').css({
+      opacity: "0.4",
+      "pointer-events": "none",
+    });
   } else {
-    enableBtn();
+    console.log("enabling btn");
+    $('[data-form="next-btn"]').css({
+      opacity: "1",
+      "pointer-events": "auto",
+    });
   }
 }
 
-occasionCheckbox.addEventListener("change", checkInputs);
-occasionInput.addEventListener("input", checkInputs);
-occasionSelect.addEventListener("change", checkInputs);
-themeCheckbox.addEventListener("change", checkInputs);
-themeInput.addEventListener("input", checkInputs);
-themeSelect.addEventListener("change", checkInputs);
+document.getElementById("IsOccasion").addEventListener("change", checkInputs);
+document
+  .getElementById("occasion-input")
+  .addEventListener("input", checkInputs);
+document.getElementById("occasion").addEventListener("change", checkInputs);
+document.getElementById("IsTheme").addEventListener("change", checkInputs);
+document.getElementById("theme-input").addEventListener("input", checkInputs);
+document.getElementById("theme").addEventListener("change", checkInputs);
 document.getElementById("StyleRandom").addEventListener("change", checkInputs);
 
-checkInputs();
+// checkInputs();
 
 ///////////////////////////////////////////////////////////
+
+fetch("https://ipapi.co/json/")
+  .then((response) => response.json())
+  .then((data) => {
+    if (data.country_code === "GB") {
+      priceSymbols.forEach((el) => (el.textContent = "£"));
+      priceLetters.forEach((el) => (el.textContent = "GBP"));
+    }
+    const select = document.getElementById("Country");
+    for (let i = 0; i < select.options.length; i++) {
+      const option = select.options[i];
+      if (option.value === data.country_code.toLowerCase()) {
+        option.selected = true;
+        initAutocomplete(option.value);
+        break;
+      }
+    }
+    currency = "gbp";
+    if (
+      data.country_code.toLowerCase() !== "lv" &&
+      data.country_code.toLowerCase() !== ""
+    ) {
+      shippingBlock.style.display = "block";
+    } else {
+      shippingBlock.style.display = "none";
+    }
+    customizeShipping(data.country_code.toLowerCase());
+    if (data.country_code.toLowerCase() !== "gb") {
+      priceSymbols.forEach((el) => (el.textContent = "€"));
+      priceLetters.forEach((el) => (el.textContent = "EUR"));
+      currency = "eur";
+    }
+    // customizeShipping(data.country_code.toLowerCase());
+  })
+  .catch((error) => console.error("Error fetching IP information:", error));
 
 function toggleCheckbox(checkboxId, checkmarkId) {
   const checkboxField = document.getElementById(checkboxId);
@@ -162,57 +214,51 @@ document
   .addEventListener("change", handleThemeCheckboxChange);
 
 function loadStoredValues() {
-  document.addEventListener("DOMContentLoaded", function () {
-    var storedOccasion = localStorage.getItem("occasion");
-    var storedTheme = localStorage.getItem("theme");
-    if (storedOccasion) {
-      toggleCheckbox("IsOccasion", ".occasion-checkmark");
-      handleOccasionCheckboxChange();
-    }
-    if (storedTheme) {
-      toggleCheckbox("IsTheme", ".theme-checkmark");
-      handleThemeCheckboxChange();
-    }
-    // Set stored values into input fields and selects
-    if (storedOccasion) {
-      document.getElementById("occasion").value = storedOccasion;
-      document.getElementById("occasion-input").value = storedOccasion;
-      var occasionSelect = document.getElementById("occasion");
-      for (var i = 0; i < occasionSelect.options.length; i++) {
-        if (occasionSelect.options[i].value === storedOccasion) {
-          occasionSelect.selectedIndex = i;
-          break;
-        }
+  // document.addEventListener("DOMContentLoaded", function () {
+  console.log("document uploaded");
+  var storedOccasion = localStorage.getItem("occasion");
+  var storedTheme = localStorage.getItem("theme");
+  console.log(storedOccasion);
+  if (storedOccasion) {
+    toggleCheckbox("IsOccasion", ".occasion-checkmark");
+    handleOccasionCheckboxChange();
+  }
+  if (storedTheme) {
+    toggleCheckbox("IsTheme", ".theme-checkmark");
+    handleThemeCheckboxChange();
+  }
+  // Set stored values into input fields and selects
+  if (storedOccasion) {
+    console.log("found stored occasion");
+    document.getElementById("occasion").value = storedOccasion;
+    document.getElementById("occasion-input").value = storedOccasion;
+    var occasionSelect = document.getElementById("occasion");
+    for (var i = 0; i < occasionSelect.options.length; i++) {
+      if (occasionSelect.options[i].value === storedOccasion) {
+        occasionSelect.selectedIndex = i;
+        break;
       }
     }
-    if (storedTheme) {
-      document.getElementById("theme").value = storedTheme;
-      document.getElementById("theme-input").value = storedTheme;
-      var themeSelect = document.getElementById("theme");
-      for (var j = 0; j < themeSelect.options.length; j++) {
-        if (themeSelect.options[j].value === storedTheme) {
-          themeSelect.selectedIndex = j;
-          break;
-        }
+  }
+  if (storedTheme) {
+    document.getElementById("theme").value = storedTheme;
+    document.getElementById("theme-input").value = storedTheme;
+    var themeSelect = document.getElementById("theme");
+    for (var j = 0; j < themeSelect.options.length; j++) {
+      if (themeSelect.options[j].value === storedTheme) {
+        themeSelect.selectedIndex = j;
+        break;
       }
     }
-    // Remove stored values after 5 seconds
-    setTimeout(function () {
-      localStorage.removeItem("occasion");
-      localStorage.removeItem("theme");
-    }, 5000);
-  });
+  }
+  // Remove stored values after 5 seconds
+  setTimeout(function () {
+    console.log("deleting stored data");
+    localStorage.removeItem("occasion");
+    localStorage.removeItem("theme");
+  }, 5000);
+  // });
 }
-
-// Call loadStoredValues() function
-loadStoredValues();
-
-// Event listener for form submission
-document.getElementById("Occasion-Form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  storeData(e.target.elements["occasion-input"].value, "occasion");
-  storeData(e.target.elements["theme-input"].value, "theme");
-});
 loadStoredValues();
 let heroData = localStorage.getItem("formData");
 if (heroData) {
@@ -412,16 +458,18 @@ document
 const detectBookLang = () => {
   const splittedHost = host.split(".");
   const detectedLanguage = splittedHost[0];
-  for (let i = 0; i < bookLang.options.length; i++) {
-    const languageOption = bookLang.options[i];
-    if (languageOption.value === "en") {
-      languageOption.selected = detectedLanguage === "www";
-      // break;
-    }
-    if (languageOption.value === detectedLanguage) {
-      console.log(languageOption.value);
-      languageOption.selected = true;
-      break;
+  if (!heroData) {
+    for (let i = 0; i < bookLang.options.length; i++) {
+      const languageOption = bookLang.options[i];
+      if (languageOption.value === "en") {
+        languageOption.selected = detectedLanguage === "www";
+        // break;
+      }
+      if (languageOption.value === detectedLanguage) {
+        console.log(languageOption.value);
+        languageOption.selected = true;
+        break;
+      }
     }
   }
 };
@@ -462,6 +510,16 @@ async function getCountryFromCoordinates(latitude, longitude) {
   return data.countryCode.toLowerCase();
 }
 
+function handleMouseOver() {
+  document.querySelector(".shipping-hint").style.display = "block";
+}
+
+function handleMouseOut() {
+  document.querySelector(".shipping-hint").style.display = "none";
+}
+
+const freeShippingRadio = document.querySelector(".free-shipping-radio");
+
 function customizeShipping(value) {
   if (value === "gb") {
     document.querySelector(".shipping-note").textContent =
@@ -483,14 +541,27 @@ function customizeShipping(value) {
     currency = "gbp";
     priceSymbols.forEach((el) => (el.textContent = "£"));
     priceLetters.forEach((el) => (el.textContent = "GBP"));
-    const freeShippingRadio = document.querySelector(".free-shipping-radio");
-    const shippingHint = document.querySelector(".shipping-hint");
-    freeShippingRadio.addEventListener("mouseover", function () {
-      shippingHint.style.display = "block";
-    });
-    freeShippingRadio.addEventListener("mouseout", function () {
-      shippingHint.style.display = "none";
-    });
+    freeShippingRadio.addEventListener("mouseover", handleMouseOver);
+    freeShippingRadio.addEventListener("mouseout", handleMouseOut);
+  } else {
+    document.querySelector(".shipping-note").textContent =
+      "Free standard shipping to your door or nearest parcel machine. For quicker delivery, select our express option.";
+    document.getElementById("free-shipping").disabled = false;
+    document.getElementById("free-shipping").checked = true;
+    priceSymbols.forEach((el) => (el.textContent = "€"));
+    priceLetters.forEach((el) => (el.textContent = "EUR"));
+    document.querySelector(".shipping-hint").style.display = "none";
+    document.querySelector(".free-shipping-radio").removeAttribute("style"); // Remove inline styles
+    document.querySelector(".free-delivery-text").removeAttribute("style"); // Remove inline styles
+    document.querySelector(".free-delivery-span").removeAttribute("style"); // Remove inline styles
+    document
+      .querySelector(".fast-shipping-radio")
+      .classList.remove("w--redirected-checked");
+    document
+      .querySelector(".free-shipping-radio")
+      .classList.add("w--redirected-checked");
+    freeShippingRadio.removeEventListener("mouseover", handleMouseOver);
+    freeShippingRadio.removeEventListener("mouseout", handleMouseOut);
   }
 }
 
@@ -650,26 +721,25 @@ function changeImage() {
     console.log("Updating 3. step picture, uploading guide");
 
     // const imageElement1 = document.getElementsByClassName("image-5")[0];
-
     // const imageElement2 = document.getElementById(
     //   "w-node-_64c267de-1f7b-60c8-f08e-df7363cd287d-6f25ecf0"
     // );
-
     // const imageElement3 = document.getElementById(
     //   "w-node-_5ab35103-f747-f14b-648c-fa1ee52dda2c-6f25ecf0"
     // );
-
+    // console.log(imageElement3);
     const imageElement4 = document.getElementById(
       "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-6f25ecf0"
     );
-
+    console.log(imageElement4);
     const imageElement5 = document.getElementById(
       "w-node-_47f06dcd-89d6-8710-a41b-fa0d1a830a72-6f25ecf0"
     );
-
+    console.log(imageElement5);
     const imageElement6 = document.getElementById(
       "w-node-ce4f6a12-c0fa-b8c4-ea5d-29324ea4ee96-6f25ecf0"
     );
+    console.log(imageElement6);
 
     function updateImage(imageElement, image_name, extension) {
       url =
@@ -1903,7 +1973,7 @@ $('[data-form="back-btn"]').on("click", function () {
 });
 
 $(steps)
-  .find(":input")
+  .find(":input[required]")
   .on("input", function (input) {
     validation();
   });
@@ -2064,15 +2134,23 @@ progressbar = $('[data-form="progress"]').children();
 $('[data-form="progress-indicator"]').on("click", clickableIndicator);
 updateStep();
 
-$("textarea").keypress(function (event) {
-  $(this).focus();
-  if (event.key == "Enter") {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+var textareaIds = ["PersonalisationNote", "DedicationMessage"];
 
-  if (event.shiftKey && event.key == "Enter") {
-    $(this).val($(this).val() + "\n");
+textareaIds.forEach(function (id) {
+  var textarea = document.getElementById(id);
+  if (textarea) {
+    textarea.addEventListener("keypress", function (event) {
+      console.log(event.target.value);
+      this.focus();
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.value += "\n";
+      }
+      // if (event.shiftKey && event.key === "Enter") {
+      //   this.value += "<br/>";
+      // }
+    });
   }
 });
 
