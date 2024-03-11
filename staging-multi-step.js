@@ -1008,47 +1008,47 @@ function updateStep() {
   $($('[data-form="custom-progress-indicator"]')[x]).addClass("current");
 
   //conditional logic
-  // selection = selections.filter((y) => y.step === x - 1);
+  selection = selections.filter((y) => y.step === x - 1);
 
-  // if (next) {
-  //   x = getSafe(() => selection[0]["skipTo"])
-  //     ? parseInt(getSafe(() => selection[0]["skipTo"]))
-  //     : x;
-  // }
+  if (next) {
+    x = getSafe(() => selection[0]["skipTo"])
+      ? parseInt(getSafe(() => selection[0]["skipTo"]))
+      : x;
+  }
 
-  // $("[data-answer]").hide();
+  $("[data-answer]").hide();
 
-  //hide unhide steps
-  // steps.hide();
-  // if (reinitIX === true) {
-  //   window.Webflow.destroy();
-  // }
+  // hide unhide steps
+  steps.hide();
+  if (reinitIX === true) {
+    window.Webflow.destroy();
+  }
 
   $(progressbar).removeClass("current");
 
   for (let i = 0; i <= x; i++) {
     $(progressbar[i]).addClass("current");
   }
-  // if (reinitIX === true) {
-  //   window.Webflow && window.Webflow.require("ix2").init();
-  //   document.dispatchEvent(new Event("readystatechange"));
-  //   $(steps[x]).show();
-  // } else {
-  //   $(steps[x]).fadeIn("slow");
-  // }
+  if (reinitIX === true) {
+    window.Webflow && window.Webflow.require("ix2").init();
+    document.dispatchEvent(new Event("readystatechange"));
+    $(steps[x]).show();
+  } else {
+    $(steps[x]).fadeIn("slow");
+  }
 
-  // if (x === 0 && !$(steps[x]).data("card")) {
-  //   console.log("First step");
-  //   $(steps[x]).find(`[data-answer]`).show();
-  // }
+  if (x === 0 && !$(steps[x]).data("card")) {
+    console.log("First step");
+    $(steps[x]).find(`[data-answer]`).show();
+  }
 
-  // if (selection.length > 0) {
-  //   console.log("Selection 1", selection[0].selected);
-  //   $(steps[x]).find(`[data-answer="${selection[0].selected}"]`).show();
-  // } else {
-  //   console.log("Selection 2", answer);
-  //   $(steps[x]).find(`[data-answer="${answer}"]`).show();
-  // }
+  if (selection.length > 0) {
+    console.log("Selection 1", selection[0].selected);
+    $(steps[x]).find(`[data-answer="${selection[0].selected}"]`).show();
+  } else {
+    console.log("Selection 2", answer);
+    $(steps[x]).find(`[data-answer="${answer}"]`).show();
+  }
 
   //hide unhide button depanding on step
   if (x === 0) {
@@ -1963,7 +1963,7 @@ $('[data-form="next-btn"]').on("click", function () {
   next = true;
   let step_number = nextStep();
   console.log("Step number: ", step_number);
-  selectionQuiz();
+  // selectionQuiz();
 });
 
 $('[data-form="back-btn"]').on("click", function () {
