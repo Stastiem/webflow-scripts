@@ -667,7 +667,7 @@ function fillInAddress() {
     }
     zipCode.value = findAddressData("postal_code", place);
   }
-  validation();
+  // validation();
   // if (validateInput($(':input[type="text"][required]:visible'))) {
   //   enableBtn();
   // } else {
@@ -1070,7 +1070,7 @@ function updateStep() {
   //focus first input in every step
   $($(steps[x]).find("input[autofocus]")[0]).focus();
   $($(steps[x]).find("textarea[autofocus]")[0]).focus();
-  validation();
+  // validation();
 
   for (idx = 0; idx <= progress; idx++) {
     $($('[data-form="custom-progress-indicator"]')[idx]).removeClass(
@@ -2127,12 +2127,12 @@ $('[data-form="custom-progress-indicator"]').on("click", clickableIndicator);
 //   }
 // });
 
-// steps.each(function () {
-//   $('[data-form="progress"]').append(progressbarClone.clone(true, true));
-// });
-// progressbar = $('[data-form="progress"]').children();
-// $('[data-form="progress-indicator"]').on("click", clickableIndicator);
-// updateStep();
+steps.each(function () {
+  $('[data-form="progress"]').append(progressbarClone.clone(true, true));
+});
+progressbar = $('[data-form="progress"]').children();
+$('[data-form="progress-indicator"]').on("click", clickableIndicator);
+updateStep();
 
 var textareaIds = ["PersonalisationNote", "DedicationMessage"];
 
