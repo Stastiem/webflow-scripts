@@ -667,7 +667,7 @@ function fillInAddress() {
     }
     zipCode.value = findAddressData("postal_code", place);
   }
-  // validation();
+  validation();
   // if (validateInput($(':input[type="text"][required]:visible'))) {
   //   enableBtn();
   // } else {
@@ -1064,7 +1064,7 @@ function updateStep() {
   //focus first input in every step
   $($(steps[x]).find("input[autofocus]")[0]).focus();
   $($(steps[x]).find("textarea[autofocus]")[0]).focus();
-  // validation();
+  validation();
 
   for (idx = 0; idx <= progress; idx++) {
     $($('[data-form="custom-progress-indicator"]')[idx]).removeClass(
@@ -1969,7 +1969,7 @@ $('[data-form="back-btn"]').on("click", function () {
 $(steps)
   .find(":input[required]")
   .on("input", function (input) {
-    // validation();
+    validation();
   });
 
 $(steps)
