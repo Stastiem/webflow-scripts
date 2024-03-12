@@ -2084,42 +2084,42 @@ if ($('[data-form="multistep"]').data("debug-mode")) {
 }
 /////////////////////////////
 
-// $('[data-form="submit-btn"]').on("click", function (e) {
-//   console.log("clicked submit");
+$('[data-form="submit-btn"]').on("click", function (e) {
+  // console.log("clicked submit");
 
-//   e.preventDefault();
-//   e.stopPropagation();
-//   console.log("form is being submitted");
+  e.preventDefault();
+  // e.stopPropagation();
+  // console.log("form is being submitted");
 
-//   if ($('[data-form="multistep"]').data("logic-extra")) {
-//     //if(x === $('[data-form="step"]:not([data-card="true"])').length || $(steps[x]).find('[data-form="submit"]:visible').length > 0){
-//     $(this).prop("novalidate", true);
-//     $(steps).find(":input").prop("required", false);
-//     console.log("nonvalidated");
-//   }
+  // if ($('[data-form="multistep"]').data("logic-extra")) {
+  //   //if(x === $('[data-form="step"]:not([data-card="true"])').length || $(steps[x]).find('[data-form="submit"]:visible').length > 0){
+  //   $(this).prop("novalidate", true);
+  //   $(steps).find(":input").prop("required", false);
+  //   console.log("nonvalidated");
+  // }
 
-//   //function to remove unanswered card
-//   if ($('[data-form="multistep"]').data("remove-unfilled")) {
-//     for (j = 1; j <= selections.length; j++) {
-//       $(steps[j])
-//         .find(
-//           `[data-answer]:not([data-answer="${selections[j - 1].selected}"])`
-//         )
-//         .remove();
-//     }
-//   }
+  // //function to remove unanswered card
+  // if ($('[data-form="multistep"]').data("remove-unfilled")) {
+  //   for (j = 1; j <= selections.length; j++) {
+  //     $(steps[j])
+  //       .find(
+  //         `[data-answer]:not([data-answer="${selections[j - 1].selected}"])`
+  //       )
+  //       .remove();
+  //   }
+  // }
 
-//   localStorage.removeItem("filledInput");
-//   if (fill) {
-//     if ($(this).data("wait")) {
-//       $(this).val($(this).data("wait"));
-//     } else {
-//       $(this).val("Please wait...");
-//       $(this).text("Please wait...");
-//     }
-//     $('[data-form="multistep"]').submit();
-//   }
-// });
+  // localStorage.removeItem("filledInput");
+  // if (fill) {
+  //   if ($(this).data("wait")) {
+  //     $(this).val($(this).data("wait"));
+  //   } else {
+  //     $(this).val("Please wait...");
+  //     $(this).text("Please wait...");
+  //   }
+  $('[data-form="multistep"]').submit();
+  // }
+});
 
 steps.each(function () {
   $('[data-form="progress"]').append(progressbarClone.clone(true, true));
