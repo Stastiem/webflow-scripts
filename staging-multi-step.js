@@ -2117,6 +2117,7 @@ $('[data-form="submit-btn"]').on("click", function (e) {
   //     $(this).val("Please wait...");
   //     $(this).text("Please wait...");
   //   }
+  $(this).text("Please wait...");
   $('[data-form="multistep"]').submit();
   // }
 });
