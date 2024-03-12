@@ -2116,15 +2116,15 @@ $('[data-form="submit-btn"]').on("click", function (e) {
   }
 
   localStorage.removeItem("filledInput");
-  if (fill) {
-    if ($(this).data("wait")) {
-      $(this).val($(this).data("wait"));
-    } else {
-      $(this).val("Please wait...");
-      $(this).text("Please wait...");
-    }
-    $('[data-form="multistep"]').submit();
+  // if (fill) {
+  if ($(this).data("wait")) {
+    $(this).val($(this).data("wait"));
+  } else {
+    $(this).val("Please wait...");
+    $(this).text("Please wait...");
   }
+  $('[data-form="multistep"]').submit();
+  // }
 });
 
 steps.each(function () {
