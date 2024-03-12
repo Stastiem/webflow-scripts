@@ -3037,3 +3037,129 @@
     <script src="/local-multi-step.js"></script>
   </body>
 </html>
+<!-- <script>
+  var Webflow = Webflow || [];
+  Webflow.push(function () {
+    $("form").on("submit", function (event) {
+      window.dataLayer.push({ event: "OrderFilled" });
+      event.preventDefault();
+      const occasionSelect = document.getElementById("occasion");
+      const occasionInput = document.getElementById("occasion-input");
+      const themeSelect = document.getElementById("theme");
+      const themeInput = document.getElementById("theme-input");
+      const occasionOption = Array.from(occasionSelect.options).find(
+        (option) => option.value === occasionInput.value
+      );
+      if (occasionOption) {
+        occasionInput.value = "";
+      } else {
+        occasionSelect.value = "";
+      }
+      const themeOption = Array.from(themeSelect.options).find(
+        (option) => option.value === themeInput.value
+      );
+      if (themeOption) {
+        themeInput.value = "";
+      } else {
+        themeSelect.value = "";
+      }
+      document.getElementById("BookQuantity").value = Number(
+        document.querySelector(".book-quantity").textContent
+      );
+      document.getElementById("PaintingQuantity").value = Number(
+        document.querySelector(".painting-quantity").textContent
+      );
+
+      let env;
+      if (currentHost.includes("stastiem.webflow.io")) {
+        env = true;
+      } else {
+        env = false;
+      }
+
+      const fetchWithTimeout = (url, options, timeout = 6000) => {
+        return Promise.race([
+          fetch(url, options),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Timeout")), timeout)
+          ),
+        ]);
+      };
+
+      const fetchWithRetry = async (
+        url,
+        options,
+        retries = 3,
+        delay = 1000
+      ) => {
+        let lastError;
+        for (let i = 0; i < retries; i++) {
+          try {
+            const response = await fetchWithTimeout(url, options);
+            if (response.ok) {
+              return await response.json();
+            }
+          } catch (error) {
+            lastError = error;
+            const randomFactor = Math.random() * 0.5 + 0.5;
+            await new Promise((res) =>
+              setTimeout(res, delay * Math.pow(2, i) * randomFactor)
+            );
+          }
+        }
+        throw lastError;
+      };
+      const apiUrl = "https://stastiem.herokuapp.com/stripe/stripe-payment-url";
+      const website_url = "https://buy.stripe.com/4gw3ewb2C7PaaKQbII";
+
+      const headers = {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      const bodyObject = {
+        products: ["book"],
+        customer_email: $("#Email").val(),
+        client_reference_id: $("#ClientReferenceId").val(),
+        language: $("#BookLanguage").val(),
+        testing: env,
+        book_quantity: $("#BookQuantity").val(),
+        painting_quantity: $("#PaintingQuantity").val(),
+        currency: currency,
+      };
+      //console.log(bodyObject);
+      const fastShippingInput = document.getElementById("fast-shipping");
+      console.log(fastShippingInput.checked);
+      if (fastShippingInput.checked) {
+        bodyObject.products.push("paid_shipping");
+        console.log("fast shipping ordered, pushed to body object");
+      }
+      const additions = document.querySelectorAll(
+        "input[name=Audio], input[name=Painting], input[name=Card]"
+      );
+
+      additions.forEach(
+        (el) => el.checked && bodyObject.products.push(el.id.toLowerCase())
+      );
+
+      fetchWithRetry(apiUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(bodyObject),
+      })
+        .then((data) => (location.href = data.payment_url))
+        .catch((error) => {
+          console.log("Error:", error);
+          setTimeout(function () {
+            location.href =
+              website_url +
+              "?prefilled_email=" +
+              $("#Email").val() +
+              "&client_reference_id=" +
+              $("#ClientReferenceId").val() +
+              "&locale=" +
+              $("#BookLanguage").val();
+          }, 100);
+        });
+    });
+  });
+</script> -->
