@@ -2084,7 +2084,7 @@ if ($('[data-form="multistep"]').data("debug-mode")) {
 }
 /////////////////////////////
 $("#order-submit-btn").on("click", function (e) {
-  e.preventDefault();
+  // e.preventDefault();
   $(this).text("Please wait...");
   // $('[data-form="multistep"]').submit();
 });
