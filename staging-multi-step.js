@@ -1890,9 +1890,9 @@ function nextStep() {
 
   if (x <= steps.length - 1) {
     updateStep();
-    if (memory) {
-      saveFilledInput();
-    }
+    // if (memory) {
+    saveFilledInput();
+    // }
 
     $('[data-text="current-step"]').text(
       $(steps[x]).data("card") ? (curStep = x + 0) : (curStep = x + 1)
