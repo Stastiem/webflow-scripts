@@ -66,7 +66,7 @@ const port = urlFormly.port; // if live server is used, then the port is not emp
 const bookLang = document.getElementById("BookLanguage");
 const dateInput = document.getElementById("HeroDOB");
 const phoneInputField = document.querySelector("#Phone");
-
+memory = true;
 ///////////////////////////////////////////////////////////
 
 // var occasionCheckbox = document.getElementById("IsOccasion");
