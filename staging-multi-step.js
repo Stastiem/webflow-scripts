@@ -800,8 +800,8 @@ if (savedFilledInput && memory) {
     } else if (x.value === "on") {
       $(`input[name="${x.inputName}"]`).click();
       $(`input[name="${x.inputName}"]`)
-        .siblings(".w-checkbox-input")
-        .addClass("w--redirected-checked");
+        .siblings(".checkmark")
+        .addClass("occasion-checkmark-checked");
     } else {
       $(`input[name="${x.inputName}"]`).val(x.value);
       $(`textarea[name="${x.inputName}"]`).val(x.value);
