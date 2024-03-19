@@ -813,7 +813,10 @@ if (savedFilledInput && memory) {
       $(`select[name="${x.inputName}"]`)
         .find(`option[value="${x.value}"]`)
         .prop("selected", true);
-      if (x.value !== "" || x.value !== "lv") {
+      if (
+        (x.inputName === "Country" && x.value !== "") ||
+        (x.inputName === "Country" && x.value !== "lv")
+      ) {
         shippingBlock.style.display = "block";
       } else {
         shippingBlock.style.display = "none";
