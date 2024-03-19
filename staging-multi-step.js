@@ -817,6 +817,7 @@ if (savedFilledInput && memory) {
         (x.inputName === "Country" && x.value !== "") ||
         (x.inputName === "Country" && x.value !== "lv")
       ) {
+        console.log("found block");
         shippingBlock.style.display = "block";
       } else {
         shippingBlock.style.display = "none";
