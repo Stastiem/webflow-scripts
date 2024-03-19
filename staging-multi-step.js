@@ -129,19 +129,22 @@ fetch("https://ipapi.co/json/")
   .then((response) => response.json())
   .then((data) => {
     if (data.country_code === "GB") {
+      currency = "gbp";
       priceSymbols.forEach((el) => (el.textContent = "£"));
       priceLetters.forEach((el) => (el.textContent = "GBP"));
     }
-    const select = document.getElementById("Country");
-    for (let i = 0; i < select.options.length; i++) {
-      const option = select.options[i];
-      if (option.value === data.country_code.toLowerCase()) {
-        option.selected = true;
-        initAutocomplete(option.value);
-        break;
+    if (!localStorage.getItem("filledInput")) {
+      const select = document.getElementById("Country");
+      for (let i = 0; i < select.options.length; i++) {
+        const option = select.options[i];
+        if (option.value === data.country_code.toLowerCase()) {
+          option.selected = true;
+          initAutocomplete(option.value);
+          break;
+        }
       }
     }
-    currency = "gbp";
+
     if (
       data.country_code.toLowerCase() !== "lv" &&
       data.country_code.toLowerCase() !== ""
