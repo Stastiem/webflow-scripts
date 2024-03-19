@@ -798,6 +798,11 @@ if (savedFilledInput && memory) {
       $(`input[name="${x.inputName}"][value="${x.value}"]`).attr("type") ===
       "radio"
     ) {
+      if (x.inputName === "PaidShipping") {
+        shippingBlock.style.display = "block";
+      } else {
+        shippingBlock.style.display = "none";
+      }
       $(`input[name="${x.inputName}"][value="${x.value}"]`).click();
       $(`input[name="${x.inputName}"][value="${x.value}"]`)
         .siblings(".w-radio-input")
@@ -813,15 +818,6 @@ if (savedFilledInput && memory) {
       $(`select[name="${x.inputName}"]`)
         .find(`option[value="${x.value}"]`)
         .prop("selected", true);
-      if (
-        (x.inputName === "Country" && x.value !== "") ||
-        (x.inputName === "Country" && x.value !== "lv")
-      ) {
-        console.log("found block");
-        shippingBlock.style.display = "block";
-      } else {
-        shippingBlock.style.display = "none";
-      }
     }
   });
 }
