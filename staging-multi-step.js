@@ -881,6 +881,7 @@ function enableBtn() {
 function saveFilledInput() {
   $('form[data-form="multistep"] :input')
     .not('[type="submit"]')
+    .not('[type="file"]')
     .each(function () {
       if (
         $(this).attr("type") === "checkbox" ||
