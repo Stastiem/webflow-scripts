@@ -791,8 +791,13 @@ function getSafe(fn, defaultVal) {
 }
 
 if (savedFilledInput && memory) {
-  const countryInputValue = document.querySelector("#Country").value;
-  if (countryInputValue !== "") {
+  const countryStoredValue = JSON.parse(
+    localStorage.getItem("filledInput")
+  ).find((el) => el.inputName === "Country").value;
+  if (countryStoredValue !== "" || countryStoredValue !== "lv") {
+    shippingBlock.style.display = "block";
+  } else {
+    shippingBlock.style.display = "none";
   }
   savedFilledInput.forEach((x) => {
     console.log("Pre-fill: ", x.inputName, x.value, x.type, x.inputType);
@@ -816,6 +821,14 @@ if (savedFilledInput && memory) {
       $(`select[name="${x.inputName}"]`)
         .find(`option[value="${x.value}"]`)
         .prop("selected", true);
+      // if (
+      //   (x.inputName === "Country" && x.value !== "") ||
+      //   (x.inputName === "Country" && x.value !== "lv")
+      // ) {
+      //   shippingBlock.style.display = "block";
+      // } else {
+      //   shippingBlock.style.display = "none";
+      // }
     }
   });
 }
