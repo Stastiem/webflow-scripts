@@ -128,12 +128,12 @@ document.getElementById("StyleRandom").addEventListener("change", checkInputs);
 fetch("https://ipapi.co/json/")
   .then((response) => response.json())
   .then((data) => {
-    if (data.country_code === "GB") {
-      currency = "gbp";
-      priceSymbols.forEach((el) => (el.textContent = "£"));
-      priceLetters.forEach((el) => (el.textContent = "GBP"));
-    }
     if (!localStorage.getItem("filledInput")) {
+      if (data.country_code === "GB") {
+        currency = "gbp";
+        priceSymbols.forEach((el) => (el.textContent = "£"));
+        priceLetters.forEach((el) => (el.textContent = "GBP"));
+      }
       const select = document.getElementById("Country");
       for (let i = 0; i < select.options.length; i++) {
         const option = select.options[i];
@@ -143,22 +143,22 @@ fetch("https://ipapi.co/json/")
           break;
         }
       }
+      if (
+        data.country_code.toLowerCase() !== "lv" &&
+        data.country_code.toLowerCase() !== ""
+      ) {
+        shippingBlock.style.display = "block";
+      } else {
+        shippingBlock.style.display = "none";
+      }
+      customizeShipping(data.country_code.toLowerCase());
+      if (data.country_code.toLowerCase() !== "gb") {
+        priceSymbols.forEach((el) => (el.textContent = "€"));
+        priceLetters.forEach((el) => (el.textContent = "EUR"));
+        currency = "eur";
+      }
     }
 
-    if (
-      data.country_code.toLowerCase() !== "lv" &&
-      data.country_code.toLowerCase() !== ""
-    ) {
-      shippingBlock.style.display = "block";
-    } else {
-      shippingBlock.style.display = "none";
-    }
-    customizeShipping(data.country_code.toLowerCase());
-    if (data.country_code.toLowerCase() !== "gb") {
-      priceSymbols.forEach((el) => (el.textContent = "€"));
-      priceLetters.forEach((el) => (el.textContent = "EUR"));
-      currency = "eur";
-    }
     // customizeShipping(data.country_code.toLowerCase());
   })
   .catch((error) => console.error("Error fetching IP information:", error));
@@ -791,6 +791,9 @@ function getSafe(fn, defaultVal) {
 }
 
 if (savedFilledInput && memory) {
+  const countryInputValue = document.querySelector("#Country").value;
+  if (countryInputValue !== "") {
+  }
   savedFilledInput.forEach((x) => {
     console.log("Pre-fill: ", x.inputName, x.value, x.type, x.inputType);
 
@@ -798,11 +801,6 @@ if (savedFilledInput && memory) {
       $(`input[name="${x.inputName}"][value="${x.value}"]`).attr("type") ===
       "radio"
     ) {
-      if (x.inputName === "PaidShipping") {
-        shippingBlock.style.display = "block";
-      } else {
-        shippingBlock.style.display = "none";
-      }
       $(`input[name="${x.inputName}"][value="${x.value}"]`).click();
       $(`input[name="${x.inputName}"][value="${x.value}"]`)
         .siblings(".w-radio-input")
