@@ -729,15 +729,15 @@ function changeImage() {
     // );
     // console.log(imageElement3);
     const imageElement4 = document.getElementById(
-      "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-6f25ecf0"
+      "w-node-c8bf5738-30c7-c414-4e66-bf7f05839cfa-33b35641"
     );
     console.log(imageElement4);
     const imageElement5 = document.getElementById(
-      "w-node-_47f06dcd-89d6-8710-a41b-fa0d1a830a72-6f25ecf0"
+      "w-node-_47f06dcd-89d6-8710-a41b-fa0d1a830a72-33b35641"
     );
     console.log(imageElement5);
     const imageElement6 = document.getElementById(
-      "w-node-ce4f6a12-c0fa-b8c4-ea5d-29324ea4ee96-6f25ecf0"
+      "w-node-ce4f6a12-c0fa-b8c4-ea5d-29324ea4ee96-33b35641"
     );
     console.log(imageElement6);
 
