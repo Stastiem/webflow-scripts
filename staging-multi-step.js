@@ -955,9 +955,9 @@ function saveFilledInput() {
   if (filledInput) {
     filledInput.forEach((x) => {
       //console.log(x)
-      urlFormly.searchParams.delete(x.inputName);
-      urlFormly.searchParams.set(x.inputName, x.value);
-      window.history.replaceState(null, null, urlFormly); // or pushState
+      // urlFormly.searchParams.delete(x.inputName);
+      // urlFormly.searchParams.set(x.inputName, x.value);
+      // window.history.replaceState(null, null, urlFormly); // or pushState
     });
   }
 
