@@ -52,7 +52,6 @@ let is_boy = true;
 // added new variables
 let autocompleteAddress;
 let currency = "eur";
-
 let addressInputField = document.querySelector("#Address");
 let countryInputField = document.querySelector("#Country");
 let streetInputField = document.querySelector("#Street");
@@ -66,17 +65,18 @@ const port = urlFormly.port; // if live server is used, then the port is not emp
 const bookLang = document.getElementById("BookLanguage");
 const dateInput = document.getElementById("HeroDOB");
 const phoneInputField = document.querySelector("#Phone");
+const freeDelSpan = document.querySelector(".free-delivery-span");
+const paidDelSpan = document.querySelector(".fast-delivery-span");
+const clientRefId = document.querySelector(".ClientReferenceId");
+const checkboxes = document.querySelectorAll(
+  "input[name=Audio], input[name=Painting], input[name=Card]"
+);
+const checkmarks = document.querySelectorAll(".check-mark");
+const paintingQuantity = document.querySelector(".painting-quantity");
+const shippingBlock = document.querySelector(".form-radio-wrap");
+const freeShippingRadio = document.querySelector(".free-shipping-radio");
 
-///////////////////////////////////////////////////////////
-
-// var occasionCheckbox = document.getElementById("IsOccasion");
-// var occasionInput = document.getElementById("occasion-input");
-// var occasionSelect = document.getElementById("occasion");
-// var themeCheckbox = document.getElementById("IsTheme");
-// var themeInput = document.getElementById("theme-input");
-// var themeSelect = document.getElementById("theme");
-// var continueButton = document.querySelector(".next-button");
-
+// Function that disables “next” button if occasion/theme checkbox checked, but nothing selected
 function checkInputs() {
   var occasionCheckbox = document.getElementById("IsOccasion");
   var occasionInput = document.getElementById("occasion-input");
@@ -84,7 +84,6 @@ function checkInputs() {
   var themeCheckbox = document.getElementById("IsTheme");
   var themeInput = document.getElementById("theme-input");
   var themeSelect = document.getElementById("theme");
-  // var continueButton = document.querySelector(".next-button");
   var occasionEmpty =
     occasionCheckbox.checked &&
     occasionInput.value === "" &&
@@ -120,11 +119,9 @@ document.getElementById("IsTheme").addEventListener("change", checkInputs);
 document.getElementById("theme-input").addEventListener("input", checkInputs);
 document.getElementById("theme").addEventListener("change", checkInputs);
 document.getElementById("StyleRandom").addEventListener("change", checkInputs);
+// END function that disables “next” button if occasion/theme checkbox checked, but nothing selected
 
-// checkInputs();
-
-///////////////////////////////////////////////////////////
-
+// Function that fetches user country and shows/hides block with shipping options, changes currency and country input field
 fetch("https://ipapi.co/json/")
   .then((response) => response.json())
   .then((data) => {
@@ -159,7 +156,9 @@ fetch("https://ipapi.co/json/")
     // customizeShipping(data.country_code.toLowerCase());
   })
   .catch((error) => console.error("Error fetching IP information:", error));
+// END Function that fetches user country and shows/hides block with shipping options, changes currency and country input field
 
+// Function that toggles all of the custom checkboxes within the form
 function toggleCheckbox(checkboxId, checkmarkId) {
   const checkboxField = document.getElementById(checkboxId);
   const checkmark = document.querySelector(checkmarkId);
@@ -184,6 +183,9 @@ document
   .addEventListener("click", function () {
     toggleCheckbox("StyleRandom", ".style-checkmark");
   });
+// END Function that toggles all of the custom checkboxes within the form
+
+// Functions that show corresponding input field if the checkbox is checked
 function handleOccasionCheckboxChange() {
   const occasionCheckbox = document.getElementById("IsOccasion");
   const occasionCombobox = document.querySelector(".occasion-combobox");
@@ -212,10 +214,10 @@ document
 document
   .getElementById("IsTheme")
   .addEventListener("change", handleThemeCheckboxChange);
+// END Functions that show corresponding input field if the checkbox is checked
 
+// Function that populates the corresponding input field with data (theme/occasion) from localStorage if available and then deletes it
 function loadStoredValues() {
-  // document.addEventListener("DOMContentLoaded", function () {
-  console.log("document uploaded");
   var storedOccasion = localStorage.getItem("occasion");
   var storedTheme = localStorage.getItem("theme");
   console.log(storedOccasion);
@@ -227,7 +229,7 @@ function loadStoredValues() {
     toggleCheckbox("IsTheme", ".theme-checkmark");
     handleThemeCheckboxChange();
   }
-  // Set stored values into input fields and selects
+
   if (storedOccasion) {
     console.log("found stored occasion");
     document.getElementById("occasion").value = storedOccasion;
@@ -251,15 +253,16 @@ function loadStoredValues() {
       }
     }
   }
-  // Remove stored values after 5 seconds
   setTimeout(function () {
     console.log("deleting stored data");
     localStorage.removeItem("occasion");
     localStorage.removeItem("theme");
   }, 5000);
-  // });
 }
 loadStoredValues();
+// END Function that populates the corresponding input field with data (theme/occasion) from localStorage if available and then deletes it
+
+// Function that populates the corresponding input field with data (hero data) from localStorage if available and then deletes it
 let heroData = localStorage.getItem("formData");
 if (heroData) {
   const formData = JSON.parse(heroData);
@@ -280,7 +283,9 @@ if (heroData) {
   document.getElementById("BookLanguage").value = formData.BookLanguage;
   localStorage.removeItem("formData");
 }
+// END Function that populates the corresponding input field with data (hero data) from localStorage if available and then deletes it
 
+// Function that changes order of steps if the occasion form on the home page was submitted
 function stepVisible() {
   const formStepsItems = document.querySelectorAll('[data-form="step"]');
   if (formStepsItems.length >= 3) {
@@ -309,11 +314,9 @@ function stepVisible() {
 if (new URL(document.location).searchParams.get("redirect_from") === "themes") {
   stepVisible();
 }
+// END Function that changes order of steps if the occasion form on the home page was submitted
 
-///////////////////////////////////////////////////////////
-
-const freeDelSpan = document.querySelector(".free-delivery-span");
-const paidDelSpan = document.querySelector(".fast-delivery-span");
+// Function that calculates and displays delivery terms
 function calculateDeliveryDate(deliveryType) {
   const orderDateTime = new Date();
   const orderDayOfWeek = orderDateTime.getDay();
@@ -340,19 +343,15 @@ freeDelSpan.textContent =
   calculateDeliveryDate("free");
 paidDelSpan.textContent =
   "Delivery to door by " + calculateDeliveryDate("paid");
+// END Function that calculates and displays delivery terms
 
-///////////////////////////////////////////////////////////
-
+// Creates clientRefId
 const refId = uuidv4();
-const clientRefId = document.querySelector(".ClientReferenceId");
 clientRefId.value = refId;
+//  END creates clientRefId
 
-const checkboxes = document.querySelectorAll(
-  "input[name=Audio], input[name=Painting], input[name=Card]"
-);
+// Function that changes border color of checked additional products and disables book checkbox
 document.getElementById("Book").setAttribute("disabled", "disabled");
-const checkmarks = document.querySelectorAll(".check-mark");
-const paintingQuantity = document.querySelector(".painting-quantity");
 for (let i = 0; i < checkboxes.length; i++) {
   checkboxes[i].addEventListener("change", () => {
     if (checkboxes[i].checked) {
@@ -375,7 +374,9 @@ for (let i = 0; i < checkboxes.length; i++) {
     }
   });
 }
+// END Function that changes border color of checked additional products and disables book checkbox
 
+// Functions that calculate price of additional books and paintings
 function incrementCounter(counterId) {
   const counterInput = document.querySelector(`.${counterId}`);
   const currentValue = parseInt(counterInput.textContent);
@@ -452,9 +453,9 @@ document
 document
   .getElementById("paint-incr-btn")
   .addEventListener("click", () => incrementCounter("painting-quantity"));
+// END Functions that calculate price of additional books and paintings
 
-///////////////////////////////////////////////////////////
-
+// Function that detects the language of a book based on the subdomain
 const detectBookLang = () => {
   const splittedHost = host.split(".");
   const detectedLanguage = splittedHost[0];
@@ -474,17 +475,17 @@ const detectBookLang = () => {
   }
 };
 detectBookLang();
+// END Function that detects the language of a book based on the subdomain
 
+// Function that sets max value of HeroDOB input (NOT WORKING ON iOS)
 function restrictAge() {
   const today = new Date();
   const minDate = new Date(today);
   minDate.setMonth(today.getMonth() - 10);
   dateInput.setAttribute("max", minDate.toISOString().split("T")[0]);
 }
-
 restrictAge();
-
-const shippingBlock = document.querySelector(".form-radio-wrap");
+// END Function that sets max value of HeroDOB input (NOT WORKING ON iOS)
 
 async function getGeolocationPermission() {
   return new Promise((resolve) => {
@@ -510,6 +511,7 @@ async function getCountryFromCoordinates(latitude, longitude) {
   return data.countryCode.toLowerCase();
 }
 
+// Functions that show/hide message that delivery to UK is paid
 function handleMouseOver() {
   document.querySelector(".shipping-hint").style.display = "block";
 }
@@ -517,9 +519,9 @@ function handleMouseOver() {
 function handleMouseOut() {
   document.querySelector(".shipping-hint").style.display = "none";
 }
+// END Functions that show/hide message that delivery to UK is paid
 
-const freeShippingRadio = document.querySelector(".free-shipping-radio");
-
+// Function that makes free shipping disabled, shows note that delivery is 10 GBP
 function customizeShipping(value) {
   if (value === "gb") {
     document.querySelector(".shipping-note").textContent =
@@ -564,6 +566,7 @@ function customizeShipping(value) {
     freeShippingRadio.removeEventListener("mouseout", handleMouseOut);
   }
 }
+// END Function that makes free shipping disabled, shows note that delivery is 10 GBP
 
 async function autocompleteCountry() {
   try {
@@ -596,6 +599,7 @@ async function autocompleteCountry() {
   }
 }
 
+// Changes the data if country is UK or Latvia or others
 countryInputField.addEventListener("change", (e) => {
   initAutocomplete(e.target.value);
   autocompleteAddress.setComponentRestrictions({ country: e.target.value });
@@ -611,16 +615,19 @@ countryInputField.addEventListener("change", (e) => {
     currency = "eur";
   }
 });
+// END Changes the data if country is UK or Latvia or others
 
+// Google Places API
 function initAutocomplete(selectedCountry = "lv") {
   autocompleteAddress = new google.maps.places.Autocomplete(addressInputField, {
     types: ["address"],
-    // componentRestrictions: { country: selectedCountry },
   });
   autocompleteAddress.setComponentRestrictions({ country: selectedCountry });
   autocompleteAddress.addListener("place_changed", fillInAddress);
 }
+// END Google Places API
 
+// Takes data from place object and fills corresponding hidden fields
 function findAddressData(data, place) {
   const dataObject = place.address_components.find((el) =>
     el.types.includes(data)
@@ -668,14 +675,10 @@ function fillInAddress() {
     zipCode.value = findAddressData("postal_code", place);
   }
   validation();
-  // if (validateInput($(':input[type="text"][required]:visible'))) {
-  //   enableBtn();
-  // } else {
-  //   disableBtn();
-  // }
 }
+// END Takes data from place object and fills corresponding hidden fields
 
-autocompleteCountry();
+// autocompleteCountry();
 
 // added dropdown list of countries to phone input
 const phoneInput = window.intlTelInput(phoneInputField, {
