@@ -1,4 +1,4 @@
-//22-2-23 Update Push
+//26-3-24 Update Push
 
 let x = 0;
 let curStep = 0;
@@ -487,30 +487,6 @@ function restrictAge() {
 restrictAge();
 // END Function that sets max value of HeroDOB input (NOT WORKING ON iOS)
 
-async function getGeolocationPermission() {
-  return new Promise((resolve) => {
-    navigator.permissions
-      .query({ name: "geolocation" })
-      .then((permissionStatus) => {
-        resolve(permissionStatus.state);
-      });
-  });
-}
-
-function getCurrentPosition() {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
-  });
-}
-
-async function getCountryFromCoordinates(latitude, longitude) {
-  const response = await fetch(
-    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-  );
-  const data = await response.json();
-  return data.countryCode.toLowerCase();
-}
-
 // Functions that show/hide message that delivery to UK is paid
 function handleMouseOver() {
   document.querySelector(".shipping-hint").style.display = "block";
@@ -567,37 +543,6 @@ function customizeShipping(value) {
   }
 }
 // END Function that makes free shipping disabled, shows note that delivery is 10 GBP
-
-async function autocompleteCountry() {
-  try {
-    const permissionStatus = await getGeolocationPermission();
-    if (permissionStatus === "granted") {
-      const position = await getCurrentPosition();
-      const userCountry = await getCountryFromCoordinates(
-        position.coords.latitude,
-        position.coords.longitude
-      );
-
-      const select = document.getElementById("Country");
-      for (let i = 0; i < select.options.length; i++) {
-        const option = select.options[i];
-        if (option.value === userCountry) {
-          option.selected = true;
-          initAutocomplete(option.value);
-          if (option.value !== "lv" && option.value !== "") {
-            shippingBlock.style.display = "block";
-          }
-          customizeShipping(option.value);
-          break;
-        }
-      }
-    } else {
-      console.warn("Geolocation permission not granted.");
-    }
-  } catch (error) {
-    console.error("Error during geolocation:", error);
-  }
-}
 
 // Changes the data if country is UK or Latvia or others
 countryInputField.addEventListener("change", (e) => {
@@ -677,8 +622,6 @@ function fillInAddress() {
   validation();
 }
 // END Takes data from place object and fills corresponding hidden fields
-
-// autocompleteCountry();
 
 // added dropdown list of countries to phone input
 const phoneInput = window.intlTelInput(phoneInputField, {
