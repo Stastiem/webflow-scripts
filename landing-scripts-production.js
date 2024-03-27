@@ -215,6 +215,7 @@ restrictAge();
 const swiper = new Swiper(".swiper", {
   direction: "horizontal",
   loop: true,
+  slidesPerView: 7,
   pagination: {
     el: ".swiper-pagination",
   },
