@@ -214,6 +214,7 @@ restrictAge();
 // Mobile swiper settings ////////////////////////////////////////////////////////////////////////////////////
 const swiper = new Swiper(".swiper", {
   direction: "horizontal",
+  slidesPerView: 7,
   loop: true,
   pagination: {
     el: ".swiper-pagination",
