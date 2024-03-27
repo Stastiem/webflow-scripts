@@ -215,7 +215,7 @@ restrictAge();
 const swiper = new Swiper(".swiper", {
   direction: "horizontal",
   slidesPerGroup: 1, // Adjust as needed
-  slidesPerView: 5, // Adjust as needed
+  slidesPerView: 1, // Adjust as needed
   loop: true, // Keep loop if desired
 
   pagination: {
