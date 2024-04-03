@@ -46,18 +46,17 @@ showHideContent();
 
 // Function that detects current domain //////////////////////////////////////////////////////////////////////////
 function detectLanguage() {
-  const domain = window.location.hostname;
-  switch (domain) {
-    case "lv.blossomreads.com":
-      return "lv";
-    case "de.blossomreads.com":
-      return "de";
-    case "uk.blossomreads.com":
-      return "uk";
-    case "ru.blossomreads.com":
-      return "ru";
-    default:
-      return "en";
+  const path = window.location.pathname;
+  if (path.startsWith("/lv")) {
+    return "lv";
+  } else if (path.startsWith("/de")) {
+    return "de";
+  } else if (path.startsWith("/uk")) {
+    return "uk";
+  } else if (path.startsWith("/ru")) {
+    return "ru";
+  } else {
+    return "en";
   }
 }
 

@@ -456,15 +456,11 @@ document
 ///////////////////////////////////////////////////////////
 
 const detectBookLang = () => {
-  const splittedHost = host.split(".");
-  const detectedLanguage = splittedHost[0];
+  const path = window.location.pathname.split("/")[1]; // Get the first segment of the path
+  const detectedLanguage = path ? path : "en"; // Default to English if no path segment
   if (!heroData) {
     for (let i = 0; i < bookLang.options.length; i++) {
       const languageOption = bookLang.options[i];
-      if (languageOption.value === "en") {
-        languageOption.selected = detectedLanguage === "www";
-        // break;
-      }
       if (languageOption.value === detectedLanguage) {
         console.log(languageOption.value);
         languageOption.selected = true;
