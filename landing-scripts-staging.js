@@ -74,13 +74,15 @@ const detectBookLang = () => {
 detectBookLang();
 
 // Typed string settings ///////////////////////////////////////////////////////////////////////////////////////////
-const typingString = document.getElementById("element");
-typingString.textContent = "";
-const usecaseList = document.getElementById("usecases");
-let placeholderStrings = [];
-for (let i = 0; i < usecaseList.children.length; i++) {
-  placeholderStrings.push(usecaseList.children[i].textContent);
-}
+// const typingString = document.getElementById("element");
+// typingString.textContent = "";
+// const usecaseList = document.getElementById("usecases");
+
+// let placeholderStrings = [];
+// for (let i = 0; i < usecaseList.children.length; i++) {
+//   placeholderStrings.push(usecaseList.children[i].textContent);
+// }
+
 // function typingTextEffect(
 //   el,
 //   texts,
@@ -178,15 +180,15 @@ for (let i = 0; i < usecaseList.children.length; i++) {
 // }
 
 // typingTextEffect(typingString, placeholderStrings);
-var typed = new Typed("#element", {
-  strings: placeholderStrings,
-  typeSpeed: 50,
-  backDelay: 700,
-  startDelay: 0,
-  backSpeed: 50,
-  showCursor: false,
-  loop: true,
-});
+// var typed = new Typed("#element", {
+//   strings: placeholderStrings,
+//   typeSpeed: 50,
+//   backDelay: 700,
+//   startDelay: 0,
+//   backSpeed: 50,
+//   showCursor: false,
+//   loop: true,
+// });
 
 // Fetch function to detect user's country ////////////////////////////////////////////////////////////////////
 fetch("https://ipapi.co/json/")
