@@ -4,7 +4,7 @@
 const domain = window.location.hostname;
 const prevArrow = document.getElementById("prev-btn");
 const nextArrow = document.getElementById("next-btn");
-const slider = document.querySelector(".slider-desktop");
+// const slider = document.querySelector(".slider-desktop");
 const firstFormStepLP = document.getElementById("first-step-form");
 const priceSymbols = document.querySelectorAll(".price-symbol");
 const priceLetters = document.querySelectorAll(".price-letters");
@@ -231,14 +231,14 @@ const swiper = new Swiper(".swiper", {
 });
 
 // Added new buttons to the desktop slider //////////////////////////////////////////////////////////////////////
-nextArrow.addEventListener("click", function () {
-  var nextButton = slider.querySelector(".w-slider-arrow-right");
-  nextButton.click();
-});
-prevArrow.addEventListener("click", function () {
-  var prevButton = slider.querySelector(".w-slider-arrow-left");
-  prevButton.click();
-});
+// nextArrow.addEventListener("click", function () {
+//   var nextButton = slider.querySelector(".w-slider-arrow-right");
+//   nextButton.click();
+// });
+// prevArrow.addEventListener("click", function () {
+//   var prevButton = slider.querySelector(".w-slider-arrow-left");
+//   prevButton.click();
+// });
 
 // Display text on slides corresponding to the chosen language /////////////////////////////////////////////////
 // function showTextBlock(language) {
