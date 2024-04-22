@@ -339,7 +339,7 @@ freeDelSpan.textContent =
   calculateDeliveryDate("paid") +
   " to " +
   calculateDeliveryDate("free");
-// paidDelSpan.textContent = "Delivery to door by " + calculateDeliveryDate("paid");
+paidDelSpan.textContent = "Delivery to door by " + calculateDeliveryDate("paid");
 // END Function that calculates and displays delivery terms
 
 // Creates clientRefId
