@@ -2169,7 +2169,7 @@ function getCookie(name) {
 }
 
 function isUploadedPhoto(photo) {
-  return photo !== "" ? "Image was uploaded" : "Image wasn't uploaded";
+  return photo !== "";
 }
 
 const nextButtons = document.querySelectorAll(".next-button");
