@@ -51,14 +51,11 @@ let is_boy = true;
 
 // added new variables
 let autocompleteAddress;
-let currency = "eur";
 let addressInputField = document.querySelector("#Address");
 let countryInputField = document.querySelector("#Country");
 let streetInputField = document.querySelector("#Street");
 let cityInputField = document.querySelector("#City");
 let zipCode = document.getElementById("ZipCode");
-const priceSymbols = document.querySelectorAll(".price-symbol");
-const priceLetters = document.querySelectorAll(".price-letters");
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
@@ -125,10 +122,10 @@ document.getElementById("StyleRandom").addEventListener("change", checkInputs);
 fetch("https://ipapi.co/json/")
   .then((response) => response.json())
   .then((data) => {
-    if (data.country_code === "GB") {
-      priceSymbols.forEach((el) => (el.textContent = "£"));
-      priceLetters.forEach((el) => (el.textContent = "GBP"));
-    }
+    // if (data.country_code === "GB") {
+    //   priceSymbols.forEach((el) => (el.textContent = "£"));
+    //   priceLetters.forEach((el) => (el.textContent = "GBP"));
+    // }
     const select = document.getElementById("Country");
     for (let i = 0; i < select.options.length; i++) {
       const option = select.options[i];
@@ -138,7 +135,7 @@ fetch("https://ipapi.co/json/")
         break;
       }
     }
-    currency = "gbp";
+    // currency = "gbp";
     if (
       data.country_code.toLowerCase() !== "lv" &&
       data.country_code.toLowerCase() !== ""
@@ -148,11 +145,11 @@ fetch("https://ipapi.co/json/")
       shippingBlock.style.display = "none";
     }
     customizeShipping(data.country_code.toLowerCase());
-    if (data.country_code.toLowerCase() !== "gb") {
-      priceSymbols.forEach((el) => (el.textContent = "€"));
-      priceLetters.forEach((el) => (el.textContent = "EUR"));
-      currency = "eur";
-    }
+    // if (data.country_code.toLowerCase() !== "gb") {
+    //   priceSymbols.forEach((el) => (el.textContent = "€"));
+    //   priceLetters.forEach((el) => (el.textContent = "EUR"));
+    //   currency = "eur";
+    // }
     // customizeShipping(data.country_code.toLowerCase());
   })
   .catch((error) => console.error("Error fetching IP information:", error));
@@ -511,7 +508,7 @@ function handleMouseOut() {
 function customizeShipping(value) {
   if (value === "gb") {
     document.querySelector(".shipping-note").textContent =
-      "The cost of shipping to the UK is 10 pounds.";
+      "The cost of shipping to the UK is 10 GBP.";
     document.getElementById("fast-shipping").checked = true;
     document.getElementById("free-shipping").disabled = true;
     document
@@ -526,9 +523,9 @@ function customizeShipping(value) {
     document
       .querySelector(".fast-shipping-radio")
       .classList.add("w--redirected-checked");
-    currency = "gbp";
-    priceSymbols.forEach((el) => (el.textContent = "£"));
-    priceLetters.forEach((el) => (el.textContent = "GBP"));
+    // currency = "gbp";
+    // priceSymbols.forEach((el) => (el.textContent = "£"));
+    // priceLetters.forEach((el) => (el.textContent = "GBP"));
     freeShippingRadio.addEventListener("mouseover", handleMouseOver);
     freeShippingRadio.addEventListener("mouseout", handleMouseOut);
   } else {
@@ -536,8 +533,8 @@ function customizeShipping(value) {
       "Free standard shipping to your door or nearest parcel machine. For quicker delivery, select our express option.";
     document.getElementById("free-shipping").disabled = false;
     document.getElementById("free-shipping").checked = true;
-    priceSymbols.forEach((el) => (el.textContent = "€"));
-    priceLetters.forEach((el) => (el.textContent = "EUR"));
+    // priceSymbols.forEach((el) => (el.textContent = "€"));
+    // priceLetters.forEach((el) => (el.textContent = "EUR"));
     document.querySelector(".shipping-hint").style.display = "none";
     document.querySelector(".free-shipping-radio").removeAttribute("style"); // Remove inline styles
     document.querySelector(".free-delivery-text").removeAttribute("style"); // Remove inline styles
@@ -564,11 +561,11 @@ countryInputField.addEventListener("change", (e) => {
     shippingBlock.style.display = "none";
   }
   customizeShipping(e.target.value);
-  if (e.target.value !== "gb") {
-    priceSymbols.forEach((el) => (el.textContent = "€"));
-    priceLetters.forEach((el) => (el.textContent = "EUR"));
-    currency = "eur";
-  }
+  // if (e.target.value !== "gb") {
+  //   priceSymbols.forEach((el) => (el.textContent = "€"));
+  //   priceLetters.forEach((el) => (el.textContent = "EUR"));
+  //   currency = "eur";
+  // }
 });
 // END Changes the data if country is UK or Latvia or others
 
