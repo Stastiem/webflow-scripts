@@ -2101,3 +2101,218 @@ textareaIds.forEach(function (id) {
 // if (new URL(window.location.href).searchParams.size > 0) {
 //   document.querySelectorAll(".next-button")[0].click();
 // }
+
+// START: Listens for image uplaod changes and then uploads the image to our own S3
+document.querySelectorAll('input.w-file-upload-input').forEach(input => {
+  input.addEventListener('change', function() {
+    const file = this.files[0];
+    const extension = file.name.split('.').pop();
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      const arrayBuffer = event.target.result;
+      sendDataToServer(arrayBuffer, file.name, extension);
+    };
+
+    reader.onerror = function(event) {
+      console.error("File could not be read! Code " + event.target.error.code);
+    };
+
+    reader.readAsArrayBuffer(file);
+
+    console.log('File uploaded:', file.name, 'with extension:', extension);
+  });
+});
+
+function sendDataToServer(arrayBuffer, fileName, extension) {
+  const clientRefId = encodeURIComponent(document.getElementById("ClientReferenceId").value)
+  const url = `https://api.blossomreads.com/order-form-image-upload?order_reference_id=${clientRefId}`;
+  const data = new Blob([arrayBuffer]); // Create a blob from the array buffer
+  const formData = new FormData();
+  formData.append('file', data, fileName);
+
+  fetch(url, {
+    method: 'PUT',
+    body: formData
+  })
+  .then(response => response.json()) // Assumes server responds with JSON
+  .then(data => {
+    console.log('Server response:', data);
+  })
+  .catch(error => {
+    console.error('Upload error:', error);
+  });
+};
+// END: Listens for image uplaod changes and then uploads the image to our own S3
+
+// <!-- START: Order Flow data tracking script -->
+// Function to get a cookie by name
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+  else return null;
+}
+
+function isUploadedPhoto(photo) {
+  return photo !== "" ? "Image was uploaded" : "Image wasn't uploaded";
+}
+
+const nextButtons = document.querySelectorAll(".next-button");
+var encodedClientRefId = encodeURIComponent(document.getElementById("ClientReferenceId").value);
+var deviceId = getCookie('DEVICE_ID');
+
+nextButtons[0].addEventListener("click", () => {
+  console.log("clicked firs next button");
+
+  var encodedStepName = encodeURIComponent("Step 1: Hero Data");
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
+            `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      hero_gender: document.querySelector('input[name="HeroGender"]:checked').value,
+      hero_name: document.getElementById("HeroName").value,
+      hero_dob: document.getElementById("HeroDOB").value,
+      book_language: document.getElementById("BookLanguage").value
+    })
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+});
+
+nextButtons[1].addEventListener("click", () => {
+  const occasionSelect = document.getElementById("occasion");
+  const occasionInput = document.getElementById("occasion-input");
+  const themeSelect = document.getElementById("theme");
+  const themeInput = document.getElementById("theme-input");
+  const occasionOption = Array.from(occasionSelect.options).find(
+    (option) => option.value === occasionInput.value
+  );
+  if (occasionOption) {
+    occasionInput.value = "";
+  } else {
+    occasionSelect.value = "";
+  }
+  const themeOption = Array.from(themeSelect.options).find(
+    (option) => option.value === themeInput.value
+  );
+  if (themeOption) {
+    themeInput.value = "";
+  } else {
+    themeSelect.value = "";
+  }
+
+  var encodedStepName = encodeURIComponent("Step 2: Personalise");
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
+            `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      book_occasion: occasionInput.value || occasionSelect.value || "",
+      book_is_occasion_from_list: occasionInput.value === "" && occasionSelect.value !== "",
+      book_theme: themeInput.value || themeSelect.value || "",
+      book_is_theme_from_list: themeInput.value === "" && themeSelect.value !== "",
+      book_is_style_random: document.getElementById("StyleRandom").checked,
+    })
+})
+
+});
+
+nextButtons[2].addEventListener("click", () => {
+  var encodedStepName = encodeURIComponent("Step 3: Personalisation Note");
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
+            `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      book_personalisation_note: document.getElementById("PersonalisationNote").value
+    })
+  })
+});
+
+nextButtons[3].addEventListener("click", () => {
+  const userName = document.getElementById("Full-Name").value;
+  const userPhone = document.getElementById("Phone").value;
+  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+
+  var encodedStepName = encodeURIComponent("Step 4: Customer Details");
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
+            `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&`
+            `user_email=${userEmail}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      user_name: userName,
+      user_phone: userPhone
+    })
+  })
+});
+
+nextButtons[4].addEventListener("click", () => {
+  const heroPhoto1 = document.getElementById("PhotoUpload1").value;
+
+  mixpanel.track("Form Step 5: Main Hero Photo", {
+    Step: "Main Hero Photo",
+    MainHeroPhoto: isUploadedPhoto(heroPhoto1),
+  });
+});
+
+nextButtons[5].addEventListener("click", () => {
+  const heroPhoto2 = document.getElementById("PhotoUpload2").value;
+  const heroPhoto3 = document.getElementById("PhotoUpload3").value;
+  const heroPhoto4 = document.getElementById("PhotoUpload4").value;
+  const heroPhoto5 = document.getElementById("PhotoUpload5").value;
+  mixpanel.track("Form Step 6: Additional Photos", {
+    Step: "Additional Photos",
+    HeroPhoto2: isUploadedPhoto(heroPhoto2),
+    HeroPhoto3: isUploadedPhoto(heroPhoto3),
+    HeroPhoto4: isUploadedPhoto(heroPhoto4),
+    HeroPhoto5: isUploadedPhoto(heroPhoto5),
+});
+});
+
+nextButtons[6].addEventListener("click", () => {
+  mixpanel.track("Form Step 7: Delivery Address", {
+    Step: "Delivery Address",
+    Country: document.getElementById("Country").value,
+    Address: document.getElementById("Address").value,
+  });
+});
+
+nextButtons[7].addEventListener("click", () => {
+  mixpanel.track("Form Step 8: Dedication Message", {
+    Step: "Dedication Message",
+    DedicationMessage: document.getElementById("DedicationMessage").value,
+  });
+});
+document.getElementById("order-submit-btn").addEventListener("click", () => {
+  mixpanel.track("Form Step 9: Additional products", {
+    Step: " Additional products",
+    Painting: document.getElementById("Painting").value,
+    Audio: document.getElementById("Audio").value,
+    Card: document.getElementById("Card").value,
+  });
+});
+// <!-- END Order Flow data tracking script-->

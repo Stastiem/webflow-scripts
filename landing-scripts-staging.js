@@ -17,32 +17,32 @@ const featuresSeparated = document.querySelector(".features-metrics");
 const heroLinkDown = document.querySelector(".scroll-link-hero");
 const featuresLinkDown = document.querySelector(".scroll-link-features");
 
-const websiteDataEn = [
-  document.querySelector(".sn-list-en"),
-  document.querySelector(".reviews-list-en"),
-  document.querySelector(".bg-image-en"),
-  document.querySelector(".pricing-image-en"),
-];
-const websiteDataLv = [
-  document.querySelector(".sn-list-lv"),
-  document.querySelector(".reviews-list-lv"),
-  document.querySelector(".bg-image-lv"),
-  document.querySelector(".pricing-image-lv"),
-];
+// const websiteDataEn = [
+//   document.querySelector(".sn-list-en"),
+//   document.querySelector(".reviews-list-en"),
+//   document.querySelector(".bg-image-en"),
+//   document.querySelector(".pricing-image-en"),
+// ];
+// const websiteDataLv = [
+//   document.querySelector(".sn-list-lv"),
+//   document.querySelector(".reviews-list-lv"),
+//   document.querySelector(".bg-image-lv"),
+//   document.querySelector(".pricing-image-lv"),
+// ];
 
 // Show/hide content according to the current domain ///////////////////////////////////////////////////////////////
-function showHideContent() {
-  const currentLanguage = detectLanguage();
-  // currentLanguage === "en" ? showTextBlock() : showTextBlock(currentLanguage);
-  if (currentLanguage === "lv") {
-    websiteDataEn.forEach((el) => (el.style.display = "none"));
-    websiteDataLv.forEach((el) => (el.style.display = "flex"));
-  } else {
-    websiteDataEn.forEach((el) => (el.style.display = "flex"));
-    websiteDataLv.forEach((el) => (el.style.display = "none"));
-  }
-}
-showHideContent();
+// function showHideContent() {
+//   const currentLanguage = detectLanguage();
+//   // currentLanguage === "en" ? showTextBlock() : showTextBlock(currentLanguage);
+//   if (currentLanguage === "lv") {
+//     websiteDataEn.forEach((el) => (el.style.display = "none"));
+//     websiteDataLv.forEach((el) => (el.style.display = "flex"));
+//   } else {
+//     websiteDataEn.forEach((el) => (el.style.display = "flex"));
+//     websiteDataLv.forEach((el) => (el.style.display = "none"));
+//   }
+// }
+// showHideContent();
 
 // Function that detects current domain //////////////////////////////////////////////////////////////////////////
 function detectLanguage() {
@@ -191,44 +191,44 @@ detectBookLang();
 // });
 
 // Fetch function to detect user's country ////////////////////////////////////////////////////////////////////
-fetch("https://ipapi.co/json/")
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.country_code === "GB") {
-      priceSymbols.forEach((el) => (el.textContent = "£"));
-      priceLetters.forEach((el) => (el.textContent = "GBP"));
-    }
-  })
-  .catch((error) => console.error("Error fetching IP information:", error));
+// fetch("https://ipapi.co/json/")
+//   .then((response) => response.json())
+//   .then((data) => {
+//     if (data.country_code === "GB") {
+//       priceSymbols.forEach((el) => (el.textContent = "£"));
+//       priceLetters.forEach((el) => (el.textContent = "GBP"));
+//     }
+//   })
+//   .catch((error) => console.error("Error fetching IP information:", error));
 
 // Age restriction ///////////////////////////////////////////////////////////////////////////////////////////
-function restrictAge() {
-  const today = new Date();
-  const minDate = new Date(today);
-  minDate.setMonth(today.getMonth() - 10);
-  document
-    .getElementById("HeroDOB")
-    .setAttribute("max", minDate.toISOString().split("T")[0]);
-}
-restrictAge();
+// function restrictAge() {
+//   const today = new Date();
+//   const minDate = new Date(today);
+//   minDate.setMonth(today.getMonth() - 10);
+//   document
+//     .getElementById("HeroDOB")
+//     .setAttribute("max", minDate.toISOString().split("T")[0]);
+// }
+// restrictAge();
 
 // Mobile swiper settings ////////////////////////////////////////////////////////////////////////////////////
-const swiper = new Swiper(".swiper", {
-  direction: "horizontal",
-  slidesPerGroup: 1,
-  slidesPerView: 7,
-  loop: true,
-  pagination: {
-    el: ".swiper-pagination",
-  },
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-  scrollbar: {
-    el: ".swiper-scrollbar",
-  },
-});
+// const swiper = new Swiper(".swiper", {
+//   direction: "horizontal",
+//   slidesPerGroup: 1,
+//   slidesPerView: 7,
+//   loop: true,
+//   pagination: {
+//     el: ".swiper-pagination",
+//   },
+//   navigation: {
+//     nextEl: ".swiper-button-next",
+//     prevEl: ".swiper-button-prev",
+//   },
+//   scrollbar: {
+//     el: ".swiper-scrollbar",
+//   },
+// });
 
 // Added new buttons to the desktop slider //////////////////////////////////////////////////////////////////////
 // nextArrow.addEventListener("click", function () {
@@ -300,100 +300,100 @@ const swiper = new Swiper(".swiper", {
 // }
 
 // Function that stores data in local storage ///////////////////////////////////////////////////////////////
-function storeData(value, name) {
-  if (value) {
-    localStorage.setItem(name, value);
-  } else {
-    localStorage.removeItem(name);
-  }
-}
+// function storeData(value, name) {
+//   if (value) {
+//     localStorage.setItem(name, value);
+//   } else {
+//     localStorage.removeItem(name);
+//   }
+// }
 
 // Function that converts select value to the image id /////////////////////////////////////////////////////
-function convertToClassName(str) {
-  const convertedString = str.toLowerCase().replace(/\s+/g, "-");
-  return convertedString + "-img";
-}
+// function convertToClassName(str) {
+//   const convertedString = str.toLowerCase().replace(/\s+/g, "-");
+//   return convertedString + "-img";
+// }
 
 // Function that saves OCCASION SELECT value in local storage, changes submit btn text content and changes active image
-function changeOccasionImage(selectElement) {
-  var selectedOption = selectElement.value;
-  var allImages = document.querySelectorAll(".image-container");
-  allImages.forEach(function (image) {
-    image.classList.remove("active");
-  });
-  if (selectedOption === "") {
-    document.getElementById("type-your-own-img").classList.add("active");
-  } else {
-    document
-      .getElementById(convertToClassName(selectedOption))
-      .classList.add("active");
-  }
-  selectElement.nextElementSibling.value = selectedOption;
-  // storeData(selectedOption, "occasion");
-  updateButtonText();
-}
+// function changeOccasionImage(selectElement) {
+//   var selectedOption = selectElement.value;
+//   var allImages = document.querySelectorAll(".image-container");
+//   allImages.forEach(function (image) {
+//     image.classList.remove("active");
+//   });
+//   if (selectedOption === "") {
+//     document.getElementById("type-your-own-img").classList.add("active");
+//   } else {
+//     document
+//       .getElementById(convertToClassName(selectedOption))
+//       .classList.add("active");
+//   }
+//   selectElement.nextElementSibling.value = selectedOption;
+//   // storeData(selectedOption, "occasion");
+//   updateButtonText();
+// }
 
 // Function that saves OCCASION INPUT value in local storage, changes submit btn text content and changes active image
-function changeOccasionImageFromInput(e) {
-  var inputValue = event.target.value;
-  var allImages = document.querySelectorAll(".image-container");
-  allImages.forEach(function (image) {
-    image.classList.remove("active");
-  });
-  document.getElementById("type-your-own-img").classList.add("active");
-  // storeData(inputValue, "occasion");
-  updateButtonText();
-}
+// function changeOccasionImageFromInput(e) {
+//   var inputValue = event.target.value;
+//   var allImages = document.querySelectorAll(".image-container");
+//   allImages.forEach(function (image) {
+//     image.classList.remove("active");
+//   });
+//   document.getElementById("type-your-own-img").classList.add("active");
+//   // storeData(inputValue, "occasion");
+//   updateButtonText();
+// }
 
 // Function that saves THEME SELECT value in local storage ///////////////////////////////////////////////////
-function changeThemeFromSelect(select) {
-  var selectedTheme = select.value;
-  select.nextElementSibling.value = selectedTheme;
-  // storeData(selectedTheme, "theme");
-  updateButtonText();
-}
+// function changeThemeFromSelect(select) {
+//   var selectedTheme = select.value;
+//   select.nextElementSibling.value = selectedTheme;
+//   // storeData(selectedTheme, "theme");
+//   updateButtonText();
+// }
 
 // Function that saves THEME INPUT value in local storage ///////////////////////////////////////////////////
-function changeThemeFromInput(e) {
-  var inputThemeValue = event.target.value;
-  // storeData(inputThemeValue, "theme");
-  updateButtonText();
-}
+// function changeThemeFromInput(e) {
+//   var inputThemeValue = event.target.value;
+//   // storeData(inputThemeValue, "theme");
+//   updateButtonText();
+// }
 
 // Function that updates submit btn value according to selected values //////////////////////////////////////////
-function updateButtonText() {
-  var occasion = document.getElementById("occasion-input").value;
-  var theme = document.getElementById("theme-input").value;
-  var buttonText = "ORDER";
-  if (occasion) {
-    buttonText += " for " + occasion;
-    if (theme) {
-      buttonText += " with " + theme;
-    }
-  }
-  if (theme && !occasion) {
-    buttonText = "book with " + theme;
-  }
-  document.getElementById("occasion-submit-btn").textContent = buttonText;
-}
+// function updateButtonText() {
+//   var occasion = document.getElementById("occasion-input").value;
+//   var theme = document.getElementById("theme-input").value;
+//   var buttonText = "ORDER";
+//   if (occasion) {
+//     buttonText += " for " + occasion;
+//     if (theme) {
+//       buttonText += " with " + theme;
+//     }
+//   }
+//   if (theme && !occasion) {
+//     buttonText = "book with " + theme;
+//   }
+//   document.getElementById("occasion-submit-btn").textContent = buttonText;
+// }
 
 // Function that saves first step data in local storage ///////////////////////////////////////////////////
-firstFormStepLP.addEventListener("submit", function (event) {
-  const formData = {
-    HeroGender: document.querySelector('input[name="HeroGender"]:checked')
-      .value,
-    HeroName: document.getElementById("HeroName").value,
-    HeroDOB: document.getElementById("HeroDOB").value,
-    BookLanguage: document.getElementById("BookLanguage").value,
-  };
-  localStorage.setItem("formData", JSON.stringify(formData));
-});
+// firstFormStepLP.addEventListener("submit", function (event) {
+//   const formData = {
+//     HeroGender: document.querySelector('input[name="HeroGender"]:checked')
+//       .value,
+//     HeroName: document.getElementById("HeroName").value,
+//     HeroDOB: document.getElementById("HeroDOB").value,
+//     BookLanguage: document.getElementById("BookLanguage").value,
+//   };
+//   localStorage.setItem("formData", JSON.stringify(formData));
+// });
 
-document.getElementById("Occasion-Form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  storeData(e.target.elements["occasion-input"].value, "occasion");
-  storeData(e.target.elements["theme-input"].value, "theme");
-});
+// document.getElementById("Occasion-Form").addEventListener("submit", (e) => {
+//   e.preventDefault();
+//   storeData(e.target.elements["occasion-input"].value, "occasion");
+//   storeData(e.target.elements["theme-input"].value, "theme");
+// });
 
 // Randomize slides /////////////////////////////////////////////////////////////////////////////////////////
 // const mask = document.querySelector(".mask");
