@@ -2143,8 +2143,7 @@ function sendDataToServer(arrayBuffer, fileName, extension) {
 
   // User might upload files with the same names so we need to add random string to the file name
   const randomString = Math.random().toString(36).substring(2, 15);
-  const fileName = `${fileName}-${randomString}.${extension}`;
-  formData.append('file', data, fileName);
+  formData.append('file', data, `${fileName}-${randomString}.${extension}`);
 
   fetch(url, {
     method: 'PUT',
