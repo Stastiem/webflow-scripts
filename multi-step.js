@@ -2163,8 +2163,7 @@ var encodedClientRefId = encodeURIComponent(document.getElementById("ClientRefer
 var deviceId = encodeURIComponent(getCookie('DEVICE_ID'));
 
 nextButtons[0].addEventListener("click", () => {
-  console.log("clicked firs next button");
-
+  console.log("clicked first next button on " + deviceId);
   var encodedStepName = encodeURIComponent("Step 1: Hero Data");
   var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
             `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
