@@ -2282,7 +2282,7 @@ nextButtons[4].addEventListener("click", () => {
   var encodedStepName = encodeURIComponent("Step 5: First Hero Photo");
   var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
 
-  fetchg(url, {
+  fetch(url, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',
