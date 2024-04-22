@@ -2363,13 +2363,29 @@ nextButtons[7].addEventListener("click", () => {
 
 document.getElementById("order-submit-btn").addEventListener("click", () => {
 
-  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+  document.getElementsByClassName("w-checkbox-input w-checkbox-input--inputType-custom additions-checkbox w--redirected-checked")
 
-  // mixpanel.track("Form Step 9: Additional products", {
-  //   Step: " Additional products",
-  //   Painting: document.getElementById("Painting").value,
-  //   Audio: document.getElementById("Audio").value,
-  //   Card: document.getElementById("Card").value,
-  // });
+  currentBookQuantity = parseInt(document.querySelector(`.book-quantity`).textContent);
+  currentPaintingQuantity = parseInt(document.querySelector(`.painting-quantity`).textContent);
+  isAudioBook = document.querySelector("input[name='Audio']").checked;
+  isCard = document.querySelector("input[name=Card]").checked;
+  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+  var encodedStepName = encodeURIComponent("Step 9: Final");
+
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      book_quantity: currentBookQuantity,
+      painting_quantity: currentPaintingQuantity,
+      is_audio_book: isAudioBook,
+      is_card: isCard
+    })
+  })
 });
 // <!-- END Order Flow data tracking script-->
