@@ -2160,7 +2160,7 @@ function isUploadedPhoto(photo) {
 
 const nextButtons = document.querySelectorAll(".next-button");
 var encodedClientRefId = encodeURIComponent(document.getElementById("ClientReferenceId").value);
-var deviceId = getCookie('DEVICE_ID');
+var deviceId = encodeURIComponent(getCookie('DEVICE_ID'));
 
 nextButtons[0].addEventListener("click", () => {
   console.log("clicked firs next button");
