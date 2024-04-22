@@ -2165,8 +2165,7 @@ var deviceId = encodeURIComponent(getCookie('DEVICE_ID'));
 nextButtons[0].addEventListener("click", () => {
   console.log("clicked first next button on " + deviceId);
   var encodedStepName = encodeURIComponent("Step 1: Hero Data");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
-            `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
 
   fetch(url, {
     method: 'PUT',
@@ -2209,8 +2208,7 @@ nextButtons[1].addEventListener("click", () => {
   }
 
   var encodedStepName = encodeURIComponent("Step 2: Personalise");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
-            `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
 
   fetch(url, {
     method: 'PUT',
@@ -2231,8 +2229,7 @@ nextButtons[1].addEventListener("click", () => {
 
 nextButtons[2].addEventListener("click", () => {
   var encodedStepName = encodeURIComponent("Step 3: Personalisation Note");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
-            `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
 
   fetch(url, {
     method: 'PUT',
@@ -2252,9 +2249,7 @@ nextButtons[3].addEventListener("click", () => {
   const userEmail = encodeURIComponent(document.getElementById("Email").value);
 
   var encodedStepName = encodeURIComponent("Step 4: Customer Details");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&`
-            `event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&`
-            `user_email=${userEmail}`;
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
 
   fetch(url, {
     method: 'PUT',
