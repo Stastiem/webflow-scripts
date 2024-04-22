@@ -2140,6 +2140,10 @@ function sendDataToServer(arrayBuffer, fileName, extension) {
   const url = `https://api.blossomreads.com/order-form-image-upload?order_reference_id=${clientRefId}`;
   const data = new Blob([arrayBuffer]); // Create a blob from the array buffer
   const formData = new FormData();
+
+  // User might upload files with the same names so we need to add random string to the file name
+  const randomString = Math.random().toString(36).substring(2, 15);
+  const fileName = `${fileName}-${randomString}.${extension}`;
   formData.append('file', data, fileName);
 
   fetch(url, {
