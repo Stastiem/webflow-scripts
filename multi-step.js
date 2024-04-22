@@ -369,7 +369,6 @@ for (let i = 0; i < checkboxes.length; i++) {
         paintingQuantity.textContent = 0;
         document.querySelectorAll(".additions-checkbox")[1].style.border =
           "1px solid rgba(0,0,0,0.15)";
-        document.querySelector(".painting-price").textContent = 17.49;
       }
     }
   });
@@ -381,12 +380,21 @@ function incrementCounter(counterId) {
   const counterInput = document.querySelector(`.${counterId}`);
   const currentValue = parseInt(counterInput.textContent);
   counterInput.textContent = currentValue + 1;
+
+  const currencyName = document.getElementsByClassName("price")[0].textContent.replace(/[\+\-]?\d+(\.\d+)?/g, '').trim()
+
+  const fullBookPrice = parseFloat(document.getElementsByClassName("price")[0].textContent.replace(/[^\d.-]/g, ''));
+  const bookPrice = fullBookPrice / (1 + 0.6 * (currentValue - 1));
+
+  const fullPaintingPrice = parseFloat(document.getElementsByClassName("price")[1].textContent.replace(/[^\d.-]/g, ''));
+  const paintingPrice = fullPaintingPrice / currentValue;
+
   if (counterInput.className === "book-quantity") {
     if (currentValue + 1 > 1) {
-      document.querySelector(".book-price").textContent = (
-        49.0 +
-        39.0 * 0.75 * currentValue
-      ).toFixed(2);
+      document.getElementsByClassName("price")[0].textContent = "+" + (
+        bookPrice +
+        bookPrice * 0.6 * currentValue
+      ).toFixed(2) + " " + currencyName;
     }
   }
   if (counterInput.className === "painting-quantity") {
@@ -396,10 +404,9 @@ function incrementCounter(counterId) {
     checkmarks[1].style.background = "#f0623d";
     checkmarks[1].style.border = "1px solid #f0623d";
     if (currentValue > 0) {
-      document.querySelector(".painting-price").textContent = (
-        17.49 *
-        (currentValue + 1)
-      ).toFixed(2);
+      document.getElementsByClassName("price")[1].textContent = "+" + (
+        paintingPrice * (currentValue + 1)
+      ).toFixed(2) + " " + currencyName;
     }
   }
 }
@@ -407,17 +414,25 @@ function incrementCounter(counterId) {
 function decrementCounter(counterId) {
   const counterInput = document.querySelector(`.${counterId}`);
   const currentValue = parseInt(counterInput.textContent);
+
+  const currencyName = document.getElementsByClassName("price")[0].textContent.replace(/[\+\-]?\d+(\.\d+)?/g, '').trim()
+  const fullBookPrice = parseFloat(document.getElementsByClassName("price")[0].textContent.replace(/[^\d.-]/g, ''));
+  const bookPrice = fullBookPrice / (1 + 0.6 * (currentValue - 1));
+
+  const fullPaintingPrice = parseFloat(document.getElementsByClassName("price")[1].textContent.replace(/[^\d.-]/g, ''));
+  const paintingPrice = fullPaintingPrice / currentValue;
+
   if (currentValue > 1 && counterInput.className === "book-quantity") {
     counterInput.textContent = currentValue - 1;
     if (currentValue - 1 > 1) {
-      document.querySelector(".book-price").textContent = (
-        49.0 +
-        39.0 * 0.75 * (currentValue - 2)
-      ).toFixed(2);
+      document.getElementsByClassName("price")[0].textContent = "+" + (
+        bookPrice +
+        bookPrice * 0.6 * (currentValue - 2)
+      ).toFixed(2) + " " + currencyName;
       console.log(currentValue - 1);
     }
     if (currentValue - 1 === 1) {
-      document.querySelector(".book-price").textContent = (49.0).toFixed(2);
+      document.getElementsByClassName("price")[0].textContent = "+" + bookPrice + " " + currencyName;
     }
   }
   if (currentValue > 0 && counterInput.className !== "book-quantity") {
@@ -430,13 +445,12 @@ function decrementCounter(counterId) {
       checkmarks[1].style.border = "1px solid rgba(0,0,0,0.15)";
     }
     if (currentValue > 0) {
-      document.querySelector(".painting-price").textContent = (
-        17.49 *
-        (currentValue - 1)
-      ).toFixed(2);
+      document.getElementsByClassName("price")[1].textContent = "+" + (
+        paintingPrice * (currentValue - 1)
+      ).toFixed(2) + " " + currencyName;
     }
     if (currentValue - 1 === 0) {
-      document.querySelector(".painting-price").textContent = 17.49;
+      document.getElementsByClassName("price")[1].textContent = "+" + paintingPrice + " " + currencyName;
     }
   }
 }
@@ -2266,11 +2280,21 @@ nextButtons[3].addEventListener("click", () => {
 
 nextButtons[4].addEventListener("click", () => {
   const heroPhoto1 = document.getElementById("PhotoUpload1").value;
+  const userEmail = encodeURIComponent(document.getElementById("Email").value);
 
-  mixpanel.track("Form Step 5: Main Hero Photo", {
-    Step: "Main Hero Photo",
-    MainHeroPhoto: isUploadedPhoto(heroPhoto1),
-  });
+  var encodedStepName = encodeURIComponent("Step 5: First Hero Photo");
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+
+  fetchg(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      is_image_1_uploaded: isUploadedPhoto(heroPhoto1)
+    })
+  })
 });
 
 nextButtons[5].addEventListener("click", () => {
@@ -2278,35 +2302,77 @@ nextButtons[5].addEventListener("click", () => {
   const heroPhoto3 = document.getElementById("PhotoUpload3").value;
   const heroPhoto4 = document.getElementById("PhotoUpload4").value;
   const heroPhoto5 = document.getElementById("PhotoUpload5").value;
-  mixpanel.track("Form Step 6: Additional Photos", {
-    Step: "Additional Photos",
-    HeroPhoto2: isUploadedPhoto(heroPhoto2),
-    HeroPhoto3: isUploadedPhoto(heroPhoto3),
-    HeroPhoto4: isUploadedPhoto(heroPhoto4),
-    HeroPhoto5: isUploadedPhoto(heroPhoto5),
-});
+  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+
+  var encodedStepName = encodeURIComponent("Step 6: Additional Photos");
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      is_image_2_uploaded: isUploadedPhoto(heroPhoto2),
+      is_image_3_uploaded: isUploadedPhoto(heroPhoto3),
+      is_image_4_uploaded: isUploadedPhoto(heroPhoto4),
+      is_image_5_uploaded: isUploadedPhoto(heroPhoto5)
+    })
+  })
 });
 
 nextButtons[6].addEventListener("click", () => {
-  mixpanel.track("Form Step 7: Delivery Address", {
-    Step: "Delivery Address",
-    Country: document.getElementById("Country").value,
-    Address: document.getElementById("Address").value,
-  });
+  const country = document.getElementById("Country").value;
+  const address = document.getElementById("Address").value;
+  const is_paid_shipping = document.getElementById("fast-shipping").checked;
+  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+  var encodedStepName = encodeURIComponent("Step 7: Delivery");
+
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      delivery_country: country,
+      delivery_address: address,
+      is_paid_shipping: is_paid_shipping
+    })
+  })
 });
 
 nextButtons[7].addEventListener("click", () => {
-  mixpanel.track("Form Step 8: Dedication Message", {
-    Step: "Dedication Message",
-    DedicationMessage: document.getElementById("DedicationMessage").value,
-  });
+  const dedicationMessage = document.getElementById("DedicationMessage").value;
+  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+  var encodedStepName = encodeURIComponent("Step 8: Dedication Message");
+
+  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      book_dedication_message: dedicationMessage
+    })
+  })
 });
+
 document.getElementById("order-submit-btn").addEventListener("click", () => {
-  mixpanel.track("Form Step 9: Additional products", {
-    Step: " Additional products",
-    Painting: document.getElementById("Painting").value,
-    Audio: document.getElementById("Audio").value,
-    Card: document.getElementById("Card").value,
-  });
+
+  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+
+  // mixpanel.track("Form Step 9: Additional products", {
+  //   Step: " Additional products",
+  //   Painting: document.getElementById("Painting").value,
+  //   Audio: document.getElementById("Audio").value,
+  //   Card: document.getElementById("Card").value,
+  // });
 });
 // <!-- END Order Flow data tracking script-->
