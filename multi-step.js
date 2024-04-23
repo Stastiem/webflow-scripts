@@ -2186,7 +2186,7 @@ function collectFormData() {
 
   return {
     deviceId: getCookie('DEVICE_ID') ?? null,
-    encodedClientRefId: document.getElementById("ClientReferenceId")?.value ?? null,
+    clientRefId: document.getElementById("ClientReferenceId")?.value ?? null,
     userEmail: document.getElementById("Email")?.value ?? null,
     userName: document.getElementById("Full-Name")?.value ?? null,
     userPhone: document.getElementById("Phone")?.value ?? null,
@@ -2259,7 +2259,7 @@ nextButtons[0].addEventListener("click", () => {
   fetchFormEvent(
     formData.deviceId,
     encodedStepName,
-    formData.encodedClientRefId,
+    formData.clientRefId,
     formData.userEmail,
     {
       hero_gender: formData.heroGender,
@@ -2278,7 +2278,7 @@ nextButtons[1].addEventListener("click", () => {
   fetchFormEvent(
     formData.deviceId,
     encodedStepName,
-    formData.encodedClientRefId,
+    formData.clientRefId,
     formData.userEmail,
     {
       book_occasion: formData.occasionInput || formData.occasionSelect,
@@ -2299,7 +2299,7 @@ nextButtons[2].addEventListener("click", () => {
   fetchFormEvent(
     formData.deviceId,
     encodedStepName,
-    formData.encodedClientRefId,
+    formData.clientRefId,
     formData.userEmail,
     {
       book_personalisation_note: formData.bookPersonalisationNote
@@ -2315,7 +2315,7 @@ nextButtons[3].addEventListener("click", () => {
   fetchFormEvent(
     formData.deviceId,
     encodedStepName,
-    formData.encodedClientRefId,
+    formData.clientRefId,
     formData.userEmail,
     {
       user_name: formData.userName,
@@ -2332,7 +2332,7 @@ nextButtons[4].addEventListener("click", () => {
   fetchFormEvent(
     formData.deviceId,
     encodedStepName,
-    formData.encodedClientRefId,
+    formData.clientRefId,
     formData.userEmail,
     {
       is_image_1_uploaded: formData.isHeroPhoto1Uploaded
@@ -2348,7 +2348,7 @@ nextButtons[5].addEventListener("click", () => {
   fetchFormEvent(
     formData.deviceId,
     encodedStepName,
-    formData.encodedClientRefId,
+    formData.clientRefId,
     formData.userEmail,
     {
       is_image_2_uploaded: formData.isHeroPhoto2Uploaded,
@@ -2367,7 +2367,7 @@ nextButtons[6].addEventListener("click", () => {
   fetchFormEvent(
     formData.deviceId,
     encodedStepName,
-    formData.encodedClientRefId,
+    formData.clientRefId,
     formData.userEmail,
     {
       delivery_country: formData.shippingCountry,
@@ -2385,7 +2385,7 @@ nextButtons[7].addEventListener("click", () => {
   fetchFormEvent(
     formData.deviceId,
     encodedStepName,
-    formData.encodedClientRefId,
+    formData.clientRefId,
     formData.userEmail,
     {
       book_dedication_message: formData.dedicationMessage
@@ -2408,7 +2408,7 @@ document.querySelector(".formly-form").addEventListener("submit", async function
     const response = await fetchFormEvent(
       formData.deviceId,
       encodedStepName,
-      formData.encodedClientRefId,
+      formData.clientRefId,
       formData.userEmail,
       {
         book_quantity: formData.bookQuantity,
@@ -2424,15 +2424,15 @@ document.querySelector(".formly-form").addEventListener("submit", async function
 
   // Redirect the user to Stripe payment page
   window.location.href = `https://api.blossomreads.com/stripe/stripe-payment-url-redirect?` +
-                          `is_audio=${encodeURIComponent(formData.isAudioBook)}&` +
-                          `is_painting=${encodeURIComponent(formData.isPainting)}&` +
-                          `is_card=${encodeURIComponent(formData.isCard)}&` +
-                          `customer_email=${encodeURIComponent(formData.userEmail)}&` +
-                          `client_reference_id=${encodeURIComponent(formData.encodedClientRefId)}&` +
-                          `language=${encodeURIComponent(formData.bookLang)}&` +
-                          `is_paid_shipping=${encodeURIComponent(formData.isFastShipping)}&` +
-                          `book_quantity=${encodeURIComponent(formData.bookQuantity)}&` +
-                          `painting_quantity=${encodeURIComponent(formData.paintingQuantity)}&` +
-                          `currency=${encodeURIComponent(formData.currencyName)}&` +
-                          `testing=${encodeURIComponent(formData.isTesting)}`;
+                         `is_audio=${formData.isAudioBook}&` +
+                         `is_painting=${formData.isPainting}&` +
+                         `is_card=${formData.isCard}&` +
+                         `customer_email=${encodeURIComponent(formData.userEmail)}&` +
+                         `client_reference_id=${encodeURIComponent(formData.clientRefId)}&` +
+                         `language=${formData.bookLang}&` +
+                         `is_paid_shipping=${formData.isFastShipping}&` +
+                         `book_quantity=${formData.bookQuantity}&` +
+                         `painting_quantity=${formData.paintingQuantity}&` +
+                         `currency=${formData.currencyName}&` +
+                         `testing=${formData.isTesting}`;
 });
