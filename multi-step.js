@@ -2253,7 +2253,7 @@ const nextButtons = document.querySelectorAll(".next-button");
 
 nextButtons[0].addEventListener("click", () => {
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 1: Hero Data");
+  var encodedStepName = "Step 1: Hero Data";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   fetchFormEvent(
@@ -2272,7 +2272,7 @@ nextButtons[0].addEventListener("click", () => {
 
 nextButtons[1].addEventListener("click", () => {
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 2: Personalise");
+  var encodedStepName = "Step 2: Personalise";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   fetchFormEvent(
@@ -2293,7 +2293,7 @@ nextButtons[1].addEventListener("click", () => {
 
 nextButtons[2].addEventListener("click", () => {
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 3: Personalisation Note");
+  var encodedStepName = "Step 3: Personalisation Note";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   fetchFormEvent(
@@ -2309,7 +2309,7 @@ nextButtons[2].addEventListener("click", () => {
 
 nextButtons[3].addEventListener("click", () => {
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 4: Customer Details");
+  var encodedStepName = "Step 4: Customer Details";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   fetchFormEvent(
@@ -2326,7 +2326,7 @@ nextButtons[3].addEventListener("click", () => {
 
 nextButtons[4].addEventListener("click", () => {
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 5: First Hero Photo");
+  var encodedStepName = "Step 5: First Hero Photo";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   fetchFormEvent(
@@ -2342,7 +2342,7 @@ nextButtons[4].addEventListener("click", () => {
 
 nextButtons[5].addEventListener("click", () => {
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 6: Additional Photos");
+  var encodedStepName = "Step 6: Additional Photos";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   fetchFormEvent(
@@ -2361,7 +2361,7 @@ nextButtons[5].addEventListener("click", () => {
 
 nextButtons[6].addEventListener("click", () => {
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 7: Delivery");
+  var encodedStepName = "Step 7: Delivery";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   fetchFormEvent(
@@ -2379,7 +2379,7 @@ nextButtons[6].addEventListener("click", () => {
 
 nextButtons[7].addEventListener("click", () => {
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 8: Dedication Message");
+  var encodedStepName = "Step 8: Dedication Message";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   fetchFormEvent(
@@ -2400,7 +2400,7 @@ document.querySelector(".formly-form").addEventListener("submit", async function
   event.preventDefault();
 
   const formData = collectFormData();
-  var encodedStepName = encodeURIComponent("Step 9: Final");
+  var encodedStepName = "Step 9: Final";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
   // We are waiting for the fetch to complete before redirecting to the payment page
