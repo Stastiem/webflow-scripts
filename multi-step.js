@@ -2428,7 +2428,7 @@ document.querySelector(".formly-form").addEventListener("submit", async function
                           `is_painting=${encodeURIComponent(formData.isPainting)}&` +
                           `is_card=${encodeURIComponent(formData.isCard)}&` +
                           `customer_email=${encodeURIComponent(formData.userEmail)}&` +
-                          `client_reference_id=${encodeURIComponent(encodedClientRefId)}&` +
+                          `client_reference_id=${encodeURIComponent(formData.encodedClientRefId)}&` +
                           `language=${encodeURIComponent(formData.bookLang)}&` +
                           `is_paid_shipping=${encodeURIComponent(formData.isFastShipping)}&` +
                           `book_quantity=${encodeURIComponent(formData.bookQuantity)}&` +
