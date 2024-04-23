@@ -2160,7 +2160,7 @@ function sendDataToServer(arrayBuffer, fileName, extension) {
 // END: Listens for image uplaod changes and then uploads the image to our own S3
 
 // <!-- START: Order Flow data tracking script -->
-// Function to get a cookie by name
+// Get a cookie by name
 function getCookie(name) {
   var value = "; " + document.cookie;
   var parts = value.split("; " + name + "=");
@@ -2168,227 +2168,271 @@ function getCookie(name) {
   else return null;
 }
 
-function isUploadedPhoto(photo) {
-  return photo !== "";
+function collectFormData() {
+
+  // Since user can select from the list or type in the input field manually we are checking
+  // which of the two is selected and then getting the value accordingly for occasions and themes
+  const _occasionSelect = document.getElementById("occasion");
+  const _occasionInput = document.getElementById("occasion-input");
+  const _occasionOption = Array.from(_occasionSelect.options).find(
+    (option) => option.value === _occasionInput.value
+  );
+
+  const _themeSelect = document.getElementById("theme");
+  const _themeInput = document.getElementById("theme-input");
+  const _themeOption = Array.from(_themeSelect.options).find(
+    (option) => option.value === _themeInput.value
+  );
+
+  return {
+    deviceId: getCookie('DEVICE_ID') ?? null,
+    encodedClientRefId: document.getElementById("ClientReferenceId")?.value ?? null,
+    userEmail: document.getElementById("Email")?.value ?? null,
+    userName: document.getElementById("Full-Name")?.value ?? null,
+    userPhone: document.getElementById("Phone")?.value ?? null,
+    heroGender: document.querySelector('input[name="HeroGender"]:checked')?.value.toLowerCase() ?? null,
+    heroName: document.getElementById("HeroName")?.value ?? null,
+    heroDOB: document.getElementById("HeroDOB")?.value ?? null,
+    occasionSelect: _occasionOption ? _occasionOption.value : "",
+    occasionInput: _occasionOption ? "" : _occasionInput.value,
+    themeSelect: _themeOption ? _themeOption.value : "",
+    themeInput: _themeOption ? "" : _themeInput.value,
+    isStyleRandom: document.getElementById("StyleRandom").checked,
+    bookPersonalisationNote: document.getElementById("PersonalisationNote")?.value ?? null,
+    isHeroPhoto1Uploaded: document.getElementById("PhotoUpload1")?.value !== "",
+    isHeroPhoto2Uploaded: document.getElementById("PhotoUpload2")?.value !== "",
+    isHeroPhoto3Uploaded: document.getElementById("PhotoUpload3")?.value !== "",
+    isHeroPhoto4Uploaded: document.getElementById("PhotoUpload4")?.value !== "",
+    isHeroPhoto5Uploaded: document.getElementById("PhotoUpload5")?.value !== "",
+    shippingCountry: document.getElementById("Country")?.value ?? null,
+    shippingAddress: document.getElementById("Address")?.value ?? null,
+    dedicationMessage: document.getElementById("DedicationMessage")?.value ?? null,
+    bookQuantity: parseInt(document.querySelector('.book-quantity')?.textContent ?? null),
+    paintingQuantity: parseInt(document.querySelector('.painting-quantity')?.textContent ?? null),
+    isAudioBook: document.querySelector("input[name='Audio']")?.checked ?? null,
+    isPainting: document.querySelector("input[name='Painting']")?.checked ?? null,
+    isCard: document.querySelector("input[name='Card']")?.checked ?? null,
+    bookLang: document.getElementById("BookLanguage")?.value ?? null,
+    isFastShipping: document.getElementById("fast-shipping")?.checked ?? null,
+    currencyName: document.getElementsByClassName("price")[0]?.textContent.replace(/[\+\-]?\d+(\.\d+)?/g, '').trim() ?? null,
+    isTesting: location.hostname.includes("blossomreads.webflow.io")
+  };
+};
+
+function fetchFormEvent(deviceId, eventName, orderReferenceId, userEmail, formData) {
+  let url = `https://api.blossomreads.com/order-form-event?` +
+            `device_id=${encodeURIComponent(deviceId)}&` +
+            `event_name=${encodeURIComponent(eventName)}&` +
+            `order_reference_id=${encodeURIComponent(orderReferenceId)}`;
+
+  if (userEmail) {
+    url += `&user_email=${encodeURIComponent(userEmail)}`;
+  }
+
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+    throw error; // Rethrow to ensure calling code can handle it
+  });
 }
 
 const nextButtons = document.querySelectorAll(".next-button");
-var encodedClientRefId = encodeURIComponent(document.getElementById("ClientReferenceId").value);
-var deviceId = encodeURIComponent(getCookie('DEVICE_ID'));
 
 nextButtons[0].addEventListener("click", () => {
-  console.log("clicked first next button on " + deviceId);
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 1: Hero Data");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      hero_gender: document.querySelector('input[name="HeroGender"]:checked').value,
-      hero_name: document.getElementById("HeroName").value,
-      hero_dob: document.getElementById("HeroDOB").value,
-      book_language: document.getElementById("BookLanguage").value
-    })
-  })
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));
+  fetchFormEvent(
+    formData.deviceId,
+    encodedStepName,
+    formData.encodedClientRefId,
+    formData.userEmail,
+    {
+      hero_gender: formData.heroGender,
+      hero_name: formData.heroName,
+      hero_dob: formData.heroDOB,
+      book_language: formData.bookLang
+    }
+  )
 });
 
 nextButtons[1].addEventListener("click", () => {
-  const occasionSelect = document.getElementById("occasion");
-  const occasionInput = document.getElementById("occasion-input");
-  const themeSelect = document.getElementById("theme");
-  const themeInput = document.getElementById("theme-input");
-  const occasionOption = Array.from(occasionSelect.options).find(
-    (option) => option.value === occasionInput.value
-  );
-  if (occasionOption) {
-    occasionInput.value = "";
-  } else {
-    occasionSelect.value = "";
-  }
-  const themeOption = Array.from(themeSelect.options).find(
-    (option) => option.value === themeInput.value
-  );
-  if (themeOption) {
-    themeInput.value = "";
-  } else {
-    themeSelect.value = "";
-  }
-
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 2: Personalise");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      book_occasion: occasionInput.value || occasionSelect.value || "",
-      book_is_occasion_from_list: occasionInput.value === "" && occasionSelect.value !== "",
-      book_theme: themeInput.value || themeSelect.value || "",
-      book_is_theme_from_list: themeInput.value === "" && themeSelect.value !== "",
-      book_is_style_random: document.getElementById("StyleRandom").checked,
-    })
-})
+  fetchFormEvent(
+    formData.deviceId,
+    encodedStepName,
+    formData.encodedClientRefId,
+    formData.userEmail,
+    {
+      book_occasion: formData.occasionInput || formData.occasionSelect,
+      book_is_occasion_from_list: formData.occasionInput === "" && formData.occasionSelect !== "",
+      book_theme: formData.themeInput || formData.themeSelect,
+      book_is_theme_from_list: formData.themeInput === "" && formData.themeSelect !== "",
+      book_is_style_random: formData.isStyleRandom
+    }
+  );
 
 });
 
 nextButtons[2].addEventListener("click", () => {
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 3: Personalisation Note");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}`;
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      book_personalisation_note: document.getElementById("PersonalisationNote").value
-    })
-  })
+  fetchFormEvent(
+    formData.deviceId,
+    encodedStepName,
+    formData.encodedClientRefId,
+    formData.userEmail,
+    {
+      book_personalisation_note: formData.bookPersonalisationNote
+    }
+  )
 });
 
 nextButtons[3].addEventListener("click", () => {
-  const userName = document.getElementById("Full-Name").value;
-  const userPhone = document.getElementById("Phone").value;
-  const userEmail = encodeURIComponent(document.getElementById("Email").value);
-
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 4: Customer Details");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      user_name: userName,
-      user_phone: userPhone
-    })
-  })
+  fetchFormEvent(
+    formData.deviceId,
+    encodedStepName,
+    formData.encodedClientRefId,
+    formData.userEmail,
+    {
+      user_name: formData.userName,
+      user_phone: formData.userPhone
+    }
+  )
 });
 
 nextButtons[4].addEventListener("click", () => {
-  const heroPhoto1 = document.getElementById("PhotoUpload1").value;
-  const userEmail = encodeURIComponent(document.getElementById("Email").value);
-
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 5: First Hero Photo");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      is_image_1_uploaded: isUploadedPhoto(heroPhoto1)
-    })
-  })
+  fetchFormEvent(
+    formData.deviceId,
+    encodedStepName,
+    formData.encodedClientRefId,
+    formData.userEmail,
+    {
+      is_image_1_uploaded: formData.isHeroPhoto1Uploaded
+    }
+  )
 });
 
 nextButtons[5].addEventListener("click", () => {
-  const heroPhoto2 = document.getElementById("PhotoUpload2").value;
-  const heroPhoto3 = document.getElementById("PhotoUpload3").value;
-  const heroPhoto4 = document.getElementById("PhotoUpload4").value;
-  const heroPhoto5 = document.getElementById("PhotoUpload5").value;
-  const userEmail = encodeURIComponent(document.getElementById("Email").value);
-
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 6: Additional Photos");
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      is_image_2_uploaded: isUploadedPhoto(heroPhoto2),
-      is_image_3_uploaded: isUploadedPhoto(heroPhoto3),
-      is_image_4_uploaded: isUploadedPhoto(heroPhoto4),
-      is_image_5_uploaded: isUploadedPhoto(heroPhoto5)
-    })
-  })
+  fetchFormEvent(
+    formData.deviceId,
+    encodedStepName,
+    formData.encodedClientRefId,
+    formData.userEmail,
+    {
+      is_image_2_uploaded: formData.isHeroPhoto2Uploaded,
+      is_image_3_uploaded: formData.isHeroPhoto3Uploaded,
+      is_image_4_uploaded: formData.isHeroPhoto4Uploaded,
+      is_image_5_uploaded: formData.isHeroPhoto5Uploaded
+    }
+  )
 });
 
 nextButtons[6].addEventListener("click", () => {
-  const country = document.getElementById("Country").value;
-  const address = document.getElementById("Address").value;
-  const is_paid_shipping = document.getElementById("fast-shipping").checked;
-  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 7: Delivery");
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
-
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      delivery_country: country,
-      delivery_address: address,
-      is_paid_shipping: is_paid_shipping
-    })
-  })
+  fetchFormEvent(
+    formData.deviceId,
+    encodedStepName,
+    formData.encodedClientRefId,
+    formData.userEmail,
+    {
+      delivery_country: formData.shippingCountry,
+      delivery_address: formData.shippingAddress,
+      is_paid_shipping: formData.isFastShipping
+    }
+  )
 });
 
 nextButtons[7].addEventListener("click", () => {
-  const dedicationMessage = document.getElementById("DedicationMessage").value;
-  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 8: Dedication Message");
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
-
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      book_dedication_message: dedicationMessage
-    })
-  })
+  fetchFormEvent(
+    formData.deviceId,
+    encodedStepName,
+    formData.encodedClientRefId,
+    formData.userEmail,
+    {
+      book_dedication_message: formData.dedicationMessage
+    }
+  )
 });
 
-document.getElementById("order-submit-btn").addEventListener("click", () => {
+// Form submission script
+document.querySelector(".formly-form").addEventListener("submit", async function (event) {
+  // Send OrderFilled event to Google Tag Manager
+  window.dataLayer.push({ event: "OrderFilled" });
+  event.preventDefault();
 
-  document.getElementsByClassName("w-checkbox-input w-checkbox-input--inputType-custom additions-checkbox w--redirected-checked")
-
-  currentBookQuantity = parseInt(document.querySelector(`.book-quantity`).textContent);
-  currentPaintingQuantity = parseInt(document.querySelector(`.painting-quantity`).textContent);
-  isAudioBook = document.querySelector("input[name='Audio']").checked;
-  isCard = document.querySelector("input[name=Card]").checked;
-  const userEmail = encodeURIComponent(document.getElementById("Email").value);
+  const formData = collectFormData();
   var encodedStepName = encodeURIComponent("Step 9: Final");
+  console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  var url = `https://api.blossomreads.com/order-form-event?device_id=${deviceId}&event_name=${encodedStepName}&order_reference_id=${encodedClientRefId}&user_email=${userEmail}`;
+  // We are waiting for the fetch to complete before redirecting to the payment page
+  try {
+    const response = await fetchFormEvent(
+      formData.deviceId,
+      encodedStepName,
+      formData.encodedClientRefId,
+      formData.userEmail,
+      {
+        book_quantity: formData.bookQuantity,
+        painting_quantity: formData.paintingQuantity,
+        is_audio_book: formData.isAudioBook,
+        is_card: formData.isCard,
+      }
+    );
+    console.log("Fetch completed successfully:", response);
+  } catch (error) {
+      console.error("Fetch failed:", error);
+  }
 
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      book_quantity: currentBookQuantity,
-      painting_quantity: currentPaintingQuantity,
-      is_audio_book: isAudioBook,
-      is_card: isCard
-    })
-  })
+  // Redirect the user to Stripe payment page
+  window.location.href = `https://api.blossomreads.com/stripe/stripe-payment-url-redirect?` +
+                          `is_audio=${encodeURIComponent(formData.isAudioBook)}&` +
+                          `is_painting=${encodeURIComponent(formData.isPainting)}&` +
+                          `is_card=${encodeURIComponent(formData.isCard)}&` +
+                          `customer_email=${encodeURIComponent(formData.userEmail)}&` +
+                          `client_reference_id=${encodeURIComponent(encodedClientRefId)}&` +
+                          `language=${encodeURIComponent(formData.bookLang)}&` +
+                          `is_paid_shipping=${encodeURIComponent(formData.isFastShipping)}&` +
+                          `book_quantity=${encodeURIComponent(formData.bookQuantity)}&` +
+                          `painting_quantity=${encodeURIComponent(formData.paintingQuantity)}&` +
+                          `currency=${encodeURIComponent(formData.currencyName)}&` +
+                          `testing=${encodeURIComponent(formData.isTesting)}`;
 });
-// <!-- END Order Flow data tracking script-->
