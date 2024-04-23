@@ -2419,7 +2419,7 @@ document.querySelector(".formly-form").addEventListener("submit", async function
     );
     console.log("Fetch completed successfully:", response);
   } catch (error) {
-      console.error("Fetch failed:", error);
+    console.error("Fetch failed:", error);
   }
 
   // Redirect the user to Stripe payment page
