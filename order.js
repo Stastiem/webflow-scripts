@@ -1026,7 +1026,7 @@ function updateStep() {
   $($(steps[x]).find("textarea[autofocus]")[0]).focus();
   validation();
 
-  for (idx = 0; idx <= progress; idx++) {
+  for (let idx = 0; idx <= progress; idx++) {
     $($('[data-form="custom-progress-indicator"]')[idx]).removeClass(
       "disabled"
     );
