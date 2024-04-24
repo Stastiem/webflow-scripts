@@ -1,5 +1,5 @@
-// import { handleDeviceId } from "./utils/handleDeviceId.js";
-// handleDeviceId(mixpanel);
+import { handleDeviceId } from "./utils/handleDeviceId.js";
+handleDeviceId(mixpanel);
 
 function init() {
   let x = 0;
