@@ -696,7 +696,7 @@ function changeImage() {
     console.log(imageElement6);
 
     function updateImage(imageElement, image_name, extension) {
-      url =
+      let url =
         "https://stastiem-public-assets.s3-accelerate.amazonaws.com/website/" +
         image_name +
         extension;
