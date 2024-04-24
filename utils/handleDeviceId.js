@@ -1,4 +1,4 @@
-function handleDeviceId(mixpanel) {
+function handleDeviceId() {
   const timeoutDuration = 3000;
   const intervalDuration = 50;
   let timerId;

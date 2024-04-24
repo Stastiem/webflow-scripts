@@ -42,4 +42,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Initialize the device ID handling when the page is fully loaded
-document.addEventListener('DOMContentLoaded', handleDeviceId(mixpanel));
+document.addEventListener('DOMContentLoaded', handleDeviceId);
