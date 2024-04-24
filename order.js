@@ -1,4 +1,4 @@
-import { handleDeviceId } from "./utils/handleDeviceId";
+import { handleDeviceId } from "./utils/handleDeviceId.js";
 
 handleDeviceId(mixpanel);
 

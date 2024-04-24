@@ -1,4 +1,4 @@
-import { handleDeviceId } from "./utils/handleDeviceId";
+import { handleDeviceId } from "./utils/handleDeviceId.js";
 
 /**
  * Sets up event listeners on document load to track clicks on elements with `data-tracker` attributes.
