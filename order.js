@@ -1,6 +1,5 @@
-import { handleDeviceId } from "./utils/handleDeviceId.js";
-
-handleDeviceId(mixpanel);
+// import { handleDeviceId } from "./utils/handleDeviceId.js";
+// handleDeviceId(mixpanel);
 
 let x = 0;
 let curStep = 0;
