@@ -356,7 +356,7 @@ function decrementCounter(counterId) {
       console.log(currentValue - 1);
     }
     if (currentValue - 1 === 1) {
-      document.getElementsByClassName("price")[0].textContent = "+" + bookPrice + " " + currencyName;
+      document.getElementsByClassName("price")[0].textContent = "+" + bookPrice.toFixed(2) + " " + currencyName;
     }
   }
   if (currentValue > 0 && counterInput.className !== "book-quantity") {
@@ -429,6 +429,7 @@ function initAutocomplete(selectedCountry = "lv") {
   autocompleteAddress.setComponentRestrictions({ country: selectedCountry });
   autocompleteAddress.addListener("place_changed", fillInAddress);
 }
+initAutocomplete("gb");
 // END Google Places API
 
 // Takes data from place object and fills corresponding hidden fields
