@@ -411,16 +411,6 @@ const detectBookLang = () => {
 detectBookLang();
 // END Function that detects the language of a book based on the subdomain
 
-// Function that sets max value of HeroDOB input (NOT WORKING ON iOS)
-function restrictAge() {
-  const today = new Date();
-  const minDate = new Date(today);
-  minDate.setMonth(today.getMonth() - 10);
-  dateInput.setAttribute("max", minDate.toISOString().split("T")[0]);
-}
-restrictAge();
-// END Function that sets max value of HeroDOB input (NOT WORKING ON iOS)
-
 // Google Places API
 function initAutocomplete(selectedCountry = "lv") {
   autocompleteAddress = new google.maps.places.Autocomplete(addressInputField, {
