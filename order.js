@@ -53,10 +53,6 @@ let is_boy = true;
 // added new variables
 let autocompleteAddress;
 let addressInputField = document.querySelector("#Address");
-let countryInputField = document.querySelector("#Country");
-let streetInputField = document.querySelector("#Street");
-let cityInputField = document.querySelector("#City");
-let zipCode = document.getElementById("ZipCode");
 const environment = document.querySelector("#Environment");
 const host = urlFormly.host;
 const port = urlFormly.port; // if live server is used, then the port is not empty
@@ -71,8 +67,6 @@ const checkboxes = document.querySelectorAll(
 );
 const checkmarks = document.querySelectorAll(".check-mark");
 const paintingQuantity = document.querySelector(".painting-quantity");
-const shippingBlock = document.querySelector(".form-radio-wrap");
-const freeShippingRadio = document.querySelector(".free-shipping-radio");
 
 // Function that disables “next” button if occasion/theme checkbox checked, but nothing selected
 function checkInputs() {
@@ -118,43 +112,6 @@ document.getElementById("theme-input").addEventListener("input", checkInputs);
 document.getElementById("theme").addEventListener("change", checkInputs);
 document.getElementById("StyleRandom").addEventListener("change", checkInputs);
 // END function that disables “next” button if occasion/theme checkbox checked, but nothing selected
-
-// Function that fetches user country and shows/hides block with shipping options, changes currency and country input field
-fetch("https://ipapi.co/json/")
-  .then((response) => response.json())
-  .then((data) => {
-    // if (data.country_code === "GB") {
-    //   priceSymbols.forEach((el) => (el.textContent = "£"));
-    //   priceLetters.forEach((el) => (el.textContent = "GBP"));
-    // }
-    const select = document.getElementById("Country");
-    for (let i = 0; i < select.options.length; i++) {
-      const option = select.options[i];
-      if (option.value === data.country_code.toLowerCase()) {
-        option.selected = true;
-        initAutocomplete(option.value);
-        break;
-      }
-    }
-    // currency = "gbp";
-    if (
-      data.country_code.toLowerCase() !== "lv" &&
-      data.country_code.toLowerCase() !== ""
-    ) {
-      shippingBlock.style.display = "block";
-    } else {
-      shippingBlock.style.display = "none";
-    }
-    customizeShipping(data.country_code.toLowerCase());
-    // if (data.country_code.toLowerCase() !== "gb") {
-    //   priceSymbols.forEach((el) => (el.textContent = "€"));
-    //   priceLetters.forEach((el) => (el.textContent = "EUR"));
-    //   currency = "eur";
-    // }
-    // customizeShipping(data.country_code.toLowerCase());
-  })
-  .catch((error) => console.error("Error fetching IP information:", error));
-// END Function that fetches user country and shows/hides block with shipping options, changes currency and country input field
 
 // Function that toggles all of the custom checkboxes within the form
 function toggleCheckbox(checkboxId, checkmarkId) {
@@ -495,81 +452,6 @@ function restrictAge() {
 restrictAge();
 // END Function that sets max value of HeroDOB input (NOT WORKING ON iOS)
 
-// Functions that show/hide message that delivery to UK is paid
-function handleMouseOver() {
-  document.querySelector(".shipping-hint").style.display = "block";
-}
-
-function handleMouseOut() {
-  document.querySelector(".shipping-hint").style.display = "none";
-}
-// END Functions that show/hide message that delivery to UK is paid
-
-// Function that makes free shipping disabled, shows note that delivery is 10 GBP
-function customizeShipping(value) {
-  if (value === "gb") {
-    document.querySelector(".shipping-note").textContent =
-      "The cost of shipping to the UK is 10 GBP.";
-    document.getElementById("fast-shipping").checked = true;
-    document.getElementById("free-shipping").disabled = true;
-    document
-      .querySelector(".free-shipping-radio")
-      .classList.remove("w--redirected-checked");
-    document.querySelector(".free-shipping-radio").style.backgroundColor =
-      "#dddddd60";
-    document.querySelector(".free-shipping-radio").style.borderColor =
-      "#dddddd60";
-    document.querySelector(".free-delivery-text").style.color = "#999999";
-    document.querySelector(".free-delivery-span").style.color = "#999999";
-    document
-      .querySelector(".fast-shipping-radio")
-      .classList.add("w--redirected-checked");
-    // currency = "gbp";
-    // priceSymbols.forEach((el) => (el.textContent = "£"));
-    // priceLetters.forEach((el) => (el.textContent = "GBP"));
-    freeShippingRadio.addEventListener("mouseover", handleMouseOver);
-    freeShippingRadio.addEventListener("mouseout", handleMouseOut);
-  } else {
-    document.querySelector(".shipping-note").textContent =
-      "Free standard shipping to your door or nearest parcel machine. For quicker delivery, select our express option.";
-    document.getElementById("free-shipping").disabled = false;
-    document.getElementById("free-shipping").checked = true;
-    // priceSymbols.forEach((el) => (el.textContent = "€"));
-    // priceLetters.forEach((el) => (el.textContent = "EUR"));
-    document.querySelector(".shipping-hint").style.display = "none";
-    document.querySelector(".free-shipping-radio").removeAttribute("style"); // Remove inline styles
-    document.querySelector(".free-delivery-text").removeAttribute("style"); // Remove inline styles
-    document.querySelector(".free-delivery-span").removeAttribute("style"); // Remove inline styles
-    document
-      .querySelector(".fast-shipping-radio")
-      .classList.remove("w--redirected-checked");
-    document
-      .querySelector(".free-shipping-radio")
-      .classList.add("w--redirected-checked");
-    freeShippingRadio.removeEventListener("mouseover", handleMouseOver);
-    freeShippingRadio.removeEventListener("mouseout", handleMouseOut);
-  }
-}
-// END Function that makes free shipping disabled, shows note that delivery is 10 GBP
-
-// Changes the data if country is UK or Latvia or others
-countryInputField.addEventListener("change", (e) => {
-  initAutocomplete(e.target.value);
-  autocompleteAddress.setComponentRestrictions({ country: e.target.value });
-  if (e.target.value !== "lv" && e.target.value !== "") {
-    shippingBlock.style.display = "block";
-  } else {
-    shippingBlock.style.display = "none";
-  }
-  customizeShipping(e.target.value);
-  // if (e.target.value !== "gb") {
-  //   priceSymbols.forEach((el) => (el.textContent = "€"));
-  //   priceLetters.forEach((el) => (el.textContent = "EUR"));
-  //   currency = "eur";
-  // }
-});
-// END Changes the data if country is UK or Latvia or others
-
 // Google Places API
 function initAutocomplete(selectedCountry = "lv") {
   autocompleteAddress = new google.maps.places.Autocomplete(addressInputField, {
@@ -594,40 +476,8 @@ function fillInAddress() {
     addressInputField.placeholder = "Enter a valid address";
   } else {
     addressInputField.value = place.formatted_address;
-    switch (countryInputField.value) {
-      case "lv":
-        cityInputField.value = findAddressData("locality", place)
-          ? findAddressData("administrative_area_level_1", place)
-            ? findAddressData("locality", place) +
-              ", " +
-              findAddressData("administrative_area_level_1", place)
-            : findAddressData("locality", place)
-          : findAddressData("administrative_area_level_2", place) +
-            ", " +
-            findAddressData("administrative_area_level_1", place);
-        streetInputField.value = findAddressData("street_number", place)
-          ? findAddressData("route", place) +
-            ", " +
-            findAddressData("street_number", place)
-          : findAddressData("route", place)
-          ? findAddressData("route", place)
-          : findAddressData("premise", place) ||
-            findAddressData("establishment", place);
-        break;
-
-      default:
-        cityInputField.value =
-          findAddressData("locality", place) ||
-          findAddressData("postal_town", place);
-        streetInputField.value =
-          findAddressData("route", place) +
-          ", " +
-          findAddressData("street_number", place);
-        break;
-    }
-    zipCode.value = findAddressData("postal_code", place);
   }
-  validation();
+  validation(); // Ensure this function is updated or handle missing field checks
 }
 // END Takes data from place object and fills corresponding hidden fields
 
@@ -2214,7 +2064,7 @@ function collectFormData() {
     isPainting: document.querySelector("input[name='Painting']")?.checked ?? null,
     isCard: document.querySelector("input[name='Card']")?.checked ?? null,
     bookLang: document.getElementById("BookLanguage")?.value ?? null,
-    isFastShipping: document.getElementById("fast-shipping")?.checked ?? null,
+    isFastShipping: false, // Shipping now is included in the price
     currencyName: document.getElementsByClassName("price")[0]?.textContent.replace(/[\+\-]?\d+(\.\d+)?/g, '').trim() ?? null,
     isTesting: location.hostname.includes("blossomreads.webflow.io")
   };
