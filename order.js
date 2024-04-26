@@ -422,14 +422,6 @@ function initAutocomplete(selectedCountry = "lv") {
 initAutocomplete("gb");
 // END Google Places API
 
-// Takes data from place object and fills corresponding hidden fields
-function findAddressData(data, place) {
-  const dataObject = place.address_components.find((el) =>
-    el.types.includes(data)
-  );
-  return dataObject ? dataObject.long_name : "";
-}
-
 function fillInAddress() {
   const place = autocompleteAddress.getPlace();
   if (!place.geometry) {
@@ -1734,17 +1726,20 @@ nextButtons[7].addEventListener("click", () => {
   )
 });
 
-// Form submission script
 document.querySelector(".formly-form").addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  // Disable the submit button immediately to prevent multiple submissions
+  const submitButton = event.target.querySelector('[type="submit"]');
+  submitButton.disabled = true;
+
   // Send OrderFilled event to Google Tag Manager
   window.dataLayer.push({ event: "OrderFilled" });
-  event.preventDefault();
 
   const formData = collectFormData();
   var encodedStepName = "Step 9: Final";
   console.log("Clicked " + encodedStepName + " button on " + formData.deviceId);
 
-  // We are waiting for the fetch to complete before redirecting to the payment page
   try {
     const response = await fetchFormEvent(
       formData.deviceId,
@@ -1761,9 +1756,11 @@ document.querySelector(".formly-form").addEventListener("submit", async function
     console.log("Fetch completed successfully:", response);
   } catch (error) {
     console.error("Fetch failed:", error);
+    // Re-enable the button in case of fetch failure so the user can try again
+    submitButton.disabled = false;
   }
 
-  // Redirect the user to Stripe payment page
+  // Redirect the user to the Stripe payment page
   window.location.href = `https://api.blossomreads.com/stripe/stripe-payment-url-redirect?` +
                          `is_audio=${formData.isAudioBook}&` +
                          `is_painting=${formData.isPainting}&` +
