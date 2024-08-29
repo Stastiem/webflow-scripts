@@ -1668,7 +1668,7 @@ nextButtons[4].addEventListener("click", () => {
     formData.clientRefId,
     formData.userEmail,
     {
-      is_image_1_uploaded: formData.isHeroPhoto1Uploaded
+      image_1_url: "1_not_implemented"
     }
   )
 });
@@ -1684,10 +1684,10 @@ nextButtons[5].addEventListener("click", () => {
     formData.clientRefId,
     formData.userEmail,
     {
-      is_image_2_uploaded: formData.isHeroPhoto2Uploaded,
-      is_image_3_uploaded: formData.isHeroPhoto3Uploaded,
-      is_image_4_uploaded: formData.isHeroPhoto4Uploaded,
-      is_image_5_uploaded: formData.isHeroPhoto5Uploaded
+      image_2_url: "2_not_implemented",
+      image_3_url: "3_not_implemented",
+      image_4_url: "4_not_implemented",
+      image_5_url: "5_not_implemented"
     }
   )
 });
