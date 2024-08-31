@@ -1469,14 +1469,14 @@ document.querySelectorAll('input.w-file-upload-input').forEach(input => {
 });
 
 function sendDataToServer(arrayBuffer, fileName, extension) {
-  const clientRefId = encodeURIComponent(document.getElementById("ClientReferenceId").value)
+  const clientRefId = encodeURIComponent(document.getElementById("ClientReferenceId").value);
   const url = `https://api.blossomreads.com/order-form-image-upload?order_reference_id=${clientRefId}`;
   const data = new Blob([arrayBuffer]); // Create a blob from the array buffer
   const formData = new FormData();
 
-  // User might upload files with the same names so we need to add random string to the file name
+  // User might upload files with the same names so we need to add a random string to the file name
   const randomString = Math.random().toString(36).substring(2, 15);
-  formData.append('file', data, `${fileName}-${randomString}.${extension}`);
+  formData.append('files', data, `${fileName}-${randomString}.${extension}`); // Changed 'file' to 'files'
 
   fetch(url, {
     method: 'PUT',
@@ -1485,11 +1485,15 @@ function sendDataToServer(arrayBuffer, fileName, extension) {
   .then(response => response.json()) // Assumes server responds with JSON
   .then(data => {
     console.log('Server response:', data);
+    // Since the response is now an array, you can access the first file's details like this:
+    if (data.length > 0) {
+      console.log('First file details:', data[0]);
+    }
   })
   .catch(error => {
     console.error('Upload error:', error);
   });
-};
+}
 // END: Listens for image uplaod changes and then uploads the image to our own S3
 
 // <!-- START: Order Flow data tracking script -->
