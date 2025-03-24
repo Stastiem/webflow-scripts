@@ -35,7 +35,7 @@ function setDeviceIdCookie(deviceId) {
   const daysToExpire = 365;  // Set cookie to expire in one year
   const expiryDate = new Date();
   expiryDate.setTime(expiryDate.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
-  document.cookie = 'DEVICE_ID=' + deviceId + ';expires=' + expiryDate.toUTCString() + ';path=/;secure';
+  document.cookie = 'DEVICE_ID=' + deviceId + ';expires=' + expiryDate.toUTCString() + ';path=/;domain=blossomreads.com;secure;samesite=lax';
 }
 
 // Function to get a cookie by name
